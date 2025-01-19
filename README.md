@@ -7,7 +7,7 @@
 A modern, customizable clock widget that can be embedded into any website. Features a sleek design with real-time updates, extensive customization options, and theme presets.
 
 <div align="center">
-  <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737278384/screenzy-1737278357529_y0xqpv.png" width="1000" alt="Clock Widget Preview Light Mode">
+  <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737279443/clock-widget_xxylrw.png" width="1000" alt="Clock Widget Preview Light Mode">
 </div>
 
 ## Features
