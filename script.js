@@ -201,6 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
+    // Add font family change handler
+    fontFamilySelect.addEventListener('change', () => {
+        console.log('Font family changed:', fontFamilySelect.value);
+        updateClockStyle();
+    });
+
     // Add text effect change handler
     textEffectSelect.addEventListener('change', (e) => {
         const effect = e.target.value;
