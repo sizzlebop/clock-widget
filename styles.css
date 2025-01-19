@@ -45,6 +45,20 @@ body {
     background-color: transparent;
 }
 
+.widget-logo {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.widget-logo:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
 /* Embedded view specific styles */
 @media (max-width: 500px) {
     .style-1 {
