@@ -164,12 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
-    // Add clock shape change handler
-    clockShapeSelect.addEventListener('change', (e) => {
-        console.log('Clock shape changed:', e.target.value);
-        updateClockStyle();
-    });
-
     // Add background type change handler
     backgroundTypeSelect.addEventListener('change', (e) => {
         const isGradient = e.target.value === 'gradient';
@@ -284,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const secondaryColor = secondaryColorInput.value;
         const gradientType = gradientTypeSelect.value;
         const gradientAngle = gradientAngleInput.value;
-        const clockShape = clockShapeSelect.value;
         const textShadowSize = parseInt(textShadowSizeInput.value);
         const textShadowColor = textShadowColorInput.value;
         const textColor = textColorInput.value;
