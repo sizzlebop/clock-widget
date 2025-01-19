@@ -9,32 +9,36 @@ document.addEventListener('DOMContentLoaded', () => {
             customizationPanel.style.display = 'none';
         }
 
-        // Set transparent background for body and outer containers
-        document.body.style.background = 'transparent';
+        // Get background color from URL params or use default
+        const params = new URLSearchParams(window.location.search);
+        const backgroundColor = params.get('backgroundColor') || '#fad029';
+        const backgroundType = params.get('backgroundType') || 'single';
+
+        // Apply background to all containers
+        document.body.style.cssText = `
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 100vh !important;
+            background-color: ${backgroundColor} !important;
+        `;
+
         document.querySelector('.style-0').style.cssText = `
             padding: 0 !important;
             margin: 0 !important;
-            background: transparent !important;
+            width: 100% !important;
+            height: 100vh !important;
+            background-color: ${backgroundColor} !important;
         `;
 
-        // Apply background directly to style-1 container
         const style1Container = document.querySelector('.style-1');
         if (style1Container) {
-            // Get background color from URL params or use default
-            const params = new URLSearchParams(window.location.search);
-            const backgroundColor = params.get('backgroundColor') || '#fad029';
-            const opacity = parseInt(params.get('opacity') || '100') / 100;
-            const backgroundType = params.get('backgroundType') || 'single';
-
             if (backgroundType === 'single') {
-                const rgbaBackground = hexToRgba(backgroundColor, opacity);
-                style1Container.style.setProperty('--bg-color', rgbaBackground);
                 style1Container.style.cssText = `
                     width: 100% !important;
                     height: 100% !important;
                     margin: 0 !important;
                     padding: 0 !important;
-                    background-color: ${rgbaBackground} !important;
+                    background-color: ${backgroundColor} !important;
                     border-radius: 8px !important;
                 `;
             } else if (backgroundType === 'gradient') {
@@ -45,14 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 let gradient;
                 if (gradientType === 'linear') {
-                    gradient = `linear-gradient(${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                    gradient = `linear-gradient(${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
                 } else if (gradientType === 'radial') {
-                    gradient = `radial-gradient(circle, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                    gradient = `radial-gradient(circle, ${primaryColor}, ${secondaryColor})`;
                 } else if (gradientType === 'conic') {
-                    gradient = `conic-gradient(from ${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                    gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
                 }
                 
-                style1Container.style.setProperty('--bg-gradient', gradient);
                 style1Container.style.cssText = `
                     width: 100% !important;
                     height: 100% !important;
@@ -63,20 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     border-radius: 8px !important;
                 `;
             }
+        }
 
-            // Ensure clock container is transparent
-            const clockContainer = document.querySelector('.clock');
-            if (clockContainer) {
-                clockContainer.style.cssText = `
-                    width: 100% !important;
-                    height: 100% !important;
-                    display: flex !important;
-                    flex-direction: column !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                    background: transparent !important;
-                `;
-            }
+        const clockContainer = document.querySelector('.clock');
+        if (clockContainer) {
+            clockContainer.style.cssText = `
+                width: 100% !important;
+                height: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                background-color: ${backgroundColor} !important;
+            `;
         }
     }
 
@@ -352,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const textShadowSize = parseInt(textShadowSizeInput.value);
         const textShadowColor = textShadowColorInput.value;
         const textColor = textColorInput.value;
-        const opacity = parseInt(backgroundOpacityInput.value) / 100;
         const borderStyle = borderStyleSelect.value;
         const borderSize = parseInt(borderSizeInput.value);
         const borderColor = borderColorInput.value;
@@ -371,33 +372,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Set background color or gradient
         if (backgroundType === 'single') {
-            const bgColor = backgroundColorInput.value;
-            const bgColorWithOpacity = hexToRgba(bgColor, opacity);
-            clockContainer.style.setProperty('--bg-color', bgColorWithOpacity);
-            clockContainer.style.backgroundColor = bgColorWithOpacity;
-            clockContainer.style.removeProperty('--bg-gradient');
-            clockContainer.style.removeProperty('background-image');
+            clockContainer.style.backgroundColor = backgroundColor;
         } else {
             let gradient;
             if (gradientType === 'linear') {
-                gradient = `linear-gradient(${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                gradient = `linear-gradient(${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
             } else if (gradientType === 'radial') {
-                gradient = `radial-gradient(circle, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                gradient = `radial-gradient(circle, ${primaryColor}, ${secondaryColor})`;
             } else if (gradientType === 'conic') {
-                gradient = `conic-gradient(from ${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
             }
             
-            clockContainer.style.setProperty('--bg-gradient', gradient);
             clockContainer.style.backgroundImage = gradient;
-            clockContainer.style.removeProperty('--bg-color');
-            clockContainer.style.removeProperty('background-color');
         }
         
         // Apply border with custom size
         if (borderStyle !== 'none') {
             const borderValue = `${borderSize}px ${borderStyle} ${borderColor}`;
             clockContainer.style.setProperty('border', borderValue, 'important');
-            console.log('Applied border:', borderValue);
         } else {
             clockContainer.style.setProperty('border', 'none', 'important');
         }
@@ -505,7 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clockShape,
             textShadowSize,
             textShadowColor,
-            opacity: backgroundOpacityInput.value,
             borderStyle,
             borderSize,
             borderColor,
@@ -543,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clockShape: settings.clockShape,
             textShadowSize: settings.textShadowSize,
             textShadowColor: settings.textShadowColor,
-            opacity: settings.opacity,
             borderStyle: settings.borderStyle,
             borderSize: settings.borderSize,
             borderColor: settings.borderColor,
@@ -551,11 +541,11 @@ document.addEventListener('DOMContentLoaded', () => {
             neonColor: settings.neonColor
         });
         
-        // Create embed code with responsive iframe
-        const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
+        // Create embed code with responsive iframe and background color
+        const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px; background-color: ${settings.backgroundColor};">
     <iframe 
         src="${generateRelativeEmbed()}"
-        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background-color: ${settings.backgroundColor};"
         allow="autoplay"
     ></iframe>
 </div>`;
@@ -581,7 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clockShape: settings.clockShape,
             textShadowSize: settings.textShadowSize,
             textShadowColor: settings.textShadowColor,
-            opacity: settings.opacity,
             borderStyle: settings.borderStyle,
             borderSize: settings.borderSize,
             borderColor: settings.borderColor,

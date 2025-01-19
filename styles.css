@@ -119,13 +119,16 @@ body {
 
 /* Force dimensions and styles when embedded */
 .embedded {
-    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
 }
 
 .embedded .style-0 {
     padding: 0 !important;
     margin: 0 !important;
-    background: transparent !important;
+    width: 100% !important;
+    height: 100vh !important;
 }
 
 .embedded .style-1 {
@@ -133,9 +136,8 @@ body {
     height: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
-    background-color: var(--bg-color, #fad029) !important;
-    background-image: var(--bg-gradient) !important;
     border-radius: 8px !important;
+    background-color: var(--bg-color, #fad029) !important;
 }
 
 .embedded .clock {
@@ -145,7 +147,6 @@ body {
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    background: transparent !important;
 }
 
 .embedded .time {
@@ -153,6 +154,7 @@ body {
     color: white !important;
     z-index: 1 !important;
     margin: 0 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 .embedded .date {
@@ -160,6 +162,8 @@ body {
     color: white !important;
     z-index: 1 !important;
     margin: 0 !important;
+    opacity: 1 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 .clock {
@@ -181,7 +185,7 @@ body {
 
 .date {
     font-size: 1.5em;
-    opacity: 0.9;
+    opacity: 1;
     text-shadow: none;
 }
 
