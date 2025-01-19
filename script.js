@@ -336,6 +336,17 @@ document.addEventListener('DOMContentLoaded', () => {
             clockContainer.style.setProperty('border', 'none', 'important');
         }
 
+        // Apply text color first (before any effects)
+        if (textEffect === 'none') {
+            timeElement.style.setProperty('color', textColor, 'important');
+            dateElement.style.setProperty('color', textColor, 'important');
+            // Clear any effect-related styles
+            timeElement.style.removeProperty('-webkit-text-fill-color');
+            dateElement.style.removeProperty('-webkit-text-fill-color');
+            timeElement.style.removeProperty('-webkit-background-clip');
+            dateElement.style.removeProperty('-webkit-background-clip');
+        }
+
         // Apply text shadow to both time and date elements
         if (textShadowSize > 0) {
             const textShadowOpacity = Math.min(0.9, textShadowSize / 10);
@@ -371,54 +382,23 @@ document.addEventListener('DOMContentLoaded', () => {
         // Apply constrained font sizes
         timeElement.style.setProperty('font-size', `${constrainedFontSize * 2}px`, 'important');
         dateElement.style.setProperty('font-size', `${constrainedFontSize * 0.8}px`, 'important');
-        
-        // Apply text color
-        timeElement.style.setProperty('color', textColor, 'important');
-        dateElement.style.setProperty('color', textColor, 'important');
-        
-        // Handle shape classes
-        clockContainer.classList.remove('rectangle', 'square', 'circle', 'octagon');
-        clockContainer.classList.add(clockShape);
 
-        // Update value displays
-        textShadowSizeValue.textContent = `${textShadowSize}px`;
-        borderSizeValue.textContent = `${borderSize}px`;
-
-        // Apply text effects
-        if (textEffect === 'neon') {
-            const neonGlow = `0 0 5px ${neonColor}, 0 0 10px ${neonColor}, 0 0 20px ${neonColor}, 0 0 30px ${neonColor}`;
-            clockElement.style.setProperty('--neon-glow', neonGlow);
-            // Remove any regular text shadow when neon effect is active
-            timeElement.style.removeProperty('text-shadow');
-            dateElement.style.removeProperty('text-shadow');
-        } else if (textEffect === 'sparkle') {
-            // Sparkle effect is handled by CSS
-            timeElement.style.setProperty('color', 'white', 'important');
-            dateElement.style.setProperty('color', 'white', 'important');
-            timeElement.style.removeProperty('text-shadow');
-            dateElement.style.removeProperty('text-shadow');
-        } else if (textEffect === 'rainbow') {
-            timeElement.style.setProperty('-webkit-background-clip', 'text');
-            dateElement.style.setProperty('-webkit-background-clip', 'text');
-            timeElement.style.setProperty('-webkit-text-fill-color', 'transparent');
-            dateElement.style.setProperty('-webkit-text-fill-color', 'transparent');
-        } else if (textEffect === 'none') {
-            // Reset all effect-related styles
-            clockElement.style.removeProperty('--neon-glow');
-            timeElement.style.setProperty('color', textColor, 'important');
-            dateElement.style.setProperty('color', textColor, 'important');
-            
-            // Reapply regular text shadow if it was set
-            if (textShadowSize > 0) {
-                const textShadowOpacity = Math.min(0.9, textShadowSize / 10);
-                const blurRadius = Math.max(2, textShadowSize);
-                const shadowColor = textShadowColor.replace('#', '');
-                const r = parseInt(shadowColor.substr(0, 2), 16);
-                const g = parseInt(shadowColor.substr(2, 2), 16);
-                const b = parseInt(shadowColor.substr(4, 2), 16);
-                const textShadowStyle = `0 ${textShadowSize/4}px ${blurRadius}px rgba(${r}, ${g}, ${b}, ${textShadowOpacity})`;
-                timeElement.style.setProperty('text-shadow', textShadowStyle, 'important');
-                dateElement.style.setProperty('text-shadow', textShadowStyle, 'important');
+        // Handle text effects after base color is set
+        if (textEffect !== 'none') {
+            if (textEffect === 'neon') {
+                const neonGlow = `0 0 5px ${neonColor}, 0 0 10px ${neonColor}, 0 0 20px ${neonColor}, 0 0 30px ${neonColor}`;
+                timeElement.style.setProperty('text-shadow', neonGlow, 'important');
+                timeElement.style.setProperty('color', neonColor, 'important');
+                // Keep date using regular text color
+                dateElement.style.setProperty('color', textColor, 'important');
+            } else if (textEffect === 'rainbow') {
+                timeElement.style.setProperty('-webkit-background-clip', 'text', 'important');
+                dateElement.style.setProperty('-webkit-background-clip', 'text', 'important');
+                timeElement.style.setProperty('-webkit-text-fill-color', 'transparent', 'important');
+                dateElement.style.setProperty('-webkit-text-fill-color', 'transparent', 'important');
+            } else if (textEffect === 'sparkle') {
+                timeElement.style.setProperty('color', textColor, 'important');
+                dateElement.style.setProperty('color', textColor, 'important');
             }
         }
 
