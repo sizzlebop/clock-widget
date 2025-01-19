@@ -118,33 +118,38 @@ body {
 }
 
 /* Force dimensions and styles when embedded */
-.embedded .style-1 {
-    width: 500px !important;
-    height: 250px !important;
-    background-color: #fad029 !important;  /* Default background color */
+.embedded body {
+    background: transparent !important;
 }
 
-.embedded .style-1.square,
-.embedded .style-1.circle,
-.embedded .style-1.octagon {
-    width: 250px !important;
-    height: 250px !important;
+.embedded .style-0,
+.embedded .style-1 {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
+.embedded .clock {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 8px !important;
+    background-color: var(--bg-color, #fad029) !important;
+    background-image: var(--bg-gradient) !important;
 }
 
 .embedded .time {
     font-size: 4em !important;
-    color: white !important;  /* Force white text color */
+    color: white !important;
+    z-index: 1 !important;
 }
 
 .embedded .date {
     font-size: 1.5em !important;
-    color: white !important;  /* Force white text color */
-}
-
-/* Ensure background styles are applied in embedded mode */
-.embedded .style-1[style*="background"] {
-    background-color: var(--bg-color, #fad029) !important;
-    background-image: var(--bg-gradient) !important;
+    color: white !important;
+    z-index: 1 !important;
 }
 
 .clock {

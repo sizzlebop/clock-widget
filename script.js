@@ -8,6 +8,59 @@ document.addEventListener('DOMContentLoaded', () => {
         if (customizationPanel) {
             customizationPanel.style.display = 'none';
         }
+
+        // Set transparent background for body and outer containers
+        document.body.style.background = 'transparent';
+        document.querySelector('.style-0').style.background = 'transparent';
+        document.querySelector('.style-1').style.background = 'transparent';
+
+        // Apply background directly to clock container
+        const clockContainer = document.querySelector('.clock');
+        if (clockContainer) {
+            // Get background color from URL params or use default
+            const params = new URLSearchParams(window.location.search);
+            const backgroundColor = params.get('backgroundColor') || '#fad029';
+            const opacity = parseInt(params.get('opacity') || '100') / 100;
+            const backgroundType = params.get('backgroundType') || 'single';
+
+            if (backgroundType === 'single') {
+                const rgbaBackground = hexToRgba(backgroundColor, opacity);
+                clockContainer.style.cssText = `
+                    background-color: ${rgbaBackground} !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    border-radius: 8px !important;
+                `;
+            } else if (backgroundType === 'gradient') {
+                const primaryColor = params.get('primaryColor') || '#fad029';
+                const secondaryColor = params.get('secondaryColor') || '#ff6b6b';
+                const gradientType = params.get('gradientType') || 'linear';
+                const gradientAngle = params.get('gradientAngle') || '45';
+                
+                let gradient;
+                if (gradientType === 'linear') {
+                    gradient = `linear-gradient(${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                } else if (gradientType === 'radial') {
+                    gradient = `radial-gradient(circle, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                } else if (gradientType === 'conic') {
+                    gradient = `conic-gradient(from ${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+                }
+                
+                clockContainer.style.cssText = `
+                    background: ${gradient} !important;
+                    background-image: ${gradient} !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    border-radius: 8px !important;
+                `;
+            }
+        }
     }
 
     const primaryColorInput = document.getElementById('primary-color');
