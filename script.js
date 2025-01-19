@@ -14,34 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const backgroundColor = params.get('backgroundColor') || '#fad029';
         const backgroundType = params.get('backgroundType') || 'single';
 
-        // Apply background to all containers
-        document.body.style.cssText = `
-            margin: 0 !important;
-            padding: 0 !important;
-            min-height: 100vh !important;
-            background-color: ${backgroundColor} !important;
-        `;
-
+        // Set up containers for embedded mode
         document.querySelector('.style-0').style.cssText = `
             padding: 0 !important;
             margin: 0 !important;
             width: 100% !important;
             height: 100vh !important;
-            background-color: ${backgroundColor} !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
         `;
 
         const style1Container = document.querySelector('.style-1');
         if (style1Container) {
-            if (backgroundType === 'single') {
-                style1Container.style.cssText = `
-                    width: 100% !important;
-                    height: 100% !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    background-color: ${backgroundColor} !important;
-                    border-radius: 8px !important;
-                `;
-            } else if (backgroundType === 'gradient') {
+            style1Container.style.cssText = `
+                width: 500px !important;
+                height: 250px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                border-radius: 8px !important;
+                background-color: ${backgroundColor} !important;
+            `;
+
+            if (backgroundType === 'gradient') {
                 const primaryColor = params.get('primaryColor') || '#fad029';
                 const secondaryColor = params.get('secondaryColor') || '#ff6b6b';
                 const gradientType = params.get('gradientType') || 'linear';
@@ -56,15 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
                 }
                 
-                style1Container.style.cssText = `
-                    width: 100% !important;
-                    height: 100% !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    background: ${gradient} !important;
-                    background-image: ${gradient} !important;
-                    border-radius: 8px !important;
-                `;
+                style1Container.style.background = gradient;
+                style1Container.style.backgroundImage = gradient;
             }
         }
 
@@ -77,8 +68,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 flex-direction: column !important;
                 justify-content: center !important;
                 align-items: center !important;
-                background-color: ${backgroundColor} !important;
+                gap: 5px !important;
             `;
+
+            const timeElement = clockContainer.querySelector('.time');
+            const dateElement = clockContainer.querySelector('.date');
+            
+            if (timeElement) {
+                timeElement.style.cssText = `
+                    font-size: 4em !important;
+                    color: white !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                `;
+            }
+            
+            if (dateElement) {
+                dateElement.style.cssText = `
+                    font-size: 1.5em !important;
+                    color: white !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                `;
+            }
+        }
+
+        // Hide footer image
+        const footerImage = document.querySelector('.footer-image');
+        if (footerImage) {
+            footerImage.style.display = 'none';
         }
     }
 

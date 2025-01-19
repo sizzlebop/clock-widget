@@ -122,6 +122,7 @@ body {
     margin: 0 !important;
     padding: 0 !important;
     min-height: 100vh !important;
+    background: transparent !important;
 }
 
 .embedded .style-0 {
@@ -129,15 +130,20 @@ body {
     margin: 0 !important;
     width: 100% !important;
     height: 100vh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 .embedded .style-1 {
-    width: 100% !important;
-    height: 100% !important;
+    width: 500px !important;
+    height: 250px !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     border-radius: 8px !important;
-    background-color: var(--bg-color, #fad029) !important;
 }
 
 .embedded .clock {
@@ -147,22 +153,24 @@ body {
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
+    gap: 5px !important;
 }
 
 .embedded .time {
     font-size: 4em !important;
     color: white !important;
-    z-index: 1 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 .embedded .date {
     font-size: 1.5em !important;
     color: white !important;
-    z-index: 1 !important;
     margin: 0 !important;
-    opacity: 1 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
