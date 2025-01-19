@@ -1,0 +1,7 @@
+fix: implement embed code and relative link functionality
+
+- Add iframe embed code generation
+- Add relative link URL generation
+- Add copy functionality
+- Add debug logging for troubleshooting
+- Update button text and styling 
