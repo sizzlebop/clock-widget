@@ -681,6 +681,44 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
         
+        // Apply settings to form controls
+        backgroundTypeSelect.value = settings.backgroundType;
+        backgroundColorInput.value = settings.backgroundColor;
+        primaryColorInput.value = settings.primaryColor;
+        secondaryColorInput.value = settings.secondaryColor;
+        gradientTypeSelect.value = settings.gradientType;
+        gradientAngleInput.value = settings.gradientAngle;
+        fontFamilySelect.value = settings.fontFamily;
+        fontSizeInput.value = settings.fontSize;
+        textColorInput.value = settings.textColor;
+        timeFormatSelect.value = settings.timeFormat;
+        showSecondsSelect.value = settings.showSeconds;
+        clockShapeSelect.value = settings.clockShape;
+        textShadowSizeInput.value = settings.textShadowSize;
+        textShadowColorInput.value = settings.textShadowColor;
+        backgroundOpacityInput.value = settings.opacity;
+        borderStyleSelect.value = settings.borderStyle;
+        borderSizeInput.value = settings.borderSize;
+        borderColorInput.value = settings.borderColor;
+        textEffectSelect.value = settings.textEffect;
+        neonColorInput.value = settings.neonColor;
+        
+        // Update display values
+        angleValue.textContent = `${settings.gradientAngle}°`;
+        sizeValue.textContent = `${settings.fontSize}px`;
+        textShadowSizeValue.textContent = `${settings.textShadowSize}px`;
+        opacityValue.textContent = `${settings.opacity}%`;
+        borderSizeValue.textContent = `${settings.borderSize}px`;
+        
+        // Show/hide gradient section based on background type
+        gradientSection.style.display = settings.backgroundType === 'gradient' ? 'block' : 'none';
+        
+        // Show/hide neon color control based on text effect
+        neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
+        
+        // Apply all styles
+        updateClockStyle();
+        
         // Hide customization panel and adjust clock container for embed mode
         document.querySelector('.customization-panel').style.display = 'none';
         document.querySelector('.style-0').style.padding = '0';
@@ -712,29 +750,10 @@ document.addEventListener('DOMContentLoaded', () => {
         timeElement.style.fontSize = `${baseFontSize * 2 * initialScale}px`;
         dateElement.style.fontSize = `${baseFontSize * 0.8 * initialScale}px`;
         
-        // Store initial container size for relative scaling
-        let initialWidth = containerWidth;
-        let initialHeight = containerHeight;
-        
-        // Adjust font sizes based on container size while maintaining proportions
-        const resizeObserver = new ResizeObserver(entries => {
-            for (let entry of entries) {
-                const container = entry.target;
-                const newWidth = container.clientWidth;
-                const newHeight = container.clientHeight;
-                
-                // Calculate scale factor based on size change
-                const widthScale = newWidth / initialWidth;
-                const heightScale = newHeight / initialHeight;
-                const scale = Math.min(widthScale, heightScale);
-                
-                // Apply scaled sizes
-                timeElement.style.fontSize = `${baseFontSize * 2 * initialScale * scale}px`;
-                dateElement.style.fontSize = `${baseFontSize * 0.8 * initialScale * scale}px`;
-            }
-        });
-        
-        resizeObserver.observe(clockContainer);
+        // Create sparkle effect if needed
+        if (settings.textEffect === 'sparkle') {
+            createSparkleParticles();
+        }
     }
 
     // Initialize default settings if they don't exist
