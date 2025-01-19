@@ -499,11 +499,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Get the current site's URL
         const currentUrl = new URL(window.location.href);
-        // Get the base URL (protocol + hostname)
-        const baseUrl = `${currentUrl.protocol}//${currentUrl.hostname}`;
+        // Get the path without any query parameters or hash
+        const path = currentUrl.pathname.replace(/\/[^\/]*$/, '/');
+        // Construct the full URL
+        const embedUrl = `${currentUrl.protocol}//${currentUrl.host}${path}?${params.toString()}#embed`;
         
-        // Return the URL with parameters
-        return `${baseUrl}/?${params.toString()}#embed`;
+        return embedUrl;
     }
 
     // Show/hide embed code
