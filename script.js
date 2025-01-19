@@ -718,23 +718,36 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Hide customization panel and adjust clock container for embed mode
         document.querySelector('.customization-panel').style.display = 'none';
-        document.querySelector('.style-0').style.padding = '0';
-        document.querySelector('.style-0').style.height = '100vh';
-        document.querySelector('.style-1').style.margin = '0';
-        document.querySelector('.style-1').style.height = '100%';
-        document.querySelector('.style-1').style.padding = '10px'; // Reduce padding
+        document.querySelector('.style-0').style.cssText = `
+            padding: 0 !important;
+            margin: 0 !important;
+            height: 100vh !important;
+            width: 100% !important;
+            overflow: hidden !important;
+        `;
+        document.querySelector('.style-1').style.cssText = `
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100% !important;
+            width: 100% !important;
+            overflow: hidden !important;
+        `;
         document.querySelector('.footer-image').style.display = 'none';
         
         // Make clock container responsive with better centering
         const clockContainer = document.querySelector('.clock');
-        clockContainer.style.height = '100%';
-        clockContainer.style.width = '100%';
-        clockContainer.style.display = 'flex';
-        clockContainer.style.flexDirection = 'column';
-        clockContainer.style.justifyContent = 'center';
-        clockContainer.style.alignItems = 'center';
-        clockContainer.style.gap = '5px'; // Add small gap between time and date
-        clockContainer.style.padding = '5px'; // Minimal padding
+        clockContainer.style.cssText = `
+            height: 100% !important;
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+        `;
 
         // Apply initial font size from settings with better proportions
         const timeElement = clockContainer.querySelector('.time');
@@ -748,13 +761,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const initialScale = minDimension / 400; // Base scale on a reference size of 400px
         
         // Set initial sizes with better proportions
-        timeElement.style.fontSize = `${baseFontSize * 2 * initialScale}px`;
-        dateElement.style.fontSize = `${baseFontSize * 0.6 * initialScale}px`; // Reduce date size
-        
-        // Ensure date is centered
-        dateElement.style.textAlign = 'center';
-        dateElement.style.width = '100%';
-        dateElement.style.margin = '0';
+        timeElement.style.cssText = `
+            font-size: ${baseFontSize * 2 * initialScale}px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+        `;
+        dateElement.style.cssText = `
+            font-size: ${baseFontSize * 0.6 * initialScale}px !important;
+            text-align: center !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+        `;
         
         // Create sparkle effect if needed
         if (settings.textEffect === 'sparkle') {
