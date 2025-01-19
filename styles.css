@@ -118,38 +118,48 @@ body {
 }
 
 /* Force dimensions and styles when embedded */
-.embedded body {
+.embedded {
     background: transparent !important;
 }
 
-.embedded .style-0,
-.embedded .style-1 {
+.embedded .style-0 {
+    padding: 0 !important;
+    margin: 0 !important;
     background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
+}
+
+.embedded .style-1 {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: var(--bg-color, #fad029) !important;
+    background-image: var(--bg-gradient) !important;
+    border-radius: 8px !important;
 }
 
 .embedded .clock {
     width: 100% !important;
     height: 100% !important;
     display: flex !important;
+    flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    border-radius: 8px !important;
-    background-color: var(--bg-color, #fad029) !important;
-    background-image: var(--bg-gradient) !important;
+    background: transparent !important;
 }
 
 .embedded .time {
     font-size: 4em !important;
     color: white !important;
     z-index: 1 !important;
+    margin: 0 !important;
 }
 
 .embedded .date {
     font-size: 1.5em !important;
     color: white !important;
     z-index: 1 !important;
+    margin: 0 !important;
 }
 
 .clock {

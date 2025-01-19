@@ -11,12 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set transparent background for body and outer containers
         document.body.style.background = 'transparent';
-        document.querySelector('.style-0').style.background = 'transparent';
-        document.querySelector('.style-1').style.background = 'transparent';
+        document.querySelector('.style-0').style.cssText = `
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+        `;
 
-        // Apply background directly to clock container
-        const clockContainer = document.querySelector('.clock');
-        if (clockContainer) {
+        // Apply background directly to style-1 container
+        const style1Container = document.querySelector('.style-1');
+        if (style1Container) {
             // Get background color from URL params or use default
             const params = new URLSearchParams(window.location.search);
             const backgroundColor = params.get('backgroundColor') || '#fad029';
@@ -25,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (backgroundType === 'single') {
                 const rgbaBackground = hexToRgba(backgroundColor, opacity);
-                clockContainer.style.cssText = `
-                    background-color: ${rgbaBackground} !important;
+                style1Container.style.setProperty('--bg-color', rgbaBackground);
+                style1Container.style.cssText = `
                     width: 100% !important;
                     height: 100% !important;
-                    display: flex !important;
-                    justify-content: center !important;
-                    align-items: center !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    background-color: ${rgbaBackground} !important;
                     border-radius: 8px !important;
                 `;
             } else if (backgroundType === 'gradient') {
@@ -49,15 +52,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     gradient = `conic-gradient(from ${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
                 }
                 
-                clockContainer.style.cssText = `
+                style1Container.style.setProperty('--bg-gradient', gradient);
+                style1Container.style.cssText = `
+                    width: 100% !important;
+                    height: 100% !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
                     background: ${gradient} !important;
                     background-image: ${gradient} !important;
+                    border-radius: 8px !important;
+                `;
+            }
+
+            // Ensure clock container is transparent
+            const clockContainer = document.querySelector('.clock');
+            if (clockContainer) {
+                clockContainer.style.cssText = `
                     width: 100% !important;
                     height: 100% !important;
                     display: flex !important;
+                    flex-direction: column !important;
                     justify-content: center !important;
                     align-items: center !important;
-                    border-radius: 8px !important;
+                    background: transparent !important;
                 `;
             }
         }
