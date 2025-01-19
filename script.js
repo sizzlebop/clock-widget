@@ -743,38 +743,24 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Make clock container responsive with better centering
         const clockContainer = document.querySelector('.clock');
-        clockContainer.style.cssText = `
-            height: 100% !important;
-            width: 100% !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            gap: 5px !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            overflow: hidden !important;
-            position: relative !important;
-            z-index: 1 !important;
-        `;
-
-        // Create a background container
-        const bgContainer = document.createElement('div');
-        bgContainer.style.cssText = `
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            z-index: -1 !important;
-        `;
-        clockContainer.appendChild(bgContainer);
         
-        // Apply background to the new container
+        // Apply background directly to clock container for embed mode
         if (settings.backgroundType === 'single') {
             const rgbaBackground = hexToRgba(settings.backgroundColor, parseInt(settings.opacity) / 100);
-            bgContainer.style.setProperty('background', rgbaBackground, 'important');
-            bgContainer.style.setProperty('background-color', rgbaBackground, 'important');
+            clockContainer.style.cssText = `
+                height: 100% !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 5px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+                background: ${rgbaBackground} !important;
+                background-color: ${rgbaBackground} !important;
+            `;
         } else if (settings.backgroundType === 'gradient') {
             let gradient;
             const rgbaPrimary = hexToRgba(settings.primaryColor, parseInt(settings.opacity) / 100);
@@ -793,8 +779,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 default:
                     gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
             }
-            bgContainer.style.setProperty('background', gradient, 'important');
-            bgContainer.style.setProperty('background-image', gradient, 'important');
+            clockContainer.style.cssText = `
+                height: 100% !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 5px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+                background: ${gradient} !important;
+                background-image: ${gradient} !important;
+            `;
         }
 
         // Apply initial font size from settings with better proportions
@@ -814,6 +812,7 @@ document.addEventListener('DOMContentLoaded', () => {
             margin: 0 !important;
             padding: 0 !important;
             line-height: 1 !important;
+            color: ${settings.textColor} !important;
         `;
         dateElement.style.cssText = `
             font-size: ${baseFontSize * 0.6 * initialScale}px !important;
@@ -822,6 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
             margin: 0 !important;
             padding: 0 !important;
             line-height: 1 !important;
+            color: ${settings.textColor} !important;
         `;
         
         // Create sparkle effect if needed
