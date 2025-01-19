@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const textEffectSelect = document.getElementById('text-effect');
     const neonColorInput = document.getElementById('neon-color');
     const neonColorControl = document.getElementById('neon-color-control');
+    const generateEmbedLinkButton = document.getElementById('generate-embed-link');
+    const embedLinkPreview = document.getElementById('embed-link-preview');
+    const embedLinkInput = document.getElementById('embed-link');
+    const copyLinkButton = document.getElementById('copy-embed-link');
+    const linkCopyFeedback = document.getElementById('link-copy-feedback');
 
     // Initialize controls with default values
     backgroundTypeSelect.value = "single";
@@ -811,4 +816,92 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 2000); // Match the longer animation duration
         }, 200); // Create particles even less frequently
     }
+
+    // Add event listener for generating embed link
+    generateEmbedLinkButton.addEventListener('click', () => {
+        // Hide embed code preview if it's open
+        embedPreview.classList.add('hidden');
+        
+        // Get all current settings
+        const settings = {
+            clockShape: clockShapeSelect.value,
+            backgroundType: backgroundTypeSelect.value,
+            backgroundColor: backgroundColorInput.value.substring(1), // Remove # from hex
+            primaryColor: primaryColorInput.value.substring(1),
+            secondaryColor: secondaryColorInput.value.substring(1),
+            gradientType: gradientTypeSelect.value,
+            gradientAngle: gradientAngleInput.value,
+            fontFamily: encodeURIComponent(fontFamilySelect.value),
+            fontSize: fontSizeInput.value,
+            textColor: textColorInput.value.substring(1),
+            textShadowSize: textShadowSizeInput.value,
+            textShadowColor: textShadowColorInput.value.substring(1),
+            textEffect: textEffectSelect.value,
+            neonColor: neonColorInput.value.substring(1),
+            timeFormat: timeFormatSelect.value,
+            showSeconds: showSecondsSelect.value,
+            borderStyle: borderStyleSelect.value,
+            borderSize: borderSizeInput.value,
+            borderColor: borderColorInput.value.substring(1)
+        };
+
+        // Create query string from settings
+        const queryString = Object.entries(settings)
+            .map(([key, value]) => `${key}=${value}`)
+            .join('&');
+
+        // Generate relative URL with settings and embed flag
+        const relativeUrl = `${window.location.pathname}?${queryString}#embed`;
+        
+        // Show the embed link preview
+        embedLinkInput.value = relativeUrl;
+        embedLinkPreview.classList.remove('hidden');
+    });
+
+    // Add event listener for copying embed link
+    copyLinkButton.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(embedLinkInput.value);
+            linkCopyFeedback.classList.remove('hidden');
+            setTimeout(() => {
+                linkCopyFeedback.classList.add('hidden');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy embed link:', err);
+        }
+    });
+
+    // Function to load settings from URL parameters
+    function loadSettingsFromUrl() {
+        if (window.location.search) {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Load each setting if it exists in the URL
+            if (params.has('clockShape')) clockShapeSelect.value = params.get('clockShape');
+            if (params.has('backgroundType')) backgroundTypeSelect.value = params.get('backgroundType');
+            if (params.has('backgroundColor')) backgroundColorInput.value = '#' + params.get('backgroundColor');
+            if (params.has('primaryColor')) primaryColorInput.value = '#' + params.get('primaryColor');
+            if (params.has('secondaryColor')) secondaryColorInput.value = '#' + params.get('secondaryColor');
+            if (params.has('gradientType')) gradientTypeSelect.value = params.get('gradientType');
+            if (params.has('gradientAngle')) gradientAngleInput.value = params.get('gradientAngle');
+            if (params.has('fontFamily')) fontFamilySelect.value = decodeURIComponent(params.get('fontFamily'));
+            if (params.has('fontSize')) fontSizeInput.value = params.get('fontSize');
+            if (params.has('textColor')) textColorInput.value = '#' + params.get('textColor');
+            if (params.has('textShadowSize')) textShadowSizeInput.value = params.get('textShadowSize');
+            if (params.has('textShadowColor')) textShadowColorInput.value = '#' + params.get('textShadowColor');
+            if (params.has('textEffect')) textEffectSelect.value = params.get('textEffect');
+            if (params.has('neonColor')) neonColorInput.value = '#' + params.get('neonColor');
+            if (params.has('timeFormat')) timeFormatSelect.value = params.get('timeFormat');
+            if (params.has('showSeconds')) showSecondsSelect.value = params.get('showSeconds');
+            if (params.has('borderStyle')) borderStyleSelect.value = params.get('borderStyle');
+            if (params.has('borderSize')) borderSizeInput.value = params.get('borderSize');
+            if (params.has('borderColor')) borderColorInput.value = '#' + params.get('borderColor');
+
+            // Update all visual elements
+            updateClockStyle();
+        }
+    }
+
+    // Load settings from URL when page loads
+    loadSettingsFromUrl();
 }); 

@@ -187,6 +187,7 @@
                 <div class="embed-controls">
                     <div class="button-group">
                         <button id="show-embed-code" class="embed-button">Show Embed Code</button>
+                        <button id="generate-embed-link" class="embed-button">Generate Embed Link</button>
                     </div>
                     <div id="embed-preview" class="embed-preview hidden">
                         <div class="code-container">
@@ -195,6 +196,15 @@
                         <div class="button-container">
                             <button id="copy-embed-code" class="copy-button">Copy Code</button>
                             <span id="copy-feedback" class="copy-feedback hidden">Copied!</span>
+                        </div>
+                    </div>
+                    <div id="embed-link-preview" class="embed-preview hidden">
+                        <div class="code-container">
+                            <input type="text" id="embed-link" readonly>
+                        </div>
+                        <div class="button-container">
+                            <button id="copy-embed-link" class="copy-button">Copy Link</button>
+                            <span id="link-copy-feedback" class="copy-feedback hidden">Copied!</span>
                         </div>
                     </div>
                 </div>
