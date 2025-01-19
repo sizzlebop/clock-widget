@@ -35,6 +35,37 @@ body {
     background: linear-gradient(45deg, #fad029, #ff6b6b);
 }
 
+/* Embedded view specific styles */
+@media (max-width: 500px) {
+    .style-1 {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    .time {
+        font-size: calc(4em * (100vw / 500));
+    }
+    
+    .date {
+        font-size: calc(1.5em * (100vw / 500));
+    }
+}
+
+/* Force dimensions when embedded */
+.embedded .style-1 {
+    width: 500px !important;
+    height: 250px !important;
+}
+
+.embedded .time {
+    font-size: 4em !important;
+}
+
+.embedded .date {
+    font-size: 1.5em !important;
+}
+
 .clock {
     width: 100%;
     height: 100%;

@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if page is embedded
+    const isEmbedded = window.location.hash === '#embed' || window !== window.parent;
+    if (isEmbedded) {
+        document.body.classList.add('embedded');
+        // Hide customization panel when embedded
+        const customizationPanel = document.querySelector('.customization-panel');
+        if (customizationPanel) {
+            customizationPanel.style.display = 'none';
+        }
+    }
+
     const primaryColorInput = document.getElementById('primary-color');
     const secondaryColorInput = document.getElementById('secondary-color');
     const gradientTypeSelect = document.getElementById('gradient-type');
