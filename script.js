@@ -50,6 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyEmbedLinkButton = document.getElementById('copy-embed-link');
     const linkCopyFeedback = document.getElementById('link-copy-feedback');
 
+    // Debug log for element initialization
+    console.log('Embed link elements initialization:', {
+        generateEmbedLinkButton: !!generateEmbedLinkButton,
+        embedLinkPreview: !!embedLinkPreview,
+        embedLinkInput: !!embedLinkInput,
+        copyEmbedLinkButton: !!copyEmbedLinkButton,
+        linkCopyFeedback: !!linkCopyFeedback
+    });
+
     // Initialize controls with default values
     backgroundTypeSelect.value = "single";
     backgroundColorInput.value = "#fad029";
@@ -487,38 +496,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide embed code
     if (showEmbedButton && embedPreview && embedCode) {
-        console.log('Embed button elements found:', {
-            showEmbedButton: showEmbedButton,
-            embedPreview: embedPreview,
-            embedCode: embedCode
-        });
         showEmbedButton.addEventListener('click', () => {
-            console.log('Embed button clicked'); // Debug log
+            console.log('Show embed button clicked');
             const isHidden = embedPreview.classList.contains('hidden');
-            console.log('Preview is hidden:', isHidden);
             if (isHidden) {
                 embedCode.dataset.type = 'full';
                 const code = generateEmbedCode();
-                console.log('Generated embed code:', code);
                 embedCode.textContent = code.trim();
                 if (window.hljs) {
-                    console.log('Highlight.js is available');
                     hljs.highlightElement(embedCode);
-                } else {
-                    console.log('Highlight.js is not available');
                 }
                 embedPreview.classList.remove('hidden');
+                embedLinkPreview.classList.add('hidden');
                 showEmbedButton.textContent = 'Hide Embed Code';
             } else {
                 embedPreview.classList.add('hidden');
                 showEmbedButton.textContent = 'Show Embed Code';
             }
-        });
-    } else {
-        console.error('Missing elements:', { 
-            showEmbedButton: !!showEmbedButton, 
-            embedPreview: !!embedPreview, 
-            embedCode: !!embedCode 
         });
     }
 
@@ -848,20 +842,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Generate embed link handler
-    generateEmbedLinkButton.addEventListener('click', () => {
-        if (embedLinkPreview.classList.contains('hidden')) {
-            const settings = getAllSettings();
-            const currentUrl = new URL(window.location.href);
-            const baseUrl = currentUrl.origin + currentUrl.pathname;
-            const embedUrl = `${baseUrl}?${settings}#embed`;
+    if (generateEmbedLinkButton && embedLinkPreview && embedLinkInput) {
+        generateEmbedLinkButton.addEventListener('click', () => {
+            console.log('Generate embed link button clicked');
+            const isHidden = embedLinkPreview.classList.contains('hidden');
+            console.log('Preview hidden state:', isHidden);
             
-            embedLinkInput.value = embedUrl;
-            embedLinkPreview.classList.remove('hidden');
-            embedPreview.classList.add('hidden');
-        } else {
-            embedLinkPreview.classList.add('hidden');
-        }
-    });
+            if (isHidden) {
+                const settings = getAllSettings();
+                console.log('Generated settings:', settings);
+                const currentUrl = new URL(window.location.href);
+                const baseUrl = currentUrl.origin + currentUrl.pathname;
+                const embedUrl = `${baseUrl}?${settings}#embed`;
+                console.log('Generated embed URL:', embedUrl);
+                
+                embedLinkInput.value = embedUrl;
+                embedLinkPreview.classList.remove('hidden');
+                if (embedPreview) {
+                    embedPreview.classList.add('hidden');
+                }
+            } else {
+                embedLinkPreview.classList.add('hidden');
+            }
+        });
+    } else {
+        console.error('Missing embed link elements:', {
+            generateEmbedLinkButton: !!generateEmbedLinkButton,
+            embedLinkPreview: !!embedLinkPreview,
+            embedLinkInput: !!embedLinkInput
+        });
+    }
 
     // Copy embed link handler
     copyEmbedLinkButton.addEventListener('click', async () => {
