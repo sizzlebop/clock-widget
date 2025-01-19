@@ -158,6 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
+    // Add clock shape change handler
+    clockShapeSelect.addEventListener('change', (e) => {
+        console.log('Clock shape changed:', e.target.value);
+        updateClockStyle();
+    });
+
     // Add background type change handler
     backgroundTypeSelect.addEventListener('change', (e) => {
         const isGradient = e.target.value === 'gradient';
@@ -323,10 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dateElement.style.setProperty('color', textColor, 'important');
         
         // Handle shape classes
-        clockContainer.classList.remove('rectangle', 'square', 'circle', 'octagon', 'star', 'heart');
-        if (clockShape !== 'rectangle') {
-            clockContainer.classList.add(clockShape);
-        }
+        clockContainer.classList.remove('rectangle', 'square', 'circle', 'octagon');
+        clockContainer.classList.add(clockShape);
 
         // Update value displays
         textShadowSizeValue.textContent = `${textShadowSize}px`;
