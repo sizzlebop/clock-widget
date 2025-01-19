@@ -299,34 +299,28 @@ document.addEventListener('DOMContentLoaded', () => {
         clockContainer.style.removeProperty('background-image');
         clockContainer.style.removeProperty('background-color');
         
-        // Apply background based on type
+        // Set background color or gradient
         if (backgroundType === 'single') {
-            const rgbaBackground = hexToRgba(backgroundColor, opacity);
-            clockContainer.style.setProperty('background', rgbaBackground, 'important');
-            clockContainer.style.setProperty('background-color', rgbaBackground, 'important');
-            console.log('Applied single color:', rgbaBackground);
-        } else if (backgroundType === 'gradient') {
-            // Create and apply gradient with opacity
+            const bgColor = backgroundColorInput.value;
+            const bgColorWithOpacity = hexToRgba(bgColor, opacity);
+            clockContainer.style.setProperty('--bg-color', bgColorWithOpacity);
+            clockContainer.style.backgroundColor = bgColorWithOpacity;
+            clockContainer.style.removeProperty('--bg-gradient');
+            clockContainer.style.removeProperty('background-image');
+        } else {
             let gradient;
-            const rgbaPrimary = hexToRgba(primaryColor, opacity);
-            const rgbaSecondary = hexToRgba(secondaryColor, opacity);
-
-            switch (gradientType) {
-                case 'linear':
-                    gradient = `linear-gradient(${gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
-                    break;
-                case 'radial':
-                    gradient = `radial-gradient(circle at center, ${rgbaPrimary}, ${rgbaSecondary})`;
-                    break;
-                case 'conic':
-                    gradient = `conic-gradient(from ${gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
-                    break;
-                default:
-                    gradient = `linear-gradient(${gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+            if (gradientType === 'linear') {
+                gradient = `linear-gradient(${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+            } else if (gradientType === 'radial') {
+                gradient = `radial-gradient(circle, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
+            } else if (gradientType === 'conic') {
+                gradient = `conic-gradient(from ${gradientAngle}deg, ${hexToRgba(primaryColor, opacity)}, ${hexToRgba(secondaryColor, opacity)})`;
             }
-            clockContainer.style.setProperty('background', gradient, 'important');
-            clockContainer.style.setProperty('background-image', gradient, 'important');
-            console.log('Applied gradient:', gradient);
+            
+            clockContainer.style.setProperty('--bg-gradient', gradient);
+            clockContainer.style.backgroundImage = gradient;
+            clockContainer.style.removeProperty('--bg-color');
+            clockContainer.style.removeProperty('background-color');
         }
         
         // Apply border with custom size

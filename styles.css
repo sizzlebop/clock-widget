@@ -117,10 +117,11 @@ body {
     }
 }
 
-/* Force dimensions when embedded */
+/* Force dimensions and styles when embedded */
 .embedded .style-1 {
     width: 500px !important;
     height: 250px !important;
+    background-color: #fad029 !important;  /* Default background color */
 }
 
 .embedded .style-1.square,
@@ -132,10 +133,18 @@ body {
 
 .embedded .time {
     font-size: 4em !important;
+    color: white !important;  /* Force white text color */
 }
 
 .embedded .date {
     font-size: 1.5em !important;
+    color: white !important;  /* Force white text color */
+}
+
+/* Ensure background styles are applied in embedded mode */
+.embedded .style-1[style*="background"] {
+    background-color: var(--bg-color, #fad029) !important;
+    background-image: var(--bg-gradient) !important;
 }
 
 .clock {
