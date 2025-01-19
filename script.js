@@ -697,7 +697,6 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 100vh !important;
             width: 100% !important;
             overflow: hidden !important;
-            background: transparent !important;
         `;
         document.querySelector('.style-1').style.cssText = `
             margin: 0 !important;
@@ -705,63 +704,49 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 100% !important;
             width: 100% !important;
             overflow: hidden !important;
-            background: transparent !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
         `;
         document.querySelector('.footer-image').style.display = 'none';
         
         // Make clock container responsive with better centering
         const clockContainer = document.querySelector('.clock');
         
-        // Apply background directly to clock container for embed mode
+        // Apply background and styles to the style-1 container instead of clock container
         if (settings.backgroundType === 'single') {
-            const rgbaBackground = hexToRgba(settings.backgroundColor, parseInt(settings.opacity) / 100);
-            clockContainer.style.cssText = `
-                height: 100% !important;
-                width: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 5px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                overflow: hidden !important;
-                background: ${rgbaBackground} !important;
-                background-color: ${rgbaBackground} !important;
-            `;
+            const container = document.querySelector('.style-1');
+            container.style.backgroundColor = settings.backgroundColor;
         } else if (settings.backgroundType === 'gradient') {
             let gradient;
-            const rgbaPrimary = hexToRgba(settings.primaryColor, parseInt(settings.opacity) / 100);
-            const rgbaSecondary = hexToRgba(settings.secondaryColor, parseInt(settings.opacity) / 100);
-            
             switch (settings.gradientType) {
                 case 'linear':
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
                     break;
                 case 'radial':
-                    gradient = `radial-gradient(circle at center, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    gradient = `radial-gradient(circle at center, ${settings.primaryColor}, ${settings.secondaryColor})`;
                     break;
                 case 'conic':
-                    gradient = `conic-gradient(from ${settings.gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
+                    gradient = `conic-gradient(from ${settings.gradientAngle}deg at center, ${settings.primaryColor}, ${settings.secondaryColor}, ${settings.primaryColor})`;
                     break;
                 default:
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
             }
-            clockContainer.style.cssText = `
-                height: 100% !important;
-                width: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 5px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                overflow: hidden !important;
-                background: ${gradient} !important;
-                background-image: ${gradient} !important;
-            `;
+            const container = document.querySelector('.style-1');
+            container.style.background = gradient;
         }
+
+        // Set clock container styles
+        clockContainer.style.cssText = `
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 20px !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+        `;
 
         // Apply initial font size from settings with better proportions
         const timeElement = clockContainer.querySelector('.time');
