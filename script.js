@@ -1,4 +1,75 @@
+// Initialize DOM elements
+const backgroundTypeSelect = document.getElementById('background-type');
+const backgroundColorInput = document.getElementById('background-color');
+const primaryColorInput = document.getElementById('primary-color');
+const secondaryColorInput = document.getElementById('secondary-color');
+const gradientTypeSelect = document.getElementById('gradient-type');
+const gradientAngleInput = document.getElementById('gradient-angle');
+const textShadowSizeInput = document.getElementById('text-shadow-size');
+const textShadowColorInput = document.getElementById('text-shadow-color');
+const textColorInput = document.getElementById('text-color');
+const borderStyleSelect = document.getElementById('border-style');
+const borderSizeInput = document.getElementById('border-size');
+const borderColorInput = document.getElementById('border-color');
+const textEffectSelect = document.getElementById('text-effect');
+const neonColorInput = document.getElementById('neon-color');
+const fontFamilySelect = document.getElementById('font-family');
+const fontSizeInput = document.getElementById('font-size');
+const timeFormatSelect = document.getElementById('time-format');
+const showSecondsSelect = document.getElementById('show-seconds');
+const clockShapeSelect = document.getElementById('clock-shape');
+const clockContainer = document.querySelector('.style-1');
+const clockElement = document.getElementById('clock');
+const timeElement = document.querySelector('.time');
+const dateElement = document.querySelector('.date');
+const gradientSection = document.getElementById('gradient-section');
+const angleValue = document.getElementById('angle-value');
+const sizeValue = document.getElementById('size-value');
+const neonColorControl = document.getElementById('neon-color-control');
+const borderSizeValue = document.getElementById('border-size-value');
+const textShadowSizeValue = document.getElementById('text-shadow-size-value');
+
+// Initialize embed-related elements
+const showEmbedButton = document.getElementById('show-embed-code');
+const embedPreview = document.getElementById('embed-preview');
+const embedCode = document.getElementById('embed-code');
+const copyButton = document.getElementById('copy-embed-code');
+const copyFeedback = document.getElementById('copy-feedback');
+const generateEmbedLinkButton = document.getElementById('generate-embed-link');
+const embedLinkPreview = document.getElementById('embed-link-preview');
+const embedLinkInput = document.getElementById('embed-link');
+const copyEmbedLinkButton = document.getElementById('copy-embed-link');
+const linkCopyFeedback = document.getElementById('link-copy-feedback');
+
+// Debug log for embed-related elements
+console.log('Embed-related elements initialization:', {
+    showEmbedButton: !!showEmbedButton,
+    embedPreview: !!embedPreview,
+    embedCode: !!embedCode,
+    copyButton: !!copyButton,
+    copyFeedback: !!copyFeedback,
+    generateEmbedLinkButton: !!generateEmbedLinkButton,
+    embedLinkPreview: !!embedLinkPreview,
+    embedLinkInput: !!embedLinkInput,
+    copyEmbedLinkButton: !!copyEmbedLinkButton,
+    linkCopyFeedback: !!linkCopyFeedback
+});
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Debug log for embed-related elements after DOM is loaded
+    console.log('Embed-related elements after DOM load:', {
+        showEmbedButton: !!showEmbedButton,
+        embedPreview: !!embedPreview,
+        embedCode: !!embedCode,
+        copyButton: !!copyButton,
+        copyFeedback: !!copyFeedback,
+        generateEmbedLinkButton: !!generateEmbedLinkButton,
+        embedLinkPreview: !!embedLinkPreview,
+        embedLinkInput: !!embedLinkInput,
+        copyEmbedLinkButton: !!copyEmbedLinkButton,
+        linkCopyFeedback: !!linkCopyFeedback
+    });
+
     // Check if page is embedded with #embed hash
     const isEmbedded = window.location.hash === '#embed';
     if (isEmbedded) {
@@ -9,55 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
             customizationPanel.style.display = 'none';
         }
     }
-
-    const primaryColorInput = document.getElementById('primary-color');
-    const secondaryColorInput = document.getElementById('secondary-color');
-    const backgroundTypeSelect = document.getElementById('background-type');
-    const backgroundColorInput = document.getElementById('background-color');
-    const gradientSection = document.getElementById('gradient-section');
-    const gradientTypeSelect = document.getElementById('gradient-type');
-    const gradientAngleInput = document.getElementById('gradient-angle');
-    const angleValue = document.getElementById('angle-value');
-    const fontFamilySelect = document.getElementById('font-family');
-    const fontSizeInput = document.getElementById('font-size');
-    const sizeValue = document.getElementById('size-value');
-    const timeFormatSelect = document.getElementById('time-format');
-    const showSecondsSelect = document.getElementById('show-seconds');
-    const clockElement = document.getElementById('clock');
-    const timeElement = clockElement.querySelector('.time');
-    const dateElement = clockElement.querySelector('.date');
-    const showEmbedButton = document.getElementById('show-embed-code');
-    const embedPreview = document.getElementById('embed-preview');
-    const embedCode = document.getElementById('embed-code');
-    const copyButton = document.getElementById('copy-embed-code');
-    const copyFeedback = document.getElementById('copy-feedback');
-    const clockShapeSelect = document.getElementById('clock-shape');
-    const textShadowSizeInput = document.getElementById('text-shadow-size');
-    const textShadowSizeValue = document.getElementById('text-shadow-size-value');
-    const textShadowColorInput = document.getElementById('text-shadow-color');
-    const textColorInput = document.getElementById('text-color');
-    const borderStyleSelect = document.getElementById('border-style');
-    const borderSizeInput = document.getElementById('border-size');
-    const borderSizeValue = document.getElementById('border-size-value');
-    const borderColorInput = document.getElementById('border-color');
-    const textEffectSelect = document.getElementById('text-effect');
-    const neonColorInput = document.getElementById('neon-color');
-    const neonColorControl = document.getElementById('neon-color-control');
-
-    const generateEmbedLinkButton = document.getElementById('generate-embed-link');
-    const embedLinkPreview = document.getElementById('embed-link-preview');
-    const embedLinkInput = document.getElementById('embed-link');
-    const copyEmbedLinkButton = document.getElementById('copy-embed-link');
-    const linkCopyFeedback = document.getElementById('link-copy-feedback');
-
-    // Debug log for element initialization
-    console.log('Embed link elements initialization:', {
-        generateEmbedLinkButton: !!generateEmbedLinkButton,
-        embedLinkPreview: !!embedLinkPreview,
-        embedLinkInput: !!embedLinkInput,
-        copyEmbedLinkButton: !!copyEmbedLinkButton,
-        linkCopyFeedback: !!linkCopyFeedback
-    });
 
     // Initialize controls with default values
     backgroundTypeSelect.value = "single";
@@ -79,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     neonColorControl.style.display = 'none';
 
     // Get the clock container once and store it
-    const clockContainer = document.querySelector('.style-1');
     if (!clockContainer) {
         console.error('Clock container not found during initialization!');
         return;
@@ -276,20 +297,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateClockStyle() {
-        const backgroundType = backgroundTypeSelect.value;
-        const backgroundColor = backgroundColorInput.value;
-        const primaryColor = primaryColorInput.value;
-        const secondaryColor = secondaryColorInput.value;
-        const gradientType = gradientTypeSelect.value;
-        const gradientAngle = gradientAngleInput.value;
-        const textShadowSize = parseInt(textShadowSizeInput.value);
-        const textShadowColor = textShadowColorInput.value;
-        const textColor = textColorInput.value;
-        const borderStyle = borderStyleSelect.value;
-        const borderSize = parseInt(borderSizeInput.value);
-        const borderColor = borderColorInput.value;
-        const textEffect = textEffectSelect.value;
-        const neonColor = neonColorInput.value;
+        // Check if required elements exist
+        if (!clockContainer || !clockElement || !timeElement || !dateElement) {
+            console.error('Required clock elements not found!');
+            return;
+        }
+
+        // Get values with fallbacks
+        const backgroundType = backgroundTypeSelect?.value || 'single';
+        const backgroundColor = backgroundColorInput?.value || '#fad029';
+        const primaryColor = primaryColorInput?.value || '#fad029';
+        const secondaryColor = secondaryColorInput?.value || '#ff6b6b';
+        const gradientType = gradientTypeSelect?.value || 'linear';
+        const gradientAngle = gradientAngleInput?.value || '45';
+        const textShadowSize = parseInt(textShadowSizeInput?.value || '0');
+        const textShadowColor = textShadowColorInput?.value || '#000000';
+        const textColor = textColorInput?.value || '#ffffff';
+        const borderStyle = borderStyleSelect?.value || 'none';
+        const borderSize = parseInt(borderSizeInput?.value || '3');
+        const borderColor = borderColorInput?.value || '#ff6b6b';
+        const textEffect = textEffectSelect?.value || 'none';
+        const neonColor = neonColorInput?.value || '#00ff00';
+        const selectedFont = fontFamilySelect?.value || 'IBM Plex Sans';
+        const fontSize = parseInt(fontSizeInput?.value || '20');
 
         if (!clockContainer) {
             console.error('Clock container not found!');
@@ -349,14 +379,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Apply font styles
-        const selectedFont = fontFamilySelect.value;
         clockElement.style.setProperty('font-family', selectedFont, 'important');
         timeElement.style.setProperty('font-family', selectedFont, 'important');
         dateElement.style.setProperty('font-family', selectedFont, 'important');
 
         // Apply font sizes
         const maxFontSize = 48;
-        const constrainedFontSize = Math.min(fontSizeInput.value, maxFontSize);
+        const constrainedFontSize = Math.min(fontSize, maxFontSize);
         fontSizeInput.value = constrainedFontSize;
         timeElement.style.setProperty('font-size', `${constrainedFontSize * 2}px`, 'important');
         dateElement.style.setProperty('font-size', `${constrainedFontSize * 0.8}px`, 'important');
@@ -412,6 +441,12 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('clockSettings', JSON.stringify(settings));
     }
 
+    // Function to save current settings to localStorage
+    function saveSettings() {
+        const settings = getAllSettings();
+        localStorage.setItem('clockSettings', JSON.stringify(settings));
+    }
+
     // Generate embed code based on current settings
     function generateEmbedCode() {
         const settings = JSON.parse(localStorage.getItem('clockSettings'));
@@ -457,11 +492,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Show/hide embed code
-    if (showEmbedButton && embedPreview) {
+    if (showEmbedButton && embedPreview && embedCode) {
         showEmbedButton.addEventListener('click', () => {
-            console.log('Embed button clicked');
             const isHidden = embedPreview.classList.contains('hidden');
-            console.log('Preview is hidden:', isHidden);
             
             if (isHidden) {
                 // First show the preview container
@@ -472,19 +505,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Generate the code
                 const code = generateEmbedCode();
-                console.log('Generated embed code:', code);
                 
-                // Now that preview is visible, update the code element
-                const codeElement = document.getElementById('embed-code');
-                if (codeElement) {
-                    console.log('Highlight.js is available:', !!window.hljs);
-                    codeElement.dataset.type = 'full';
-                    codeElement.textContent = code.trim();
-                    if (window.hljs) {
-                        hljs.highlightElement(codeElement);
-                    }
-                } else {
-                    console.error('Could not find embed-code element');
+                // Update the code element
+                embedCode.dataset.type = 'full';
+                embedCode.textContent = code.trim();
+                if (window.hljs) {
+                    hljs.highlightElement(embedCode);
                 }
                 
                 showEmbedButton.textContent = 'Hide Embed Code';
@@ -496,9 +522,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Copy embed code
-    if (copyButton && embedCode) {
+    if (copyButton && embedCode && copyFeedback) {
         copyButton.addEventListener('click', async () => {
-            console.log('Copy button clicked'); // Debug log
             try {
                 await navigator.clipboard.writeText(embedCode.textContent);
                 copyFeedback.classList.remove('hidden');
@@ -507,12 +532,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             } catch (err) {
                 console.error('Failed to copy embed code:', err);
+                // Fallback for browsers that don't support clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = embedCode.textContent;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                copyFeedback.classList.remove('hidden');
+                setTimeout(() => {
+                    copyFeedback.classList.add('hidden');
+                }, 2000);
             }
-        });
-    } else {
-        console.error('Missing elements:', { 
-            copyButton: !!copyButton, 
-            embedCode: !!embedCode 
         });
     }
 
@@ -521,30 +552,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedSettings = localStorage.getItem('clockSettings');
         if (savedSettings) {
             const settings = JSON.parse(savedSettings);
-            backgroundTypeSelect.value = settings.backgroundType || 'single';
-            backgroundColorInput.value = settings.backgroundColor || '#fad029';
-            gradientSection.style.display = settings.backgroundType === 'gradient' ? 'block' : 'none';
-            primaryColorInput.value = settings.primaryColor || '#fad029';
-            secondaryColorInput.value = settings.secondaryColor || '#ff6b6b';
-            gradientTypeSelect.value = settings.gradientType || 'linear';
-            gradientAngleInput.value = settings.gradientAngle || '45';
-            angleValue.textContent = `${settings.gradientAngle || '45'}°`;
-            fontFamilySelect.value = settings.fontFamily || 'IBM Plex Sans';
-            fontSizeInput.value = settings.fontSize || '20';
-            sizeValue.textContent = `${settings.fontSize || '20'}px`;
-            textColorInput.value = settings.textColor || '#ffffff';
-            timeFormatSelect.value = settings.timeFormat || '24';
-            showSecondsSelect.value = settings.showSeconds || 'true';
-            clockShapeSelect.value = settings.clockShape || 'rectangle';
-            textShadowSizeInput.value = settings.textShadowSize || '0';
-            textShadowColorInput.value = settings.textShadowColor || '#000000';
-            borderStyleSelect.value = settings.borderStyle || 'none';
-            borderSizeInput.value = settings.borderSize || '3';
-            borderSizeValue.textContent = `${settings.borderSize || '3'}px`;
-            borderColorInput.value = settings.borderColor || '#ff6b6b';
-            textEffectSelect.value = settings.textEffect || 'none';
-            neonColorInput.value = settings.neonColor || '#00ff00';
-            neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
+            if (backgroundTypeSelect) backgroundTypeSelect.value = settings.backgroundType || 'single';
+            if (backgroundColorInput) backgroundColorInput.value = settings.backgroundColor || '#fad029';
+            if (gradientSection) gradientSection.style.display = settings.backgroundType === 'gradient' ? 'block' : 'none';
+            if (primaryColorInput) primaryColorInput.value = settings.primaryColor || '#fad029';
+            if (secondaryColorInput) secondaryColorInput.value = settings.secondaryColor || '#ff6b6b';
+            if (gradientTypeSelect) gradientTypeSelect.value = settings.gradientType || 'linear';
+            if (gradientAngleInput) gradientAngleInput.value = settings.gradientAngle || '45';
+            if (angleValue) angleValue.textContent = `${settings.gradientAngle || '45'}°`;
+            if (fontFamilySelect) fontFamilySelect.value = settings.fontFamily || 'IBM Plex Sans';
+            if (fontSizeInput) fontSizeInput.value = settings.fontSize || '20';
+            if (sizeValue) sizeValue.textContent = `${settings.fontSize || '20'}px`;
+            if (textColorInput) textColorInput.value = settings.textColor || '#ffffff';
+            if (timeFormatSelect) timeFormatSelect.value = settings.timeFormat || '24';
+            if (showSecondsSelect) showSecondsSelect.value = settings.showSeconds || 'true';
+            if (clockShapeSelect) clockShapeSelect.value = settings.clockShape || 'rectangle';
+            if (textShadowSizeInput) textShadowSizeInput.value = settings.textShadowSize || '0';
+            if (textShadowColorInput) textShadowColorInput.value = settings.textShadowColor || '#000000';
+            if (borderStyleSelect) borderStyleSelect.value = settings.borderStyle || 'none';
+            if (borderSizeInput) borderSizeInput.value = settings.borderSize || '3';
+            if (borderSizeValue) borderSizeValue.textContent = `${settings.borderSize || '3'}px`;
+            if (borderColorInput) borderColorInput.value = settings.borderColor || '#ff6b6b';
+            if (textEffectSelect) textEffectSelect.value = settings.textEffect || 'none';
+            if (neonColorInput) neonColorInput.value = settings.neonColor || '#00ff00';
+            if (neonColorControl) neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
             updateClockStyle();
         }
     }
@@ -794,68 +825,117 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to get all current settings as URL parameters
     function getAllSettings() {
         return {
-            backgroundType: backgroundTypeSelect.value,
-            backgroundColor: backgroundColorInput.value,
-            primaryColor: primaryColorInput.value,
-            secondaryColor: secondaryColorInput.value,
-            gradientType: gradientTypeSelect.value,
-            gradientAngle: gradientAngleInput.value,
-            fontFamily: fontFamilySelect.value,
-            fontSize: fontSizeInput.value,
-            textColor: textColorInput.value,
-            textShadowSize: textShadowSizeInput.value,
-            textShadowColor: textShadowColorInput.value,
-            timeFormat: timeFormatSelect.value,
-            showSeconds: showSecondsSelect.value,
-            borderStyle: borderStyleSelect.value,
-            borderSize: borderSizeInput.value,
-            borderColor: borderColorInput.value,
-            textEffect: textEffectSelect.value,
-            neonColor: neonColorInput.value
+            backgroundType: backgroundTypeSelect?.value || 'single',
+            backgroundColor: backgroundColorInput?.value || '#fad029',
+            primaryColor: primaryColorInput?.value || '#fad029',
+            secondaryColor: secondaryColorInput?.value || '#ff6b6b',
+            gradientType: gradientTypeSelect?.value || 'linear',
+            gradientAngle: gradientAngleInput?.value || '45',
+            fontFamily: fontFamilySelect?.value || 'IBM Plex Sans',
+            fontSize: fontSizeInput?.value || '20',
+            textColor: textColorInput?.value || '#ffffff',
+            textShadowSize: textShadowSizeInput?.value || '0',
+            textShadowColor: textShadowColorInput?.value || '#000000',
+            timeFormat: timeFormatSelect?.value || '24',
+            showSeconds: showSecondsSelect?.value || 'true',
+            borderStyle: borderStyleSelect?.value || 'none',
+            borderSize: borderSizeInput?.value || '3',
+            borderColor: borderColorInput?.value || '#ff6b6b',
+            textEffect: textEffectSelect?.value || 'none',
+            neonColor: neonColorInput?.value || '#00ff00',
+            clockShape: clockShapeSelect?.value || 'rectangle'
         };
     }
 
     // Add event listener for generate embed link button
-    generateEmbedLinkButton.addEventListener('click', () => {
-        // Hide embed code preview if it's visible
-        embedPreview.classList.add('hidden');
-        showEmbedButton.textContent = 'Show Embed Code';
-        
-        // Get current settings and create a URL with them
-        const settings = getAllSettings();
-        const currentUrl = new URL(window.location.href);
-        currentUrl.hash = '#embed';
-        
-        // Add all settings to URL parameters
-        const searchParams = new URLSearchParams();
-        Object.entries(settings).forEach(([key, value]) => {
-            // Remove # from color values
-            if (value.startsWith('#')) {
-                searchParams.append(key, value.substring(1));
-            } else {
-                searchParams.append(key, value);
+    if (generateEmbedLinkButton && embedLinkPreview && embedLinkInput && embedPreview && showEmbedButton) {
+        console.log('Adding click listener to generate embed link button');
+        generateEmbedLinkButton.addEventListener('click', () => {
+            console.log('Generate embed link button clicked');
+            
+            // Toggle embed link preview visibility
+            const isHidden = embedLinkPreview.classList.contains('hidden');
+            console.log('Preview is hidden:', isHidden);
+            
+            if (!isHidden) {
+                embedLinkPreview.classList.add('hidden');
+                generateEmbedLinkButton.textContent = 'Generate Embed Link';
+                return;
             }
+
+            // Hide embed code preview if it's visible
+            embedPreview.classList.add('hidden');
+            showEmbedButton.textContent = 'Show Embed Code';
+            
+            // Get current settings and create a URL with them
+            const settings = getAllSettings();
+            const currentUrl = new URL(window.location.href);
+            
+            // Add all settings to URL parameters with correct parameter names
+            const searchParams = new URLSearchParams();
+            searchParams.append('shape', settings.clockShape || 'rectangle');
+            searchParams.append('bgType', settings.backgroundType);
+            searchParams.append('bgColor', settings.backgroundColor.replace('#', ''));
+            searchParams.append('primaryColor', settings.primaryColor.replace('#', ''));
+            searchParams.append('secondaryColor', settings.secondaryColor.replace('#', ''));
+            searchParams.append('gradientType', settings.gradientType);
+            searchParams.append('gradientAngle', settings.gradientAngle);
+            searchParams.append('fontFamily', encodeURIComponent(settings.fontFamily));
+            searchParams.append('fontSize', settings.fontSize);
+            searchParams.append('textColor', settings.textColor.replace('#', ''));
+            searchParams.append('textShadowSize', settings.textShadowSize);
+            searchParams.append('textShadowColor', settings.textShadowColor.replace('#', ''));
+            searchParams.append('timeFormat', settings.timeFormat);
+            searchParams.append('showSeconds', settings.showSeconds);
+            searchParams.append('borderStyle', settings.borderStyle);
+            searchParams.append('borderSize', settings.borderSize);
+            searchParams.append('borderColor', settings.borderColor.replace('#', ''));
+            searchParams.append('textEffect', settings.textEffect);
+            searchParams.append('neonColor', settings.neonColor.replace('#', ''));
+            searchParams.append('embed', 'true');
+            
+            // Get the base URL without any parameters or hash
+            const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
+            // Construct the embed URL
+            const embedUrl = `${baseUrl}?${searchParams.toString()}#embed`;
+            
+            console.log('Generated URL:', embedUrl);
+            
+            // Show the embed link preview and set the link
+            embedLinkPreview.classList.remove('hidden');
+            embedLinkInput.value = embedUrl;
+            generateEmbedLinkButton.textContent = 'Hide Embed Link';
         });
-        
-        currentUrl.search = searchParams.toString();
-        
-        // Show the embed link preview and set the link
-        embedLinkPreview.classList.remove('hidden');
-        embedLinkInput.value = currentUrl.toString();
-    });
+    } else {
+        console.error('Missing elements:', {
+            generateEmbedLinkButton: !!generateEmbedLinkButton,
+            embedLinkPreview: !!embedLinkPreview,
+            embedLinkInput: !!embedLinkInput,
+            embedPreview: !!embedPreview,
+            showEmbedButton: !!showEmbedButton
+        });
+    }
 
     // Add event listener for copy embed link button
-    copyEmbedLinkButton.addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(embedLinkInput.value);
-            linkCopyFeedback.classList.remove('hidden');
-            setTimeout(() => {
-                linkCopyFeedback.classList.add('hidden');
-            }, 2000);
-        } catch (err) {
-            console.error('Failed to copy link:', err);
-        }
-    });
+    if (copyEmbedLinkButton && embedLinkInput && linkCopyFeedback) {
+        copyEmbedLinkButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(embedLinkInput.value);
+                linkCopyFeedback.classList.remove('hidden');
+                setTimeout(() => {
+                    linkCopyFeedback.classList.add('hidden');
+                }, 2000);
+            } catch (err) {
+                // Fallback for browsers that don't support clipboard API
+                embedLinkInput.select();
+                document.execCommand('copy');
+                linkCopyFeedback.classList.remove('hidden');
+                setTimeout(() => {
+                    linkCopyFeedback.classList.add('hidden');
+                }, 2000);
+            }
+        });
+    }
 
     // Load settings from URL parameters if they exist
     function loadSettingsFromUrl() {
