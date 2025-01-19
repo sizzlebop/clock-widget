@@ -463,14 +463,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateEmbedCode() {
         const settings = JSON.parse(localStorage.getItem('clockSettings'));
         const params = new URLSearchParams({
+            backgroundType: settings.backgroundType,
+            backgroundColor: settings.backgroundColor,
             primaryColor: settings.primaryColor,
             secondaryColor: settings.secondaryColor,
             gradientType: settings.gradientType,
             gradientAngle: settings.gradientAngle,
             fontFamily: settings.fontFamily,
             fontSize: settings.fontSize,
+            textColor: settings.textColor,
             timeFormat: settings.timeFormat,
-            showSeconds: settings.showSeconds
+            showSeconds: settings.showSeconds,
+            clockShape: settings.clockShape,
+            textShadowSize: settings.textShadowSize,
+            textShadowColor: settings.textShadowColor,
+            opacity: settings.opacity,
+            borderStyle: settings.borderStyle,
+            borderSize: settings.borderSize,
+            borderColor: settings.borderColor,
+            textEffect: settings.textEffect,
+            neonColor: settings.neonColor
         });
         
         // Create embed code with responsive iframe
@@ -489,14 +501,26 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateRelativeEmbed() {
         const settings = JSON.parse(localStorage.getItem('clockSettings'));
         const params = new URLSearchParams({
+            backgroundType: settings.backgroundType,
+            backgroundColor: settings.backgroundColor,
             primaryColor: settings.primaryColor,
             secondaryColor: settings.secondaryColor,
             gradientType: settings.gradientType,
             gradientAngle: settings.gradientAngle,
             fontFamily: settings.fontFamily,
             fontSize: settings.fontSize,
+            textColor: settings.textColor,
             timeFormat: settings.timeFormat,
-            showSeconds: settings.showSeconds
+            showSeconds: settings.showSeconds,
+            clockShape: settings.clockShape,
+            textShadowSize: settings.textShadowSize,
+            textShadowColor: settings.textShadowColor,
+            opacity: settings.opacity,
+            borderStyle: settings.borderStyle,
+            borderSize: settings.borderSize,
+            borderColor: settings.borderColor,
+            textEffect: settings.textEffect,
+            neonColor: settings.neonColor
         });
         
         // Get the current site's URL
@@ -634,14 +658,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.hash === '#embed') {
         const params = new URLSearchParams(window.location.search);
         const settings = {
-            primaryColor: params.get('primaryColor'),
-            secondaryColor: params.get('secondaryColor'),
-            gradientType: params.get('gradientType'),
-            gradientAngle: params.get('gradientAngle'),
-            fontFamily: params.get('fontFamily'),
-            fontSize: params.get('fontSize'),
-            timeFormat: params.get('timeFormat'),
-            showSeconds: params.get('showSeconds')
+            backgroundType: params.get('backgroundType') || 'single',
+            backgroundColor: params.get('backgroundColor') || '#fad029',
+            primaryColor: params.get('primaryColor') || '#fad029',
+            secondaryColor: params.get('secondaryColor') || '#ff6b6b',
+            gradientType: params.get('gradientType') || 'linear',
+            gradientAngle: params.get('gradientAngle') || '45',
+            fontFamily: params.get('fontFamily') || 'IBM Plex Sans',
+            fontSize: params.get('fontSize') || '20',
+            textColor: params.get('textColor') || '#ffffff',
+            timeFormat: params.get('timeFormat') || '24',
+            showSeconds: params.get('showSeconds') || 'true',
+            clockShape: params.get('clockShape') || 'rectangle',
+            textShadowSize: params.get('textShadowSize') || '0',
+            textShadowColor: params.get('textShadowColor') || '#000000',
+            opacity: params.get('opacity') || '100',
+            borderStyle: params.get('borderStyle') || 'none',
+            borderSize: params.get('borderSize') || '3',
+            borderColor: params.get('borderColor') || '#ff6b6b',
+            textEffect: params.get('textEffect') || 'none',
+            neonColor: params.get('neonColor') || '#00ff00'
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
         
