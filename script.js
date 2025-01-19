@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const timeElement = clockElement.querySelector('.time');
     const dateElement = clockElement.querySelector('.date');
     const showEmbedButton = document.getElementById('show-embed-code');
-    const showRelativeEmbed = document.getElementById('show-relative-embed');
     const embedPreview = document.getElementById('embed-preview');
     const embedCode = document.getElementById('embed-code');
     const copyButton = document.getElementById('copy-embed-code');
@@ -460,53 +459,23 @@ document.addEventListener('DOMContentLoaded', () => {
             neonColor: settings.neonColor
         });
         
+        // Get the current site's URL
+        const currentUrl = new URL(window.location.href);
+        // Get the base URL without any parameters or hash
+        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
+        // Construct the embed URL
+        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
+        
         // Create embed code with responsive iframe
         const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
     <iframe 
-        src="${generateRelativeEmbed()}"
+        src="${embedUrl}"
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
         allow="autoplay"
     ></iframe>
 </div>`;
 
         return embedHTML;
-    }
-
-    // Generate relative embed link
-    function generateRelativeEmbed() {
-        const settings = JSON.parse(localStorage.getItem('clockSettings'));
-        const params = new URLSearchParams({
-            backgroundType: settings.backgroundType,
-            backgroundColor: settings.backgroundColor,
-            primaryColor: settings.primaryColor,
-            secondaryColor: settings.secondaryColor,
-            gradientType: settings.gradientType,
-            gradientAngle: settings.gradientAngle,
-            fontFamily: settings.fontFamily,
-            fontSize: settings.fontSize,
-            textColor: settings.textColor,
-            timeFormat: settings.timeFormat,
-            showSeconds: settings.showSeconds,
-            clockShape: settings.clockShape,
-            textShadowSize: settings.textShadowSize,
-            textShadowColor: settings.textShadowColor,
-            borderStyle: settings.borderStyle,
-            borderSize: settings.borderSize,
-            borderColor: settings.borderColor,
-            textEffect: settings.textEffect,
-            neonColor: settings.neonColor
-        });
-        
-        // Get the current site's URL
-        const currentUrl = new URL(window.location.href);
-        // Get the base URL without any parameters or hash
-        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
-        // Construct the full URL with embed hash
-        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
-        
-        console.log('Generated embed URL:', embedUrl);
-        
-        return embedUrl;
     }
 
     // Show/hide embed code
@@ -533,7 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 embedPreview.classList.remove('hidden');
                 showEmbedButton.textContent = 'Hide Embed Code';
-                showRelativeEmbed.textContent = 'Get Relative Link';
             } else {
                 embedPreview.classList.add('hidden');
                 showEmbedButton.textContent = 'Show Embed Code';
@@ -542,33 +510,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Missing elements:', { 
             showEmbedButton: !!showEmbedButton, 
-            embedPreview: !!embedPreview, 
-            embedCode: !!embedCode 
-        });
-    }
-
-    // Show/hide relative embed link
-    if (showRelativeEmbed && embedPreview && embedCode) {
-        showRelativeEmbed.addEventListener('click', () => {
-            console.log('Relative link button clicked');
-            const isHidden = embedPreview.classList.contains('hidden');
-            if (isHidden) {
-                embedCode.dataset.type = 'relative';
-                const link = generateRelativeEmbed();
-                // Create a proper iframe embed code
-                const embedHTML = `<iframe src="${link}" style="width: 100%; height: 200px; border: none; border-radius: 8px;" allow="autoplay"></iframe>`;
-                embedCode.textContent = embedHTML;
-                embedPreview.classList.remove('hidden');
-                showRelativeEmbed.textContent = 'Hide Relative Link';
-                showEmbedButton.textContent = 'Show Embed Code';
-            } else {
-                embedPreview.classList.add('hidden');
-                showRelativeEmbed.textContent = 'Get Relative Link';
-            }
-        });
-    } else {
-        console.error('Missing elements:', { 
-            showRelativeEmbed: !!showRelativeEmbed, 
             embedPreview: !!embedPreview, 
             embedCode: !!embedCode 
         });
