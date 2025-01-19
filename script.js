@@ -131,14 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showSeconds: settings.showSeconds
         });
         
-        // Create embed code with iframe
-        const embedHTML = `<iframe 
-    src="https://twinkle.pinkpixel.dev/?${params.toString()}#embed"
-    width="500"
-    height="250"
-    frameborder="0"
-    style="border-radius: 8px;"
-></iframe>`;
+        // Create embed code with responsive iframe
+        const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
+    <iframe 
+        src="${generateRelativeEmbed()}"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+        allow="autoplay"
+    ></iframe>
+</div>`;
 
         return embedHTML;
     }
@@ -275,7 +275,41 @@ document.addEventListener('DOMContentLoaded', () => {
             showSeconds: params.get('showSeconds')
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
+        
+        // Hide customization panel and adjust clock container for embed mode
         document.querySelector('.customization-panel').style.display = 'none';
+        document.querySelector('.style-0').style.padding = '0';
+        document.querySelector('.style-0').style.height = '100vh';
+        document.querySelector('.style-1').style.margin = '0';
+        document.querySelector('.style-1').style.height = '100%';
+        document.querySelector('.footer-image').style.display = 'none';
+        
+        // Make clock container responsive
+        const clockContainer = document.querySelector('.clock');
+        clockContainer.style.height = '100%';
+        clockContainer.style.display = 'flex';
+        clockContainer.style.flexDirection = 'column';
+        clockContainer.style.justifyContent = 'center';
+        clockContainer.style.alignItems = 'center';
+        
+        // Adjust font sizes based on container size
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                const container = entry.target;
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+                const minDimension = Math.min(containerWidth, containerHeight);
+                
+                const timeElement = container.querySelector('.time');
+                const dateElement = container.querySelector('.date');
+                
+                // Adjust font sizes proportionally to container size
+                timeElement.style.fontSize = `${minDimension * 0.2}px`;
+                dateElement.style.fontSize = `${minDimension * 0.08}px`;
+            }
+        });
+        
+        resizeObserver.observe(clockContainer);
     }
 
     // Initialize with saved settings or defaults

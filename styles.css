@@ -135,19 +135,75 @@ body {
 }
 
 .embed-button, .copy-button {
-    background-color: rgb(250, 208, 41);
-    color: rgb(27, 29, 30);
+    background-color: #4A5568;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
+    border-radius: 6px;
+    padding: 10px 18px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    flex: 1;
 }
 
 .embed-button:hover, .copy-button:hover {
-    background-color: rgb(255, 220, 70);
+    background-color: #2D3748;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.embed-button:active, .copy-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.copy-button {
+    background-color: #3182CE;
+}
+
+.copy-button:hover {
+    background-color: #2C5282;
+}
+
+.copy-feedback {
+    color: #48BB78;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.copy-feedback.hidden {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px 0;
+}
+
+.footer-image {
+    width: 15%;
+    height: auto;
+}
+
+.embed-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
 }
 
 .embed-preview {
@@ -185,73 +241,4 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-}
-
-.copy-button {
-    background: #4a5568;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.copy-button:hover {
-    background: #2d3748;
-}
-
-.copy-feedback {
-    color: #68d391;
-    font-size: 14px;
-}
-
-.copy-feedback.hidden {
-    display: none;
-}
-
-.hidden {
-    display: none;
-}
-
-.footer {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    padding: 20px 0;
-}
-
-.footer-image {
-    width: 15%;
-    height: auto;
-}
-
-.embed-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.button-group {
-    display: flex;
-    gap: 12px;
-}
-
-.embed-button, .copy-button {
-    background-color: rgb(250, 208, 41);
-    color: rgb(27, 29, 30);
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    flex: 1;
-}
-
-.embed-button:hover, .copy-button:hover {
-    background-color: rgb(255, 220, 70);
 } 
