@@ -429,7 +429,7 @@ body {
     position: absolute;
     pointer-events: none;
     animation: sparkle-pop 2000ms ease-in-out forwards;
-    font-size: 10.5px;
+    font-size: 15.75px;
     line-height: 1;
     color: white;
     z-index: 2;
@@ -471,7 +471,7 @@ body {
 .clock[data-effect="sparkle"] .date::after {
     content: '★';
     position: absolute;
-    font-size: 10.5px;
+    font-size: 15.75px;
     line-height: 1;
     animation: sparkle-pop 2000ms ease-in-out infinite;
     pointer-events: none;
@@ -484,7 +484,7 @@ body {
     text-shadow: var(--neon-glow) !important;
 }
 
-/* Rainbow Text Effect */
+/* Rainbow Text Effect with enhanced glow */
 [data-effect="rainbow"] .time,
 [data-effect="rainbow"] .date {
     background: linear-gradient(
@@ -502,6 +502,9 @@ body {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: rainbow-shift 5s linear infinite;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))
+           drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes rainbow-shift {
