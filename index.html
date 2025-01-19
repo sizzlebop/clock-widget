@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Widget</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="style-0">
+        <div class="style-1">
+            <div id="clock" class="clock">
+                <div class="time"></div>
+                <div class="date"></div>
+            </div>
+        </div>
+        <div class="customization-panel">
+            <div class="panel-section">
+                <h3>Color Scheme</h3>
+                <div class="color-controls">
+                    <div class="control-group">
+                        <label for="primary-color">Primary Color:</label>
+                        <input type="color" id="primary-color" value="#fad029">
+                    </div>
+                    <div class="control-group">
+                        <label for="secondary-color">Secondary Color:</label>
+                        <input type="color" id="secondary-color" value="#ff6b6b">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h3>Gradient</h3>
+                <div class="gradient-controls">
+                    <div class="control-group">
+                        <label for="gradient-type">Gradient Type:</label>
+                        <select id="gradient-type">
+                            <option value="linear">Linear</option>
+                            <option value="radial">Radial</option>
+                            <option value="conic">Conic</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="gradient-angle">Angle:</label>
+                        <input type="range" id="gradient-angle" min="0" max="360" value="45">
+                        <span id="angle-value">45°</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Font Style</h3>
+                <div class="font-controls">
+                    <div class="control-group">
+                        <label for="font-family">Font Family:</label>
+                        <select id="font-family">
+                            <option value="IBM Plex Sans">IBM Plex Sans</option>
+                            <option value="Roboto">Roboto</option>
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Lato">Lato</option>
+                            <option value="Open Sans">Open Sans</option>
+                            <option value="Poppins">Poppins</option>
+                            <option value="Source Sans Pro">Source Sans Pro</option>
+                            <option value="Ubuntu">Ubuntu</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="font-size">Font Size:</label>
+                        <input type="range" id="font-size" min="12" max="48" value="20">
+                        <span id="size-value">20px</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Time Format</h3>
+                <div class="time-format-controls">
+                    <div class="control-group">
+                        <label for="time-format">Format:</label>
+                        <select id="time-format">
+                            <option value="24">24-hour</option>
+                            <option value="12">12-hour</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="show-seconds">Show Seconds:</label>
+                        <select id="show-seconds">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Embed Code</h3>
+                <div class="embed-controls">
+                    <div class="button-group">
+                        <button id="show-embed-code" class="embed-button">Show Embed Code</button>
+                        <button id="show-relative-embed" class="embed-button">Get Relative Link</button>
+                    </div>
+                    <div id="embed-preview" class="embed-preview hidden">
+                        <div class="code-container">
+                            <pre><code id="embed-code" class="language-html"></code></pre>
+                        </div>
+                        <div class="button-container">
+                            <button id="copy-embed-code" class="copy-button">Copy Code</button>
+                            <span id="copy-feedback" class="copy-feedback hidden">Copied!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737173617/pp_o1235u.png" alt="Footer Image" class="footer-image">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
