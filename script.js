@@ -306,29 +306,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateElement = clockContainer.querySelector('.date');
         const baseFontSize = parseInt(settings.fontSize) || 20;
         
-        // Set initial sizes
-        timeElement.style.fontSize = `${baseFontSize * 2}px`;
-        dateElement.style.fontSize = `${baseFontSize * 0.8}px`;
+        // Calculate initial scale based on container size
+        const containerWidth = clockContainer.clientWidth;
+        const containerHeight = clockContainer.clientHeight;
+        const minDimension = Math.min(containerWidth, containerHeight);
+        const initialScale = minDimension / 400; // Base scale on a reference size of 400px
+        
+        // Set initial sizes with scaling
+        timeElement.style.fontSize = `${baseFontSize * 2 * initialScale}px`;
+        dateElement.style.fontSize = `${baseFontSize * 0.8 * initialScale}px`;
         
         // Store initial container size for relative scaling
-        let initialWidth = clockContainer.clientWidth;
-        let initialHeight = clockContainer.clientHeight;
+        let initialWidth = containerWidth;
+        let initialHeight = containerHeight;
         
         // Adjust font sizes based on container size while maintaining proportions
         const resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
                 const container = entry.target;
-                const containerWidth = container.clientWidth;
-                const containerHeight = container.clientHeight;
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
                 
                 // Calculate scale factor based on size change
-                const widthScale = containerWidth / initialWidth;
-                const heightScale = containerHeight / initialHeight;
+                const widthScale = newWidth / initialWidth;
+                const heightScale = newHeight / initialHeight;
                 const scale = Math.min(widthScale, heightScale);
                 
                 // Apply scaled sizes
-                timeElement.style.fontSize = `${baseFontSize * 2 * scale}px`;
-                dateElement.style.fontSize = `${baseFontSize * 0.8 * scale}px`;
+                timeElement.style.fontSize = `${baseFontSize * 2 * initialScale * scale}px`;
+                dateElement.style.fontSize = `${baseFontSize * 0.8 * initialScale * scale}px`;
             }
         });
         
