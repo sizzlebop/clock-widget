@@ -157,8 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showSeconds: settings.showSeconds
         });
         
-        // Return just the URL for embedding in apps
-        return `https://twinkle.pinkpixel.dev/?${params.toString()}#embed`;
+        // Get the current site's URL and path
+        const currentUrl = new URL(window.location.href);
+        // Remove any existing query parameters and hash
+        currentUrl.search = '';
+        currentUrl.hash = '';
+        
+        // Return URL relative to current site
+        return `${currentUrl.toString()}?${params.toString()}#embed`;
     }
 
     // Show/hide embed code
