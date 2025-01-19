@@ -427,13 +427,13 @@ body {
 .sparkle-particle {
     position: absolute;
     pointer-events: none;
-    animation: sparkle-pop 700ms ease-in-out forwards;
-    font-size: 32px;
+    animation: sparkle-pop 2000ms ease-in-out forwards;
+    font-size: 6px;
     line-height: 1;
     color: white;
     z-index: 2;
     will-change: transform, opacity;
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
 }
 
 .sparkle-particle::before {
@@ -445,9 +445,17 @@ body {
         transform: scale(0) rotate(0deg);
         opacity: 0;
     }
+    25% {
+        transform: scale(0.6) rotate(90deg);
+        opacity: 0.4;
+    }
     50% {
-        transform: scale(1.2) rotate(180deg);
-        opacity: 0.95;
+        transform: scale(0.8) rotate(180deg);
+        opacity: 0.8;
+    }
+    75% {
+        transform: scale(0.6) rotate(270deg);
+        opacity: 0.4;
     }
     100% {
         transform: scale(0) rotate(360deg);
@@ -462,45 +470,44 @@ body {
 .clock[data-effect="sparkle"] .date::after {
     content: '✦';
     position: absolute;
-    font-size: 32px;
+    font-size: 6px;
     line-height: 1;
-    animation: sparkle-pop 700ms ease-in-out infinite;
+    animation: sparkle-pop 2000ms ease-in-out infinite;
     pointer-events: none;
     opacity: 0;
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
     z-index: 2;
 }
 
 .clock[data-effect="sparkle"] .time::before {
     color: #FFD700;
-    top: -15px;
+    top: -3px;
     left: 10%;
     animation-delay: 0ms;
 }
 
 .clock[data-effect="sparkle"] .time::after {
     color: #FF69B4;
-    top: 15px;
+    top: 3px;
     right: 10%;
-    animation-delay: 150ms;
+    animation-delay: 500ms;
 }
 
 .clock[data-effect="sparkle"] .date::before {
     color: #00FFFF;
-    bottom: -10px;
+    bottom: -2px;
     left: 15%;
-    animation-delay: 300ms;
+    animation-delay: 1000ms;
 }
 
 .clock[data-effect="sparkle"] .date::after {
     color: #FF4500;
-    bottom: 10px;
+    bottom: 2px;
     right: 15%;
-    animation-delay: 450ms;
+    animation-delay: 1500ms;
 }
 
-.clock[data-effect="neon"] .time,
-.clock[data-effect="neon"] .date {
+.clock[data-effect="neon"] .time {
     text-shadow: var(--neon-glow) !important;
 }
 

@@ -224,9 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (effect === 'neon') {
                 const neonGlow = `0 0 5px ${neonColorInput.value}, 0 0 10px ${neonColorInput.value}, 0 0 20px ${neonColorInput.value}, 0 0 30px ${neonColorInput.value}`;
                 timeElement.style.textShadow = neonGlow;
-                dateElement.style.textShadow = neonGlow;
                 timeElement.style.color = neonColorInput.value;
-                dateElement.style.color = neonColorInput.value;
+                // Keep date normal
+                dateElement.style.color = textColorInput.value;
+                dateElement.style.textShadow = 'none';
             } else if (effect === 'sparkle') {
                 // Create sparkle particles
                 createSparkleParticles();
@@ -253,7 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
     neonColorInput.addEventListener('input', () => {
         if (textEffectSelect.value === 'neon') {
             const neonGlow = `0 0 5px ${neonColorInput.value}, 0 0 10px ${neonColorInput.value}, 0 0 20px ${neonColorInput.value}, 0 0 30px ${neonColorInput.value}`;
-            clockElement.style.setProperty('--neon-glow', neonGlow);
+            timeElement.style.textShadow = neonGlow;
+            timeElement.style.color = neonColorInput.value;
+            // Keep date normal
+            dateElement.style.color = textColorInput.value;
+            dateElement.style.textShadow = 'none';
         }
         updateClockStyle();
     });
@@ -698,23 +703,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const particle = document.createElement('div');
             particle.className = 'sparkle-particle';
             
-            // Get the time and date elements' positions
-            const timeRect = timeElement.getBoundingClientRect();
-            const dateRect = dateElement.getBoundingClientRect();
+            // Get the clock container dimensions
+            const clockRect = clockContainer.getBoundingClientRect();
             
-            // Randomly choose between time and date element with higher weight for time
-            const targetRect = Math.random() < 0.8 ? timeRect : dateRect;
-            
-            // Position sparkle near the text with tighter clustering
-            const padding = 15; // Reduced padding for closer sparkles
-            const centerX = targetRect.left + targetRect.width / 2;
-            const centerY = targetRect.top + targetRect.height / 2;
-            
-            // Use gaussian-like distribution for more natural clustering
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.pow(Math.random(), 2) * (targetRect.width / 2 + padding);
-            const x = centerX + Math.cos(angle) * distance;
-            const y = centerY + Math.sin(angle) * distance;
+            // Position sparkle within the clock container bounds
+            const padding = 10; // Smaller padding to keep particles more contained
+            const x = padding + Math.random() * (clockRect.width - padding * 2);
+            const y = padding + Math.random() * (clockRect.height - padding * 2);
             
             // Random colors with more variety and brightness
             const colors = [
@@ -731,21 +726,21 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
             const color = colors[Math.floor(Math.random() * colors.length)];
             
-            // Random size variation (much larger)
-            const size = 28 + Math.random() * 12; // 28px to 40px
+            // Random size variation (tiny)
+            const size = 4 + Math.random() * 4; // 4px to 8px
             
-            particle.style.left = `${x - clockElement.getBoundingClientRect().left}px`;
-            particle.style.top = `${y - clockElement.getBoundingClientRect().top}px`;
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
             particle.style.color = color;
             particle.style.fontSize = `${size}px`;
-            particle.style.textShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+            particle.style.textShadow = `0 0 3px ${color}, 0 0 6px ${color}`;
             
-            clockElement.appendChild(particle);
+            clockContainer.appendChild(particle);
             
             // Remove particle after animation
             setTimeout(() => {
                 particle.remove();
-            }, 700); // Match the animation duration
-        }, 50); // Create particles more frequently for a denser effect
+            }, 2000); // Match the longer animation duration
+        }, 200); // Create particles even less frequently
     }
 }); 
