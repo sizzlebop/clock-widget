@@ -3,74 +3,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const isEmbedded = window.location.hash === '#embed';
     if (isEmbedded) {
         document.body.classList.add('embedded');
-        // Hide customization panel when embedded
-        const customizationPanel = document.querySelector('.customization-panel');
-        if (customizationPanel) {
-            customizationPanel.style.display = 'none';
-        }
-
-        // Get background color from URL params or use default
+        
+        // Get settings from URL params
         const params = new URLSearchParams(window.location.search);
-        const backgroundColor = params.get('backgroundColor') || '#fad029';
-        const backgroundType = params.get('backgroundType') || 'single';
+        const settings = {
+            backgroundType: params.get('backgroundType') || 'single',
+            backgroundColor: params.get('backgroundColor') || '#fad029',
+            primaryColor: params.get('primaryColor') || '#fad029',
+            secondaryColor: params.get('secondaryColor') || '#ff6b6b',
+            gradientType: params.get('gradientType') || 'linear',
+            gradientAngle: params.get('gradientAngle') || '45',
+            fontFamily: params.get('fontFamily') || 'IBM Plex Sans',
+            fontSize: params.get('fontSize') || '20',
+            textColor: params.get('textColor') || '#ffffff',
+            timeFormat: params.get('timeFormat') || '24',
+            showSeconds: params.get('showSeconds') || 'true',
+            clockShape: params.get('clockShape') || 'rectangle',
+            textShadowSize: params.get('textShadowSize') || '0',
+            textShadowColor: params.get('textShadowColor') || '#000000',
+            borderStyle: params.get('borderStyle') || 'none',
+            borderSize: params.get('borderSize') || '3',
+            borderColor: params.get('borderColor') || '#ff6b6b',
+            textEffect: params.get('textEffect') || 'none',
+            neonColor: params.get('neonColor') || '#00ff00'
+        };
+
+        // Hide customization panel and footer
+        const customizationPanel = document.querySelector('.customization-panel');
+        const footerImage = document.querySelector('.footer-image');
+        if (customizationPanel) customizationPanel.style.display = 'none';
+        if (footerImage) footerImage.style.display = 'none';
 
         // Set up containers for embedded mode
-        document.querySelector('.style-0').style.cssText = `
-            padding: 0 !important;
-            margin: 0 !important;
-            width: 100% !important;
-            height: 100vh !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            background: transparent !important;
-        `;
+        const style0 = document.querySelector('.style-0');
+        const style1 = document.querySelector('.style-1');
+        const clockContainer = document.querySelector('.clock');
+        const timeElement = clockContainer.querySelector('.time');
+        const dateElement = clockContainer.querySelector('.date');
 
-        const style1Container = document.querySelector('.style-1');
-        if (style1Container) {
-            if (backgroundType === 'single') {
-                style1Container.style.cssText = `
-                    width: 500px !important;
-                    height: 250px !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    display: flex !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                    border-radius: 8px !important;
-                    background-color: ${backgroundColor} !important;
-                `;
-            } else if (backgroundType === 'gradient') {
-                const primaryColor = params.get('primaryColor') || '#fad029';
-                const secondaryColor = params.get('secondaryColor') || '#ff6b6b';
-                const gradientType = params.get('gradientType') || 'linear';
-                const gradientAngle = params.get('gradientAngle') || '45';
-                
+        // Style the outer container
+        if (style0) {
+            style0.style.cssText = `
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: 100vh !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+            `;
+        }
+
+        // Style the clock container
+        if (style1) {
+            let backgroundStyle = '';
+            if (settings.backgroundType === 'single') {
+                backgroundStyle = `background-color: ${settings.backgroundColor} !important;`;
+            } else if (settings.backgroundType === 'gradient') {
                 let gradient;
-                if (gradientType === 'linear') {
-                    gradient = `linear-gradient(${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
-                } else if (gradientType === 'radial') {
-                    gradient = `radial-gradient(circle, ${primaryColor}, ${secondaryColor})`;
-                } else if (gradientType === 'conic') {
-                    gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
+                if (settings.gradientType === 'linear') {
+                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
+                } else if (settings.gradientType === 'radial') {
+                    gradient = `radial-gradient(circle, ${settings.primaryColor}, ${settings.secondaryColor})`;
+                } else if (settings.gradientType === 'conic') {
+                    gradient = `conic-gradient(from ${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
                 }
-                
-                style1Container.style.cssText = `
-                    width: 500px !important;
-                    height: 250px !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    display: flex !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                    border-radius: 8px !important;
+                backgroundStyle = `
                     background: ${gradient} !important;
                     background-image: ${gradient} !important;
                 `;
             }
+
+            style1.style.cssText = `
+                width: 500px !important;
+                height: 250px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                border-radius: 8px !important;
+                ${backgroundStyle}
+            `;
         }
 
-        const clockContainer = document.querySelector('.clock');
+        // Style the clock elements
         if (clockContainer) {
             clockContainer.style.cssText = `
                 width: 100% !important;
@@ -81,40 +98,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 align-items: center !important;
                 gap: 5px !important;
             `;
-
-            const timeElement = clockContainer.querySelector('.time');
-            const dateElement = clockContainer.querySelector('.date');
-            
-            if (timeElement) {
-                timeElement.style.cssText = `
-                    font-size: 4em !important;
-                    color: white !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    line-height: 1 !important;
-                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-                `;
-            }
-            
-            if (dateElement) {
-                dateElement.style.cssText = `
-                    font-size: 1.5em !important;
-                    color: white !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
-                    line-height: 1 !important;
-                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-                `;
-            }
         }
 
-        // Hide footer image
-        const footerImage = document.querySelector('.footer-image');
-        if (footerImage) {
-            footerImage.style.display = 'none';
+        if (timeElement) {
+            timeElement.style.cssText = `
+                font-size: 4em !important;
+                color: ${settings.textColor} !important;
+                font-family: ${settings.fontFamily} !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+            `;
         }
 
-        // Don't run updateClockStyle in embedded mode
+        if (dateElement) {
+            dateElement.style.cssText = `
+                font-size: 1.5em !important;
+                color: ${settings.textColor} !important;
+                font-family: ${settings.fontFamily} !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 1 !important;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+            `;
+        }
+
+        // Start the clock update
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Don't run the rest of the initialization code
         return;
     }
 
@@ -733,192 +747,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load saved settings on page load
     loadSavedSettings();
-
-    // Check if we're in embed mode
-    if (window.location.hash === '#embed') {
-        const params = new URLSearchParams(window.location.search);
-        const settings = {
-            backgroundType: params.get('backgroundType') || 'single',
-            backgroundColor: params.get('backgroundColor') || '#fad029',
-            primaryColor: params.get('primaryColor') || '#fad029',
-            secondaryColor: params.get('secondaryColor') || '#ff6b6b',
-            gradientType: params.get('gradientType') || 'linear',
-            gradientAngle: params.get('gradientAngle') || '45',
-            fontFamily: params.get('fontFamily') || 'IBM Plex Sans',
-            fontSize: params.get('fontSize') || '20',
-            textColor: params.get('textColor') || '#ffffff',
-            timeFormat: params.get('timeFormat') || '24',
-            showSeconds: params.get('showSeconds') || 'true',
-            clockShape: params.get('clockShape') || 'rectangle',
-            textShadowSize: params.get('textShadowSize') || '0',
-            textShadowColor: params.get('textShadowColor') || '#000000',
-            borderStyle: params.get('borderStyle') || 'none',
-            borderSize: params.get('borderSize') || '3',
-            borderColor: params.get('borderColor') || '#ff6b6b',
-            textEffect: params.get('textEffect') || 'none',
-            neonColor: params.get('neonColor') || '#00ff00'
-        };
-        localStorage.setItem('clockSettings', JSON.stringify(settings));
-        
-        // Apply settings to form controls
-        backgroundTypeSelect.value = settings.backgroundType;
-        backgroundColorInput.value = settings.backgroundColor;
-        primaryColorInput.value = settings.primaryColor;
-        secondaryColorInput.value = settings.secondaryColor;
-        gradientTypeSelect.value = settings.gradientType;
-        gradientAngleInput.value = settings.gradientAngle;
-        fontFamilySelect.value = settings.fontFamily;
-        fontSizeInput.value = settings.fontSize;
-        textColorInput.value = settings.textColor;
-        timeFormatSelect.value = settings.timeFormat;
-        showSecondsSelect.value = settings.showSeconds;
-        clockShapeSelect.value = settings.clockShape;
-        textShadowSizeInput.value = settings.textShadowSize;
-        textShadowColorInput.value = settings.textShadowColor;
-        borderStyleSelect.value = settings.borderStyle;
-        borderSizeInput.value = settings.borderSize;
-        borderColorInput.value = settings.borderColor;
-        textEffectSelect.value = settings.textEffect;
-        neonColorInput.value = settings.neonColor;
-        
-        // Update display values
-        angleValue.textContent = `${settings.gradientAngle}°`;
-        sizeValue.textContent = `${settings.fontSize}px`;
-        textShadowSizeValue.textContent = `${settings.textShadowSize}px`;
-        borderSizeValue.textContent = `${settings.borderSize}px`;
-        
-        // Show/hide gradient section based on background type
-        gradientSection.style.display = settings.backgroundType === 'gradient' ? 'block' : 'none';
-        
-        // Show/hide neon color control based on text effect
-        neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
-        
-        // Apply all styles before modifying container styles
-        updateClockStyle();
-        
-        // Hide customization panel and adjust clock container for embed mode
-        document.querySelector('.customization-panel').style.display = 'none';
-        document.querySelector('.style-0').style.cssText = `
-            padding: 0 !important;
-            margin: 0 !important;
-            height: 100vh !important;
-            width: 100% !important;
-            overflow: hidden !important;
-            background: transparent !important;
-        `;
-        document.querySelector('.style-1').style.cssText = `
-            margin: 0 !important;
-            padding: 0 !important;
-            height: 100% !important;
-            width: 100% !important;
-            overflow: hidden !important;
-            background: transparent !important;
-        `;
-        document.querySelector('.footer-image').style.display = 'none';
-        
-        // Make clock container responsive with better centering
-        const clockContainer = document.querySelector('.clock');
-        
-        // Apply background directly to clock container for embed mode
-        if (settings.backgroundType === 'single') {
-            const rgbaBackground = hexToRgba(settings.backgroundColor, 100);
-            clockContainer.style.cssText = `
-                height: 100% !important;
-                width: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 5px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                overflow: hidden !important;
-                background: ${rgbaBackground} !important;
-                background-color: ${rgbaBackground} !important;
-            `;
-        } else if (settings.backgroundType === 'gradient') {
-            let gradient;
-            const rgbaPrimary = hexToRgba(settings.primaryColor, 100);
-            const rgbaSecondary = hexToRgba(settings.secondaryColor, 100);
-            
-            switch (settings.gradientType) {
-                case 'linear':
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
-                    break;
-                case 'radial':
-                    gradient = `radial-gradient(circle at center, ${rgbaPrimary}, ${rgbaSecondary})`;
-                    break;
-                case 'conic':
-                    gradient = `conic-gradient(from ${settings.gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
-                    break;
-                default:
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
-            }
-            clockContainer.style.cssText = `
-                height: 100% !important;
-                width: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 5px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                overflow: hidden !important;
-                background: ${gradient} !important;
-                background-image: ${gradient} !important;
-            `;
-        }
-
-        // Apply initial font size from settings with better proportions
-        const timeElement = clockContainer.querySelector('.time');
-        const dateElement = clockContainer.querySelector('.date');
-        const baseFontSize = parseInt(settings.fontSize) || 20;
-        
-        // Calculate initial scale based on container size
-        const containerWidth = clockContainer.clientWidth;
-        const containerHeight = clockContainer.clientHeight;
-        const minDimension = Math.min(containerWidth, containerHeight);
-        const initialScale = minDimension / 400; // Base scale on a reference size of 400px
-        
-        // Set initial sizes with better proportions
-        timeElement.style.cssText = `
-            font-size: ${baseFontSize * 2 * initialScale}px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
-            color: ${settings.textColor} !important;
-        `;
-        dateElement.style.cssText = `
-            font-size: ${baseFontSize * 0.6 * initialScale}px !important;
-            text-align: center !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
-            color: ${settings.textColor} !important;
-        `;
-        
-        // Create sparkle effect if needed
-        if (settings.textEffect === 'sparkle') {
-            createSparkleParticles();
-        }
-    }
-
-    // Initialize default settings if they don't exist
-    if (!localStorage.getItem('clockSettings')) {
-        const defaultSettings = {
-            primaryColor: primaryColorInput.value,
-            secondaryColor: secondaryColorInput.value,
-            gradientType: gradientTypeSelect.value,
-            gradientAngle: gradientAngleInput.value,
-            fontFamily: fontFamilySelect.value,
-            fontSize: fontSizeInput.value,
-            timeFormat: timeFormatSelect.value,
-            showSeconds: showSecondsSelect.value
-        };
-        localStorage.setItem('clockSettings', JSON.stringify(defaultSettings));
-    }
 
     // Function to create sparkle particles
     function createSparkleParticles() {
