@@ -815,7 +815,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const isHidden = embedLinkPreview.classList.contains('hidden');
         if (isHidden) {
-            // Get all current settings
+            // First, update the clock style and store current settings
+            updateClockStyle();
+            
+            // Get all current settings directly from the form controls
             const settings = {
                 clockShape: clockShapeSelect.value,
                 backgroundType: backgroundTypeSelect.value,
@@ -838,6 +841,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 borderColor: borderColorInput.value.substring(1)
             };
 
+            // Store settings in localStorage
+            localStorage.setItem('clockSettings', JSON.stringify(settings));
+
             // Create query string from settings
             const queryString = Object.entries(settings)
                 .map(([key, value]) => `${key}=${value}`)
@@ -853,6 +859,9 @@ document.addEventListener('DOMContentLoaded', () => {
             embedLinkPreview.classList.remove('hidden');
             generateEmbedLinkButton.classList.add('active');
             generateEmbedLinkButton.textContent = 'Hide Embed Link';
+
+            // Log for debugging
+            console.log('Generated embed link:', relativeUrl);
         } else {
             embedLinkPreview.classList.add('hidden');
             generateEmbedLinkButton.classList.remove('active');
