@@ -269,6 +269,7 @@ body {
     border-radius: 4px;
     font-family: monospace;
     font-size: 14px;
+    margin: 0;
 }
 
 #embed-link:focus {
@@ -284,7 +285,7 @@ body {
 }
 
 .embed-preview.hidden {
-    display: none;
+    display: none !important;
 }
 
 .code-container {

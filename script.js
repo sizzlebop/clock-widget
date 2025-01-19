@@ -793,70 +793,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to get all current settings as URL parameters
     function getAllSettings() {
-        const settings = {
-            shape: clockShapeSelect.value,
-            bgType: backgroundTypeSelect.value,
-            bgColor: backgroundColorInput.value.substring(1),
-            primaryColor: primaryColorInput.value.substring(1),
-            secondaryColor: secondaryColorInput.value.substring(1),
+        return {
+            backgroundType: backgroundTypeSelect.value,
+            backgroundColor: backgroundColorInput.value,
+            primaryColor: primaryColorInput.value,
+            secondaryColor: secondaryColorInput.value,
             gradientType: gradientTypeSelect.value,
             gradientAngle: gradientAngleInput.value,
-            fontFamily: encodeURIComponent(fontFamilySelect.value),
+            fontFamily: fontFamilySelect.value,
             fontSize: fontSizeInput.value,
-            textColor: textColorInput.value.substring(1),
+            textColor: textColorInput.value,
             textShadowSize: textShadowSizeInput.value,
-            textShadowColor: textShadowColorInput.value.substring(1),
+            textShadowColor: textShadowColorInput.value,
             timeFormat: timeFormatSelect.value,
             showSeconds: showSecondsSelect.value,
             borderStyle: borderStyleSelect.value,
             borderSize: borderSizeInput.value,
-            borderColor: borderColorInput.value.substring(1),
+            borderColor: borderColorInput.value,
             textEffect: textEffectSelect.value,
-            neonColor: neonColorInput.value.substring(1)
+            neonColor: neonColorInput.value
         };
-
-        return Object.entries(settings)
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&');
     }
 
-    // Generate embed link handler
-    if (generateEmbedLinkButton && embedLinkPreview && embedLinkInput) {
-        generateEmbedLinkButton.addEventListener('click', () => {
-            console.log('Generate embed link button clicked');
-            const isHidden = embedLinkPreview.classList.contains('hidden');
-            console.log('Preview hidden state:', isHidden);
-            
-            if (isHidden) {
-                try {
-                    const settings = getAllSettings();
-                    console.log('Generated settings:', settings);
-                    const currentUrl = new URL(window.location.href);
-                    const baseUrl = currentUrl.origin + currentUrl.pathname;
-                    const embedUrl = `${baseUrl}?${settings}#embed`;
-                    console.log('Generated embed URL:', embedUrl);
-                    
-                    embedLinkInput.value = embedUrl;
-                    embedLinkPreview.classList.remove('hidden');
-                    if (embedPreview) {
-                        embedPreview.classList.add('hidden');
-                    }
-                } catch (err) {
-                    console.error('Error generating embed link:', err);
-                }
+    // Add event listener for generate embed link button
+    generateEmbedLinkButton.addEventListener('click', () => {
+        // Hide embed code preview if it's visible
+        embedPreview.classList.add('hidden');
+        showEmbedButton.textContent = 'Show Embed Code';
+        
+        // Get current settings and create a URL with them
+        const settings = getAllSettings();
+        const currentUrl = new URL(window.location.href);
+        currentUrl.hash = '#embed';
+        
+        // Add all settings to URL parameters
+        const searchParams = new URLSearchParams();
+        Object.entries(settings).forEach(([key, value]) => {
+            // Remove # from color values
+            if (value.startsWith('#')) {
+                searchParams.append(key, value.substring(1));
             } else {
-                embedLinkPreview.classList.add('hidden');
+                searchParams.append(key, value);
             }
         });
-    } else {
-        console.error('Missing embed link elements:', {
-            generateEmbedLinkButton: !!generateEmbedLinkButton,
-            embedLinkPreview: !!embedLinkPreview,
-            embedLinkInput: !!embedLinkInput
-        });
-    }
+        
+        currentUrl.search = searchParams.toString();
+        
+        // Show the embed link preview and set the link
+        embedLinkPreview.classList.remove('hidden');
+        embedLinkInput.value = currentUrl.toString();
+    });
 
-    // Copy embed link handler
+    // Add event listener for copy embed link button
     copyEmbedLinkButton.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(embedLinkInput.value);
@@ -865,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 linkCopyFeedback.classList.add('hidden');
             }, 2000);
         } catch (err) {
-            console.error('Failed to copy embed link:', err);
+            console.error('Failed to copy link:', err);
         }
     });
 
