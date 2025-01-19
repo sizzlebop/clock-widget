@@ -497,22 +497,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show/hide embed code
     if (showEmbedButton && embedPreview) {
         showEmbedButton.addEventListener('click', () => {
-            console.log('Show embed button clicked');
+            console.log('Embed button clicked');
             const isHidden = embedPreview.classList.contains('hidden');
+            console.log('Preview is hidden:', isHidden);
+            
             if (isHidden) {
+                // First show the preview container
+                embedPreview.classList.remove('hidden');
+                if (embedLinkPreview) {
+                    embedLinkPreview.classList.add('hidden');
+                }
+                
+                // Generate the code
                 const code = generateEmbedCode();
+                console.log('Generated embed code:', code);
+                
+                // Now that preview is visible, update the code element
                 const codeElement = document.getElementById('embed-code');
                 if (codeElement) {
+                    console.log('Highlight.js is available:', !!window.hljs);
                     codeElement.dataset.type = 'full';
                     codeElement.textContent = code.trim();
                     if (window.hljs) {
                         hljs.highlightElement(codeElement);
                     }
+                } else {
+                    console.error('Could not find embed-code element');
                 }
-                embedPreview.classList.remove('hidden');
-                if (embedLinkPreview) {
-                    embedLinkPreview.classList.add('hidden');
-                }
+                
                 showEmbedButton.textContent = 'Hide Embed Code';
             } else {
                 embedPreview.classList.add('hidden');
