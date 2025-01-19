@@ -716,6 +716,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show/hide neon color control based on text effect
         neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
         
+        // Apply all styles before modifying container styles
+        updateClockStyle();
+        
         // Hide customization panel and adjust clock container for embed mode
         document.querySelector('.customization-panel').style.display = 'none';
         document.querySelector('.style-0').style.cssText = `
