@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const isEmbedded = window.location.hash === '#embed';
     if (isEmbedded) {
         document.body.classList.add('embedded');
-        // Hide customization panel when embedded
+        // Only hide customization panel if we're in an iframe
         const customizationPanel = document.querySelector('.customization-panel');
-        if (customizationPanel) {
+        if (customizationPanel && window.self !== window.top) {
             customizationPanel.style.display = 'none';
         }
     }
