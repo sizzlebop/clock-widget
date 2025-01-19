@@ -23,23 +23,24 @@ document.addEventListener('DOMContentLoaded', () => {
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
+            background: transparent !important;
         `;
 
         const style1Container = document.querySelector('.style-1');
         if (style1Container) {
-            style1Container.style.cssText = `
-                width: 500px !important;
-                height: 250px !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                border-radius: 8px !important;
-                background-color: ${backgroundColor} !important;
-            `;
-
-            if (backgroundType === 'gradient') {
+            if (backgroundType === 'single') {
+                style1Container.style.cssText = `
+                    width: 500px !important;
+                    height: 250px !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    border-radius: 8px !important;
+                    background-color: ${backgroundColor} !important;
+                `;
+            } else if (backgroundType === 'gradient') {
                 const primaryColor = params.get('primaryColor') || '#fad029';
                 const secondaryColor = params.get('secondaryColor') || '#ff6b6b';
                 const gradientType = params.get('gradientType') || 'linear';
@@ -54,8 +55,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
                 }
                 
-                style1Container.style.background = gradient;
-                style1Container.style.backgroundImage = gradient;
+                style1Container.style.cssText = `
+                    width: 500px !important;
+                    height: 250px !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    display: flex !important;
+                    justify-content: center !important;
+                    align-items: center !important;
+                    border-radius: 8px !important;
+                    background: ${gradient} !important;
+                    background-image: ${gradient} !important;
+                `;
             }
         }
 
@@ -81,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     margin: 0 !important;
                     padding: 0 !important;
                     line-height: 1 !important;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
                 `;
             }
             
@@ -91,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     margin: 0 !important;
                     padding: 0 !important;
                     line-height: 1 !important;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
                 `;
             }
         }
@@ -100,6 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (footerImage) {
             footerImage.style.display = 'none';
         }
+
+        // Don't run updateClockStyle in embedded mode
+        return;
     }
 
     const primaryColorInput = document.getElementById('primary-color');
