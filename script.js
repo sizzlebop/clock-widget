@@ -460,12 +460,14 @@ document.addEventListener('DOMContentLoaded', () => {
             neonColor: settings.neonColor
         });
         
-        // Create embed code with responsive iframe
+        // Create embed code with responsive iframe and force embed mode
         const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
     <iframe 
         src="${generateRelativeEmbed()}"
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
         allow="autoplay"
+        scrolling="no"
+        loading="lazy"
     ></iframe>
 </div>`;
 
@@ -494,17 +496,18 @@ document.addEventListener('DOMContentLoaded', () => {
             borderSize: settings.borderSize,
             borderColor: settings.borderColor,
             textEffect: settings.textEffect,
-            neonColor: settings.neonColor
+            neonColor: settings.neonColor,
+            embed: 'true'  // Add embed parameter
         });
         
         // Get the current site's URL
         const currentUrl = new URL(window.location.href);
-        // Get the path without any query parameters or hash
-        const path = currentUrl.pathname.replace(/\/[^\/]*$/, '/');
-        // Construct the full URL
-        const embedUrl = `${currentUrl.protocol}//${currentUrl.host}${path}?${params.toString()}#embed`;
+        // Get the base URL (remove any query parameters and hash)
+        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
+        // Construct the full URL with embed parameter
+        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
         
-        console.log('Generated relative embed URL:', embedUrl);
+        console.log('Generated embed URL:', embedUrl);
         
         return embedUrl;
     }
@@ -631,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSavedSettings();
 
     // Check if we're in embed mode
-    if (window.location.hash === '#embed') {
+    if (window.location.hash === '#embed' || new URLSearchParams(window.location.search).get('embed') === 'true') {
         const params = new URLSearchParams(window.location.search);
         const settings = {
             backgroundType: params.get('backgroundType') || 'single',
@@ -689,101 +692,116 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show/hide neon color control based on text effect
         neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
         
-        // Apply all styles before modifying container styles
+        // Apply all styles
         updateClockStyle();
         
         // Hide customization panel and adjust clock container for embed mode
-        document.querySelector('.customization-panel').style.display = 'none';
-        document.querySelector('.style-0').style.cssText = `
-            padding: 0 !important;
-            margin: 0 !important;
-            height: 100vh !important;
-            width: 100% !important;
-            overflow: hidden !important;
-        `;
-        document.querySelector('.style-1').style.cssText = `
-            margin: 0 !important;
-            padding: 0 !important;
-            height: 100% !important;
-            width: 100% !important;
-            overflow: hidden !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        `;
-        document.querySelector('.footer-image').style.display = 'none';
+        const customizationPanel = document.querySelector('.customization-panel');
+        if (customizationPanel) {
+            customizationPanel.style.display = 'none';
+        }
+
+        // Adjust main container styles
+        const style0 = document.querySelector('.style-0');
+        if (style0) {
+            style0.style.cssText = `
+                padding: 0 !important;
+                margin: 0 !important;
+                height: 100vh !important;
+                width: 100% !important;
+                overflow: hidden !important;
+                background: transparent !important;
+            `;
+        }
+
+        // Adjust clock container styles
+        const style1 = document.querySelector('.style-1');
+        if (style1) {
+            style1.style.cssText = `
+                margin: 0 !important;
+                padding: 0 !important;
+                height: 100% !important;
+                width: 100% !important;
+                overflow: hidden !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                border-radius: 0 !important;
+            `;
+        }
+
+        // Hide footer image
+        const footerImage = document.querySelector('.footer-image');
+        if (footerImage) {
+            footerImage.style.display = 'none';
+        }
         
         // Make clock container responsive with better centering
         const clockContainer = document.querySelector('.clock');
-        
-        // Apply background and styles to the style-1 container instead of clock container
-        if (settings.backgroundType === 'single') {
-            const container = document.querySelector('.style-1');
-            container.style.backgroundColor = settings.backgroundColor;
-        } else if (settings.backgroundType === 'gradient') {
-            let gradient;
-            switch (settings.gradientType) {
-                case 'linear':
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
-                    break;
-                case 'radial':
-                    gradient = `radial-gradient(circle at center, ${settings.primaryColor}, ${settings.secondaryColor})`;
-                    break;
-                case 'conic':
-                    gradient = `conic-gradient(from ${settings.gradientAngle}deg at center, ${settings.primaryColor}, ${settings.secondaryColor}, ${settings.primaryColor})`;
-                    break;
-                default:
-                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${settings.primaryColor}, ${settings.secondaryColor})`;
+        if (clockContainer) {
+            clockContainer.style.cssText = `
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 5px !important;
+                padding: 20px !important;
+                margin: 0 !important;
+                overflow: hidden !important;
+                background: transparent !important;
+            `;
+
+            // Apply responsive font sizes
+            const timeElement = clockContainer.querySelector('.time');
+            const dateElement = clockContainer.querySelector('.date');
+            if (timeElement && dateElement) {
+                const baseFontSize = parseInt(settings.fontSize) || 20;
+                const containerWidth = clockContainer.clientWidth;
+                const containerHeight = clockContainer.clientHeight;
+                const minDimension = Math.min(containerWidth, containerHeight);
+                const initialScale = minDimension / 400;
+
+                timeElement.style.cssText = `
+                    font-size: ${baseFontSize * 2 * initialScale}px !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                    color: ${settings.textColor} !important;
+                `;
+                dateElement.style.cssText = `
+                    font-size: ${baseFontSize * 0.6 * initialScale}px !important;
+                    text-align: center !important;
+                    width: 100% !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                    color: ${settings.textColor} !important;
+                `;
             }
-            const container = document.querySelector('.style-1');
-            container.style.background = gradient;
         }
 
-        // Set clock container styles
-        clockContainer.style.cssText = `
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important;
-            align-items: center !important;
-            gap: 5px !important;
-            padding: 20px !important;
-            margin: 0 !important;
-            overflow: hidden !important;
-        `;
-
-        // Apply initial font size from settings with better proportions
-        const timeElement = clockContainer.querySelector('.time');
-        const dateElement = clockContainer.querySelector('.date');
-        const baseFontSize = parseInt(settings.fontSize) || 20;
-        
-        // Calculate initial scale based on container size
-        const containerWidth = clockContainer.clientWidth;
-        const containerHeight = clockContainer.clientHeight;
-        const minDimension = Math.min(containerWidth, containerHeight);
-        const initialScale = minDimension / 400; // Base scale on a reference size of 400px
-        
-        // Set initial sizes with better proportions
-        timeElement.style.cssText = `
-            font-size: ${baseFontSize * 2 * initialScale}px !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
-            color: ${settings.textColor} !important;
-        `;
-        dateElement.style.cssText = `
-            font-size: ${baseFontSize * 0.6 * initialScale}px !important;
-            text-align: center !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            line-height: 1 !important;
-            color: ${settings.textColor} !important;
-        `;
-        
         // Create sparkle effect if needed
         if (settings.textEffect === 'sparkle') {
             createSparkleParticles();
         }
+
+        // Add resize handler for responsive sizing
+        window.addEventListener('resize', () => {
+            if (clockContainer) {
+                const timeElement = clockContainer.querySelector('.time');
+                const dateElement = clockContainer.querySelector('.date');
+                if (timeElement && dateElement) {
+                    const baseFontSize = parseInt(settings.fontSize) || 20;
+                    const containerWidth = clockContainer.clientWidth;
+                    const containerHeight = clockContainer.clientHeight;
+                    const minDimension = Math.min(containerWidth, containerHeight);
+                    const scale = minDimension / 400;
+
+                    timeElement.style.fontSize = `${baseFontSize * 2 * scale}px`;
+                    dateElement.style.fontSize = `${baseFontSize * 0.6 * scale}px`;
+                }
+            }
+        });
     }
 
     // Initialize default settings if they don't exist
