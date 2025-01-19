@@ -4,7 +4,7 @@
   <img src="logo.svg" width="100" height="100" alt="Clock Widget Logo">
 </div>
 
-A modern, customizable clock widget that can be embedded into any website. Features a sleek design with real-time updates, extensive customization options, and theme presets.
+A sleek and modern clock widget that seamlessly embeds into any website, featuring real-time updates and smooth animations. The widget offers extensive customization options including multiple gradient types, font families, and visual effects, all controlled through an intuitive interface. Built with pure HTML, CSS, and vanilla JavaScript, it requires no external dependencies and maintains high performance with 60 FPS animations. The widget includes advanced features like theme presets, dark/light mode, alarms, and world clock display, while remaining lightweight at under 50KB gzipped. Settings persist locally with cloud sync capability, making it perfect for both personal and professional websites.
 
 <div align="center">
   <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737279443/clock-widget_xxylrw.png" width="1000" alt="Clock Widget Preview Light Mode">
