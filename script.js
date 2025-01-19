@@ -305,8 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const timeElement = clockContainer.querySelector('.time');
         const dateElement = clockContainer.querySelector('.date');
         const baseFontSize = parseInt(settings.fontSize) || 20;
+        
+        // Set initial sizes
         timeElement.style.fontSize = `${baseFontSize * 2}px`;
         dateElement.style.fontSize = `${baseFontSize * 0.8}px`;
+        
+        // Store initial container size for relative scaling
+        let initialWidth = clockContainer.clientWidth;
+        let initialHeight = clockContainer.clientHeight;
         
         // Adjust font sizes based on container size while maintaining proportions
         const resizeObserver = new ResizeObserver(entries => {
@@ -314,14 +320,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const container = entry.target;
                 const containerWidth = container.clientWidth;
                 const containerHeight = container.clientHeight;
-                const minDimension = Math.min(containerWidth, containerHeight);
                 
-                // Calculate responsive sizes while preserving the original proportion
-                const responsiveBase = minDimension * 0.1;
-                const scaleFactor = baseFontSize / 20; // 20 is our default base size
+                // Calculate scale factor based on size change
+                const widthScale = containerWidth / initialWidth;
+                const heightScale = containerHeight / initialHeight;
+                const scale = Math.min(widthScale, heightScale);
                 
-                timeElement.style.fontSize = `${responsiveBase * 2 * scaleFactor}px`;
-                dateElement.style.fontSize = `${responsiveBase * 0.8 * scaleFactor}px`;
+                // Apply scaled sizes
+                timeElement.style.fontSize = `${baseFontSize * 2 * scale}px`;
+                dateElement.style.fontSize = `${baseFontSize * 0.8 * scale}px`;
             }
         });
         
