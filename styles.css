@@ -35,12 +35,14 @@ body {
     margin-right: auto;
     box-sizing: border-box;
     overflow: visible !important;
-    background: linear-gradient(45deg, #fad029, #ff6b6b);
     transition: all 0.3s ease;
     position: relative;
     z-index: 1;
     border: none;
     box-shadow: none;
+    background: none;
+    background-image: none;
+    background-color: transparent;
 }
 
 /* Clock Shapes */

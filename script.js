@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const primaryColorInput = document.getElementById('primary-color');
     const secondaryColorInput = document.getElementById('secondary-color');
+    const backgroundTypeSelect = document.getElementById('background-type');
+    const backgroundColorInput = document.getElementById('background-color');
+    const gradientSection = document.getElementById('gradient-section');
     const gradientTypeSelect = document.getElementById('gradient-type');
     const gradientAngleInput = document.getElementById('gradient-angle');
     const angleValue = document.getElementById('angle-value');
@@ -36,14 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundOpacityInput = document.getElementById('background-opacity');
     const opacityValue = document.getElementById('opacity-value');
     const borderStyleSelect = document.getElementById('border-style');
+    const borderSizeInput = document.getElementById('border-size');
+    const borderSizeValue = document.getElementById('border-size-value');
     const borderColorInput = document.getElementById('border-color');
 
     // Initialize controls with default values
+    backgroundTypeSelect.value = "single";
+    backgroundColorInput.value = "#fad029";
+    gradientSection.style.display = 'none';
     textShadowSizeInput.value = "0";
     textShadowColorInput.value = "#000000";
     textColorInput.value = "#ffffff";
     backgroundOpacityInput.value = "100";
     borderStyleSelect.value = "none";
+    borderSizeInput.value = "3";
     borderColorInput.value = "#ff6b6b";
 
     // Update clock display
@@ -121,12 +130,32 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
+    borderSizeInput.addEventListener('input', (e) => {
+        console.log('Border size changed:', e.target.value);
+        borderSizeValue.textContent = `${e.target.value}px`;
+        updateClockStyle();
+    });
+
     borderColorInput.addEventListener('input', () => {
         console.log('Border color changed:', borderColorInput.value);
         updateClockStyle();
     });
 
+    // Add background type change handler
+    backgroundTypeSelect.addEventListener('change', (e) => {
+        const isGradient = e.target.value === 'gradient';
+        gradientSection.style.display = isGradient ? 'block' : 'none';
+        updateClockStyle();
+    });
+
+    backgroundColorInput.addEventListener('input', () => {
+        console.log('Background color changed:', backgroundColorInput.value);
+        updateClockStyle();
+    });
+
     function updateClockStyle() {
+        const backgroundType = backgroundTypeSelect.value;
+        const backgroundColor = backgroundColorInput.value;
         const primaryColor = primaryColorInput.value;
         const secondaryColor = secondaryColorInput.value;
         const gradientType = gradientTypeSelect.value;
@@ -137,32 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const textColor = textColorInput.value;
         const opacity = parseInt(backgroundOpacityInput.value) / 100;
         const borderStyle = borderStyleSelect.value;
+        const borderSize = parseInt(borderSizeInput.value);
         const borderColor = borderColorInput.value;
-
-        console.log('Style values:', {
-            textShadowSize,
-            textShadowColor,
-            textColor,
-            opacity,
-            borderStyle,
-            borderColor,
-            primaryColor,
-            secondaryColor
-        });
-
-        // Create gradient based on type
-        let gradient;
-        switch (gradientType) {
-            case 'linear':
-                gradient = `linear-gradient(${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
-                break;
-            case 'radial':
-                gradient = `radial-gradient(circle, ${primaryColor}, ${secondaryColor})`;
-                break;
-            case 'conic':
-                gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor}, ${primaryColor})`;
-                break;
-        }
 
         // Get the correct container (.style-1)
         const clockContainer = document.querySelector('.style-1');
@@ -172,15 +177,39 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Clock container not found!');
             return;
         }
+
+        // Clear any existing background properties
+        clockContainer.style.removeProperty('background');
+        clockContainer.style.removeProperty('background-image');
+        clockContainer.style.removeProperty('background-color');
+
+        // Apply background based on type
+        if (backgroundType === 'single') {
+            const rgbaBackground = hexToRgba(backgroundColor, opacity);
+            clockContainer.style.setProperty('background-color', rgbaBackground, 'important');
+        } else {
+            // Create and apply gradient with opacity
+            let gradient;
+            const rgbaPrimary = hexToRgba(primaryColor, opacity);
+            const rgbaSecondary = hexToRgba(secondaryColor, opacity);
+
+            switch (gradientType) {
+                case 'linear':
+                    gradient = `linear-gradient(${gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    break;
+                case 'radial':
+                    gradient = `radial-gradient(circle at center, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    break;
+                case 'conic':
+                    gradient = `conic-gradient(from ${gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
+                    break;
+            }
+            clockContainer.style.setProperty('background', gradient, 'important');
+        }
         
-        // Apply background with opacity
-        const rgbaPrimary = `rgba(${hexToRgb(primaryColor)}, ${opacity})`;
-        clockContainer.style.setProperty('background', gradient, 'important');
-        
-        // Apply border with width proportional to container
+        // Apply border with custom size
         if (borderStyle !== 'none') {
-            const borderWidth = Math.max(3, Math.floor(clockContainer.offsetWidth * 0.015));
-            const borderValue = `${borderWidth}px ${borderStyle} ${borderColor}`;
+            const borderValue = `${borderSize}px ${borderStyle} ${borderColor}`;
             clockContainer.style.setProperty('border', borderValue, 'important');
             console.log('Applied border:', borderValue);
         } else {
@@ -219,9 +248,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update value displays
         textShadowSizeValue.textContent = `${textShadowSize}px`;
         opacityValue.textContent = `${backgroundOpacityInput.value}%`;
+        borderSizeValue.textContent = `${borderSize}px`;
 
         // Store current settings in localStorage
         const settings = {
+            backgroundType,
+            backgroundColor,
             primaryColor,
             secondaryColor,
             gradientType,
@@ -236,17 +268,20 @@ document.addEventListener('DOMContentLoaded', () => {
             textShadowColor,
             opacity: backgroundOpacityInput.value,
             borderStyle,
+            borderSize,
             borderColor
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
     }
 
-    // Helper function to convert hex to RGB
-    function hexToRgb(hex) {
+    // Helper function to convert hex to RGBA
+    function hexToRgba(hex, alpha = 1) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? 
-            `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
-            '0, 0, 0';
+        if (!result) return `rgba(0, 0, 0, ${alpha})`;
+        const r = parseInt(result[1], 16);
+        const g = parseInt(result[2], 16);
+        const b = parseInt(result[3], 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     // Generate embed code based on current settings
@@ -388,6 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedSettings = localStorage.getItem('clockSettings');
         if (savedSettings) {
             const settings = JSON.parse(savedSettings);
+            backgroundTypeSelect.value = settings.backgroundType || 'single';
+            backgroundColorInput.value = settings.backgroundColor || '#fad029';
+            gradientSection.style.display = settings.backgroundType === 'gradient' ? 'block' : 'none';
             primaryColorInput.value = settings.primaryColor || '#fad029';
             secondaryColorInput.value = settings.secondaryColor || '#ff6b6b';
             gradientTypeSelect.value = settings.gradientType || 'linear';
@@ -404,6 +442,8 @@ document.addEventListener('DOMContentLoaded', () => {
             textShadowColorInput.value = settings.textShadowColor || '#000000';
             backgroundOpacityInput.value = settings.opacity || '100';
             borderStyleSelect.value = settings.borderStyle || 'none';
+            borderSizeInput.value = settings.borderSize || '3';
+            borderSizeValue.textContent = `${settings.borderSize || '3'}px`;
             borderColorInput.value = settings.borderColor || '#ff6b6b';
             updateClockStyle();
         }
