@@ -168,15 +168,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide embed code
     if (showEmbedButton && embedPreview && embedCode) {
+        console.log('Embed button elements found:', {
+            showEmbedButton: showEmbedButton,
+            embedPreview: embedPreview,
+            embedCode: embedCode
+        });
         showEmbedButton.addEventListener('click', () => {
             console.log('Embed button clicked'); // Debug log
             const isHidden = embedPreview.classList.contains('hidden');
+            console.log('Preview is hidden:', isHidden);
             if (isHidden) {
                 embedCode.dataset.type = 'full';
                 const code = generateEmbedCode();
+                console.log('Generated embed code:', code);
                 embedCode.textContent = code.trim();
                 if (window.hljs) {
+                    console.log('Highlight.js is available');
                     hljs.highlightElement(embedCode);
+                } else {
+                    console.log('Highlight.js is not available');
                 }
                 embedPreview.classList.remove('hidden');
                 showEmbedButton.textContent = 'Hide Embed Code';
@@ -309,6 +319,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         resizeObserver.observe(clockContainer);
+    }
+
+    // Initialize default settings if they don't exist
+    if (!localStorage.getItem('clockSettings')) {
+        const defaultSettings = {
+            primaryColor: primaryColorInput.value,
+            secondaryColor: secondaryColorInput.value,
+            gradientType: gradientTypeSelect.value,
+            gradientAngle: gradientAngleInput.value,
+            fontFamily: fontFamilySelect.value,
+            fontSize: fontSizeInput.value,
+            timeFormat: timeFormatSelect.value,
+            showSeconds: showSecondsSelect.value
+        };
+        localStorage.setItem('clockSettings', JSON.stringify(defaultSettings));
     }
 
     // Initialize with saved settings or defaults
