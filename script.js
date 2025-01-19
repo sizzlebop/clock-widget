@@ -217,14 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 dateElement.style.textShadow = neonGlow;
                 timeElement.style.color = neonColorInput.value;
                 dateElement.style.color = neonColorInput.value;
-            } else if (effect === 'rainbow') {
-                // Rainbow effect is handled by CSS
-                timeElement.style.backgroundSize = '800% 100%';
-                dateElement.style.backgroundSize = '800% 100%';
             } else if (effect === 'sparkle') {
                 // Sparkle effect is handled by CSS
-                timeElement.style.color = textColorInput.value;
-                dateElement.style.color = textColorInput.value;
+                timeElement.style.color = 'white';
+                dateElement.style.color = 'white';
             }
         }
         updateClockStyle();
@@ -345,17 +341,11 @@ document.addEventListener('DOMContentLoaded', () => {
             timeElement.style.removeProperty('text-shadow');
             dateElement.style.removeProperty('text-shadow');
         } else if (textEffect === 'sparkle') {
-            // Ensure sparkle effect has white text
+            // Sparkle effect is handled by CSS
             timeElement.style.setProperty('color', 'white', 'important');
             dateElement.style.setProperty('color', 'white', 'important');
             timeElement.style.removeProperty('text-shadow');
             dateElement.style.removeProperty('text-shadow');
-        } else if (textEffect === 'rainbow') {
-            // Ensure rainbow effect has no interfering styles
-            timeElement.style.removeProperty('text-shadow');
-            dateElement.style.removeProperty('text-shadow');
-            timeElement.style.removeProperty('-webkit-text-fill-color');
-            dateElement.style.removeProperty('-webkit-text-fill-color');
         } else if (textEffect === 'none') {
             // Reset all effect-related styles
             clockElement.style.removeProperty('--neon-glow');
