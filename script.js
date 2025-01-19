@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize controls with default values
     backgroundTypeSelect.value = "single";
     backgroundColorInput.value = "#fad029";
+    primaryColorInput.value = "#fad029";
+    secondaryColorInput.value = "#ff6b6b";
+    gradientTypeSelect.value = "linear";
+    gradientAngleInput.value = "45";
     gradientSection.style.display = 'none';
     textShadowSizeInput.value = "0";
     textShadowColorInput.value = "#000000";
@@ -54,6 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
     borderStyleSelect.value = "none";
     borderSizeInput.value = "3";
     borderColorInput.value = "#ff6b6b";
+
+    // Get the clock container once and store it
+    const clockContainer = document.querySelector('.style-1');
+    if (!clockContainer) {
+        console.error('Clock container not found during initialization!');
+        return;
+    }
 
     // Update clock display
     function updateClock() {
@@ -145,11 +156,34 @@ document.addEventListener('DOMContentLoaded', () => {
     backgroundTypeSelect.addEventListener('change', (e) => {
         const isGradient = e.target.value === 'gradient';
         gradientSection.style.display = isGradient ? 'block' : 'none';
-        updateClockStyle();
+        if (isGradient) {
+            clockContainer.style.removeProperty('background-color');
+            updateClockStyle();
+        } else {
+            clockContainer.style.removeProperty('background');
+            clockContainer.style.removeProperty('background-image');
+            updateClockStyle();
+        }
     });
 
     backgroundColorInput.addEventListener('input', () => {
         console.log('Background color changed:', backgroundColorInput.value);
+        updateClockStyle();
+    });
+
+    // Add gradient control event listeners
+    primaryColorInput.addEventListener('input', () => {
+        console.log('Primary color changed:', primaryColorInput.value);
+        updateClockStyle();
+    });
+
+    secondaryColorInput.addEventListener('input', () => {
+        console.log('Secondary color changed:', secondaryColorInput.value);
+        updateClockStyle();
+    });
+
+    gradientTypeSelect.addEventListener('change', () => {
+        console.log('Gradient type changed:', gradientTypeSelect.value);
         updateClockStyle();
     });
 
@@ -169,10 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const borderSize = parseInt(borderSizeInput.value);
         const borderColor = borderColorInput.value;
 
-        // Get the correct container (.style-1)
-        const clockContainer = document.querySelector('.style-1');
-        console.log('Clock container:', clockContainer);
-        
         if (!clockContainer) {
             console.error('Clock container not found!');
             return;
@@ -187,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (backgroundType === 'single') {
             const rgbaBackground = hexToRgba(backgroundColor, opacity);
             clockContainer.style.setProperty('background-color', rgbaBackground, 'important');
-        } else {
+            console.log('Applied single color:', rgbaBackground);
+        } else if (backgroundType === 'gradient') {
             // Create and apply gradient with opacity
             let gradient;
             const rgbaPrimary = hexToRgba(primaryColor, opacity);
@@ -203,8 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'conic':
                     gradient = `conic-gradient(from ${gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
                     break;
+                default:
+                    gradient = `linear-gradient(${gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
             }
-            clockContainer.style.setProperty('background', gradient, 'important');
+            clockContainer.style.setProperty('background-image', gradient, 'important');
+            console.log('Applied gradient:', gradient);
         }
         
         // Apply border with custom size
