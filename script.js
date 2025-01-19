@@ -460,14 +460,12 @@ document.addEventListener('DOMContentLoaded', () => {
             neonColor: settings.neonColor
         });
         
-        // Create embed code with responsive iframe and force embed mode
+        // Create embed code with responsive iframe
         const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
     <iframe 
         src="${generateRelativeEmbed()}"
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
         allow="autoplay"
-        scrolling="no"
-        loading="lazy"
     ></iframe>
 </div>`;
 
@@ -496,18 +494,17 @@ document.addEventListener('DOMContentLoaded', () => {
             borderSize: settings.borderSize,
             borderColor: settings.borderColor,
             textEffect: settings.textEffect,
-            neonColor: settings.neonColor,
-            embed: 'true'  // Add embed parameter
+            neonColor: settings.neonColor
         });
         
         // Get the current site's URL
         const currentUrl = new URL(window.location.href);
-        // Get the base URL (remove any query parameters and hash)
-        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
-        // Construct the full URL with embed parameter
-        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
+        // Get the path without any query parameters or hash
+        const path = currentUrl.pathname.replace(/\/[^\/]*$/, '/');
+        // Construct the full URL
+        const embedUrl = `${currentUrl.protocol}//${currentUrl.host}${path}?${params.toString()}#embed`;
         
-        console.log('Generated embed URL:', embedUrl);
+        console.log('Generated relative embed URL:', embedUrl);
         
         return embedUrl;
     }
