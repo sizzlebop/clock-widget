@@ -476,13 +476,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Construct the embed URL
         const embedUrl = `${baseUrl}?${params.toString()}#embed`;
         
-        // Create embed code with fixed dimensions
-        const embedHTML = `<iframe 
+        // Create embed code with responsive iframe
+        const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
+    <iframe 
         src="${embedUrl}"
-        style="width: 500px; height: 250px; border: none; display: block;"
-        scrolling="no"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
         allow="autoplay"
-    ></iframe>`;
+    ></iframe>
+</div>`;
 
         return embedHTML;
     }
