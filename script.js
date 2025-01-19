@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     secondaryColorInput.value = "#ff6b6b";
     gradientTypeSelect.value = "linear";
     gradientAngleInput.value = "45";
-    gradientSection.style.display = 'none';
+    // Show gradient section if gradient is selected
+    gradientSection.style.display = backgroundTypeSelect.value === 'gradient' ? 'block' : 'none';
     textShadowSizeInput.value = "0";
     textShadowColorInput.value = "#000000";
     textColorInput.value = "#ffffff";
@@ -166,18 +167,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add background type change handler
     backgroundTypeSelect.addEventListener('change', (e) => {
+        console.log('Background type changed:', e.target.value);
         const isGradient = e.target.value === 'gradient';
-        const gradientSection = document.getElementById('gradient-section');
         gradientSection.style.display = isGradient ? 'block' : 'none';
         
         if (isGradient) {
             clockContainer.style.removeProperty('background-color');
-            updateClockStyle();
         } else {
             clockContainer.style.removeProperty('background');
             clockContainer.style.removeProperty('background-image');
-            updateClockStyle();
+            clockContainer.style.backgroundColor = backgroundColorInput.value;
         }
+        updateClockStyle();
+        
+        // Save the current settings
+        saveSettings();
     });
 
     backgroundColorInput.addEventListener('input', () => {
