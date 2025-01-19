@@ -157,14 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
             showSeconds: settings.showSeconds
         });
         
-        // Get the current site's URL and path
+        // Get the current site's URL
         const currentUrl = new URL(window.location.href);
-        // Remove any existing query parameters and hash
-        currentUrl.search = '';
-        currentUrl.hash = '';
+        // Get the base URL (protocol + hostname)
+        const baseUrl = `${currentUrl.protocol}//${currentUrl.hostname}`;
         
-        // Return URL relative to current site
-        return `${currentUrl.toString()}?${params.toString()}#embed`;
+        // Return the URL with parameters
+        return `${baseUrl}/?${params.toString()}#embed`;
     }
 
     // Show/hide embed code
