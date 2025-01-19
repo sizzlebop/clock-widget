@@ -504,6 +504,45 @@ body {
     display: none;
 }
 
-.embedded .widget-logo {
+.embedded .widget-logo,
+.widget-logo[style*="display: none"],
+body.embedded .widget-logo,
+body.embedded .style-0 > .widget-logo,
+iframe .widget-logo {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Embedded view styles - remove all padding and show only clock */
+.embedded body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.embedded .style-0 {
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+}
+
+.embedded .style-1 {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.embedded .clock {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.embedded .time {
+    margin-bottom: 4px !important;
 }
