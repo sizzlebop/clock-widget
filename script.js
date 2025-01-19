@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const borderSizeInput = document.getElementById('border-size');
     const borderSizeValue = document.getElementById('border-size-value');
     const borderColorInput = document.getElementById('border-color');
+    const textEffectSelect = document.getElementById('text-effect');
+    const neonColorInput = document.getElementById('neon-color');
+    const neonColorControl = document.getElementById('neon-color-control');
 
     // Initialize controls with default values
     backgroundTypeSelect.value = "single";
@@ -58,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
     borderStyleSelect.value = "none";
     borderSizeInput.value = "3";
     borderColorInput.value = "#ff6b6b";
+    textEffectSelect.value = "none";
+    neonColorInput.value = "#00ff00";
+    neonColorControl.style.display = 'none';
 
     // Get the clock container once and store it
     const clockContainer = document.querySelector('.style-1');
@@ -187,6 +193,51 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
+    // Add text effect change handler
+    textEffectSelect.addEventListener('change', (e) => {
+        const effect = e.target.value;
+        // Remove any existing effect
+        clockElement.removeAttribute('data-effect');
+        // Clear any existing text shadows and colors
+        timeElement.style.removeProperty('text-shadow');
+        dateElement.style.removeProperty('text-shadow');
+        timeElement.style.removeProperty('color');
+        dateElement.style.removeProperty('color');
+        timeElement.style.removeProperty('-webkit-text-fill-color');
+        dateElement.style.removeProperty('-webkit-text-fill-color');
+        
+        if (effect !== 'none') {
+            clockElement.setAttribute('data-effect', effect);
+            // Show/hide neon color control
+            neonColorControl.style.display = effect === 'neon' ? 'flex' : 'none';
+            
+            if (effect === 'neon') {
+                const neonGlow = `0 0 5px ${neonColorInput.value}, 0 0 10px ${neonColorInput.value}, 0 0 20px ${neonColorInput.value}, 0 0 30px ${neonColorInput.value}`;
+                timeElement.style.textShadow = neonGlow;
+                dateElement.style.textShadow = neonGlow;
+                timeElement.style.color = neonColorInput.value;
+                dateElement.style.color = neonColorInput.value;
+            } else if (effect === 'rainbow') {
+                // Rainbow effect is handled by CSS
+                timeElement.style.backgroundSize = '800% 100%';
+                dateElement.style.backgroundSize = '800% 100%';
+            } else if (effect === 'sparkle') {
+                // Sparkle effect is handled by CSS
+                timeElement.style.color = textColorInput.value;
+                dateElement.style.color = textColorInput.value;
+            }
+        }
+        updateClockStyle();
+    });
+
+    neonColorInput.addEventListener('input', () => {
+        if (textEffectSelect.value === 'neon') {
+            const neonGlow = `0 0 5px ${neonColorInput.value}, 0 0 10px ${neonColorInput.value}, 0 0 20px ${neonColorInput.value}, 0 0 30px ${neonColorInput.value}`;
+            clockElement.style.setProperty('--neon-glow', neonGlow);
+        }
+        updateClockStyle();
+    });
+
     function updateClockStyle() {
         const backgroundType = backgroundTypeSelect.value;
         const backgroundColor = backgroundColorInput.value;
@@ -202,6 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const borderStyle = borderStyleSelect.value;
         const borderSize = parseInt(borderSizeInput.value);
         const borderColor = borderColorInput.value;
+        const textEffect = textEffectSelect.value;
+        const neonColor = neonColorInput.value;
 
         if (!clockContainer) {
             console.error('Clock container not found!');
@@ -284,6 +337,45 @@ document.addEventListener('DOMContentLoaded', () => {
         opacityValue.textContent = `${backgroundOpacityInput.value}%`;
         borderSizeValue.textContent = `${borderSize}px`;
 
+        // Apply text effects
+        if (textEffect === 'neon') {
+            const neonGlow = `0 0 5px ${neonColor}, 0 0 10px ${neonColor}, 0 0 20px ${neonColor}, 0 0 30px ${neonColor}`;
+            clockElement.style.setProperty('--neon-glow', neonGlow);
+            // Remove any regular text shadow when neon effect is active
+            timeElement.style.removeProperty('text-shadow');
+            dateElement.style.removeProperty('text-shadow');
+        } else if (textEffect === 'sparkle') {
+            // Ensure sparkle effect has white text
+            timeElement.style.setProperty('color', 'white', 'important');
+            dateElement.style.setProperty('color', 'white', 'important');
+            timeElement.style.removeProperty('text-shadow');
+            dateElement.style.removeProperty('text-shadow');
+        } else if (textEffect === 'rainbow') {
+            // Ensure rainbow effect has no interfering styles
+            timeElement.style.removeProperty('text-shadow');
+            dateElement.style.removeProperty('text-shadow');
+            timeElement.style.removeProperty('-webkit-text-fill-color');
+            dateElement.style.removeProperty('-webkit-text-fill-color');
+        } else if (textEffect === 'none') {
+            // Reset all effect-related styles
+            clockElement.style.removeProperty('--neon-glow');
+            timeElement.style.setProperty('color', textColor, 'important');
+            dateElement.style.setProperty('color', textColor, 'important');
+            
+            // Reapply regular text shadow if it was set
+            if (textShadowSize > 0) {
+                const textShadowOpacity = Math.min(0.9, textShadowSize / 10);
+                const blurRadius = Math.max(2, textShadowSize);
+                const shadowColor = textShadowColor.replace('#', '');
+                const r = parseInt(shadowColor.substr(0, 2), 16);
+                const g = parseInt(shadowColor.substr(2, 2), 16);
+                const b = parseInt(shadowColor.substr(4, 2), 16);
+                const textShadowStyle = `0 ${textShadowSize/4}px ${blurRadius}px rgba(${r}, ${g}, ${b}, ${textShadowOpacity})`;
+                timeElement.style.setProperty('text-shadow', textShadowStyle, 'important');
+                dateElement.style.setProperty('text-shadow', textShadowStyle, 'important');
+            }
+        }
+
         // Store current settings in localStorage
         const settings = {
             backgroundType,
@@ -303,7 +395,9 @@ document.addEventListener('DOMContentLoaded', () => {
             opacity: backgroundOpacityInput.value,
             borderStyle,
             borderSize,
-            borderColor
+            borderColor,
+            textEffect,
+            neonColor
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
     }
@@ -479,6 +573,9 @@ document.addEventListener('DOMContentLoaded', () => {
             borderSizeInput.value = settings.borderSize || '3';
             borderSizeValue.textContent = `${settings.borderSize || '3'}px`;
             borderColorInput.value = settings.borderColor || '#ff6b6b';
+            textEffectSelect.value = settings.textEffect || 'none';
+            neonColorInput.value = settings.neonColor || '#00ff00';
+            neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
             updateClockStyle();
         }
     }
