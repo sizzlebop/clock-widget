@@ -300,8 +300,15 @@ document.addEventListener('DOMContentLoaded', () => {
         clockContainer.style.flexDirection = 'column';
         clockContainer.style.justifyContent = 'center';
         clockContainer.style.alignItems = 'center';
+
+        // Apply initial font size from settings
+        const timeElement = clockContainer.querySelector('.time');
+        const dateElement = clockContainer.querySelector('.date');
+        const baseFontSize = parseInt(settings.fontSize) || 20;
+        timeElement.style.fontSize = `${baseFontSize * 2}px`;
+        dateElement.style.fontSize = `${baseFontSize * 0.8}px`;
         
-        // Adjust font sizes based on container size
+        // Adjust font sizes based on container size while maintaining proportions
         const resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
                 const container = entry.target;
@@ -309,12 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const containerHeight = container.clientHeight;
                 const minDimension = Math.min(containerWidth, containerHeight);
                 
-                const timeElement = container.querySelector('.time');
-                const dateElement = container.querySelector('.date');
+                // Calculate responsive sizes while preserving the original proportion
+                const responsiveBase = minDimension * 0.1;
+                const scaleFactor = baseFontSize / 20; // 20 is our default base size
                 
-                // Adjust font sizes proportionally to container size
-                timeElement.style.fontSize = `${minDimension * 0.2}px`;
-                dateElement.style.fontSize = `${minDimension * 0.08}px`;
+                timeElement.style.fontSize = `${responsiveBase * 2 * scaleFactor}px`;
+                dateElement.style.fontSize = `${responsiveBase * 0.8 * scaleFactor}px`;
             }
         });
         
