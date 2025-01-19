@@ -716,26 +716,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show/hide neon color control based on text effect
         neonColorControl.style.display = settings.textEffect === 'neon' ? 'flex' : 'none';
         
-        // Apply all styles
-        updateClockStyle();
-        
         // Hide customization panel and adjust clock container for embed mode
         document.querySelector('.customization-panel').style.display = 'none';
         document.querySelector('.style-0').style.padding = '0';
         document.querySelector('.style-0').style.height = '100vh';
         document.querySelector('.style-1').style.margin = '0';
         document.querySelector('.style-1').style.height = '100%';
+        document.querySelector('.style-1').style.padding = '10px'; // Reduce padding
         document.querySelector('.footer-image').style.display = 'none';
         
-        // Make clock container responsive
+        // Make clock container responsive with better centering
         const clockContainer = document.querySelector('.clock');
         clockContainer.style.height = '100%';
+        clockContainer.style.width = '100%';
         clockContainer.style.display = 'flex';
         clockContainer.style.flexDirection = 'column';
         clockContainer.style.justifyContent = 'center';
         clockContainer.style.alignItems = 'center';
+        clockContainer.style.gap = '5px'; // Add small gap between time and date
+        clockContainer.style.padding = '5px'; // Minimal padding
 
-        // Apply initial font size from settings
+        // Apply initial font size from settings with better proportions
         const timeElement = clockContainer.querySelector('.time');
         const dateElement = clockContainer.querySelector('.date');
         const baseFontSize = parseInt(settings.fontSize) || 20;
@@ -746,9 +747,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const minDimension = Math.min(containerWidth, containerHeight);
         const initialScale = minDimension / 400; // Base scale on a reference size of 400px
         
-        // Set initial sizes with scaling
+        // Set initial sizes with better proportions
         timeElement.style.fontSize = `${baseFontSize * 2 * initialScale}px`;
-        dateElement.style.fontSize = `${baseFontSize * 0.8 * initialScale}px`;
+        dateElement.style.fontSize = `${baseFontSize * 0.6 * initialScale}px`; // Reduce date size
+        
+        // Ensure date is centered
+        dateElement.style.textAlign = 'center';
+        dateElement.style.width = '100%';
+        dateElement.style.margin = '0';
         
         // Create sparkle effect if needed
         if (settings.textEffect === 'sparkle') {
