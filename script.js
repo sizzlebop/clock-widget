@@ -495,19 +495,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Show/hide embed code
-    if (showEmbedButton && embedPreview && embedCode) {
+    if (showEmbedButton && embedPreview) {
         showEmbedButton.addEventListener('click', () => {
             console.log('Show embed button clicked');
             const isHidden = embedPreview.classList.contains('hidden');
             if (isHidden) {
-                embedCode.dataset.type = 'full';
                 const code = generateEmbedCode();
-                embedCode.textContent = code.trim();
-                if (window.hljs) {
-                    hljs.highlightElement(embedCode);
+                const codeElement = document.getElementById('embed-code');
+                if (codeElement) {
+                    codeElement.dataset.type = 'full';
+                    codeElement.textContent = code.trim();
+                    if (window.hljs) {
+                        hljs.highlightElement(codeElement);
+                    }
                 }
                 embedPreview.classList.remove('hidden');
-                embedLinkPreview.classList.add('hidden');
+                if (embedLinkPreview) {
+                    embedLinkPreview.classList.add('hidden');
+                }
                 showEmbedButton.textContent = 'Hide Embed Code';
             } else {
                 embedPreview.classList.add('hidden');
@@ -849,17 +854,21 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Preview hidden state:', isHidden);
             
             if (isHidden) {
-                const settings = getAllSettings();
-                console.log('Generated settings:', settings);
-                const currentUrl = new URL(window.location.href);
-                const baseUrl = currentUrl.origin + currentUrl.pathname;
-                const embedUrl = `${baseUrl}?${settings}#embed`;
-                console.log('Generated embed URL:', embedUrl);
-                
-                embedLinkInput.value = embedUrl;
-                embedLinkPreview.classList.remove('hidden');
-                if (embedPreview) {
-                    embedPreview.classList.add('hidden');
+                try {
+                    const settings = getAllSettings();
+                    console.log('Generated settings:', settings);
+                    const currentUrl = new URL(window.location.href);
+                    const baseUrl = currentUrl.origin + currentUrl.pathname;
+                    const embedUrl = `${baseUrl}?${settings}#embed`;
+                    console.log('Generated embed URL:', embedUrl);
+                    
+                    embedLinkInput.value = embedUrl;
+                    embedLinkPreview.classList.remove('hidden');
+                    if (embedPreview) {
+                        embedPreview.classList.add('hidden');
+                    }
+                } catch (err) {
+                    console.error('Error generating embed link:', err);
                 }
             } else {
                 embedLinkPreview.classList.add('hidden');
