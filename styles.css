@@ -40,7 +40,9 @@ body {
     z-index: 1;
     border: none;
     box-shadow: none;
-    background-color: #fad029;
+    background: none;
+    background-image: none;
+    background-color: transparent;
 }
 
 /* Clock Shapes */
@@ -115,69 +117,25 @@ body {
     }
 }
 
-/* Force dimensions and styles when embedded */
-.embedded {
-    margin: 0 !important;
-    padding: 0 !important;
-    min-height: 100vh !important;
-    background: transparent !important;
-}
-
-.embedded .style-0 {
-    padding: 0 !important;
-    margin: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    background: transparent !important;
-}
-
+/* Force dimensions when embedded */
 .embedded .style-1 {
     width: 500px !important;
     height: 250px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    border-radius: 8px !important;
-    overflow: visible !important;
 }
 
-.embedded .clock {
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 5px !important;
+.embedded .style-1.square,
+.embedded .style-1.circle,
+.embedded .style-1.octagon {
+    width: 250px !important;
+    height: 250px !important;
 }
 
 .embedded .time {
     font-size: 4em !important;
-    color: white !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 
 .embedded .date {
     font-size: 1.5em !important;
-    color: white !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: 1 !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Hide customization panel and footer in embedded mode */
-.embedded .customization-panel,
-.embedded .footer-image {
-    display: none !important;
 }
 
 .clock {
@@ -195,14 +153,12 @@ body {
     font-size: 4em;
     font-weight: 500;
     margin-bottom: 8px;
-    color: white;
 }
 
 .date {
     font-size: 1.5em;
-    opacity: 1;
+    opacity: 0.9;
     text-shadow: none;
-    color: white;
 }
 
 .customization-panel {
