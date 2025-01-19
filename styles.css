@@ -503,3 +503,7 @@ body {
 #gradient-section {
     display: none;
 }
+
+.embedded .widget-logo {
+    display: none !important;
+}
