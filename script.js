@@ -294,14 +294,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Clear any existing background properties
+        // Force clear any existing background styles
         clockContainer.style.removeProperty('background');
         clockContainer.style.removeProperty('background-image');
         clockContainer.style.removeProperty('background-color');
-
+        
         // Apply background based on type
         if (backgroundType === 'single') {
             const rgbaBackground = hexToRgba(backgroundColor, opacity);
+            clockContainer.style.setProperty('background', rgbaBackground, 'important');
             clockContainer.style.setProperty('background-color', rgbaBackground, 'important');
             console.log('Applied single color:', rgbaBackground);
         } else if (backgroundType === 'gradient') {
@@ -323,6 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 default:
                     gradient = `linear-gradient(${gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
             }
+            clockContainer.style.setProperty('background', gradient, 'important');
             clockContainer.style.setProperty('background-image', gradient, 'important');
             console.log('Applied gradient:', gradient);
         }
@@ -727,6 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 100vh !important;
             width: 100% !important;
             overflow: hidden !important;
+            background: transparent !important;
         `;
         document.querySelector('.style-1').style.cssText = `
             margin: 0 !important;
@@ -734,6 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
             height: 100% !important;
             width: 100% !important;
             overflow: hidden !important;
+            background: transparent !important;
         `;
         document.querySelector('.footer-image').style.display = 'none';
         
@@ -750,7 +754,48 @@ document.addEventListener('DOMContentLoaded', () => {
             padding: 0 !important;
             margin: 0 !important;
             overflow: hidden !important;
+            position: relative !important;
+            z-index: 1 !important;
         `;
+
+        // Create a background container
+        const bgContainer = document.createElement('div');
+        bgContainer.style.cssText = `
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: -1 !important;
+        `;
+        clockContainer.appendChild(bgContainer);
+        
+        // Apply background to the new container
+        if (settings.backgroundType === 'single') {
+            const rgbaBackground = hexToRgba(settings.backgroundColor, parseInt(settings.opacity) / 100);
+            bgContainer.style.setProperty('background', rgbaBackground, 'important');
+            bgContainer.style.setProperty('background-color', rgbaBackground, 'important');
+        } else if (settings.backgroundType === 'gradient') {
+            let gradient;
+            const rgbaPrimary = hexToRgba(settings.primaryColor, parseInt(settings.opacity) / 100);
+            const rgbaSecondary = hexToRgba(settings.secondaryColor, parseInt(settings.opacity) / 100);
+            
+            switch (settings.gradientType) {
+                case 'linear':
+                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    break;
+                case 'radial':
+                    gradient = `radial-gradient(circle at center, ${rgbaPrimary}, ${rgbaSecondary})`;
+                    break;
+                case 'conic':
+                    gradient = `conic-gradient(from ${settings.gradientAngle}deg at center, ${rgbaPrimary}, ${rgbaSecondary}, ${rgbaPrimary})`;
+                    break;
+                default:
+                    gradient = `linear-gradient(${settings.gradientAngle}deg, ${rgbaPrimary}, ${rgbaSecondary})`;
+            }
+            bgContainer.style.setProperty('background', gradient, 'important');
+            bgContainer.style.setProperty('background-image', gradient, 'important');
+        }
 
         // Apply initial font size from settings with better proportions
         const timeElement = clockContainer.querySelector('.time');
