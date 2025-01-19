@@ -108,8 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const textShadowSizeValue = document.getElementById('text-shadow-size-value');
     const textShadowColorInput = document.getElementById('text-shadow-color');
     const textColorInput = document.getElementById('text-color');
-    const backgroundOpacityInput = document.getElementById('background-opacity');
-    const opacityValue = document.getElementById('opacity-value');
     const borderStyleSelect = document.getElementById('border-style');
     const borderSizeInput = document.getElementById('border-size');
     const borderSizeValue = document.getElementById('border-size-value');
@@ -129,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
     textShadowSizeInput.value = "0";
     textShadowColorInput.value = "#000000";
     textColorInput.value = "#ffffff";
-    backgroundOpacityInput.value = "100";
     borderStyleSelect.value = "none";
     borderSizeInput.value = "3";
     borderColorInput.value = "#ff6b6b";
@@ -205,12 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     textColorInput.addEventListener('input', (e) => {
         console.log('Text color changed:', e.target.value);
-        updateClockStyle();
-    });
-
-    backgroundOpacityInput.addEventListener('input', (e) => {
-        console.log('Opacity changed:', e.target.value);
-        opacityValue.textContent = `${e.target.value}%`;
         updateClockStyle();
     });
 
@@ -440,7 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Update value displays
         textShadowSizeValue.textContent = `${textShadowSize}px`;
-        opacityValue.textContent = `${backgroundOpacityInput.value}%`;
         borderSizeValue.textContent = `${borderSize}px`;
 
         // Apply text effects
@@ -694,7 +684,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clockShapeSelect.value = settings.clockShape || 'rectangle';
             textShadowSizeInput.value = settings.textShadowSize || '0';
             textShadowColorInput.value = settings.textShadowColor || '#000000';
-            backgroundOpacityInput.value = settings.opacity || '100';
             borderStyleSelect.value = settings.borderStyle || 'none';
             borderSizeInput.value = settings.borderSize || '3';
             borderSizeValue.textContent = `${settings.borderSize || '3'}px`;
@@ -727,7 +716,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clockShape: params.get('clockShape') || 'rectangle',
             textShadowSize: params.get('textShadowSize') || '0',
             textShadowColor: params.get('textShadowColor') || '#000000',
-            opacity: params.get('opacity') || '100',
             borderStyle: params.get('borderStyle') || 'none',
             borderSize: params.get('borderSize') || '3',
             borderColor: params.get('borderColor') || '#ff6b6b',
@@ -751,7 +739,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clockShapeSelect.value = settings.clockShape;
         textShadowSizeInput.value = settings.textShadowSize;
         textShadowColorInput.value = settings.textShadowColor;
-        backgroundOpacityInput.value = settings.opacity;
         borderStyleSelect.value = settings.borderStyle;
         borderSizeInput.value = settings.borderSize;
         borderColorInput.value = settings.borderColor;
@@ -762,7 +749,6 @@ document.addEventListener('DOMContentLoaded', () => {
         angleValue.textContent = `${settings.gradientAngle}°`;
         sizeValue.textContent = `${settings.fontSize}px`;
         textShadowSizeValue.textContent = `${settings.textShadowSize}px`;
-        opacityValue.textContent = `${settings.opacity}%`;
         borderSizeValue.textContent = `${settings.borderSize}px`;
         
         // Show/hide gradient section based on background type
@@ -799,7 +785,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Apply background directly to clock container for embed mode
         if (settings.backgroundType === 'single') {
-            const rgbaBackground = hexToRgba(settings.backgroundColor, parseInt(settings.opacity) / 100);
+            const rgbaBackground = hexToRgba(settings.backgroundColor, 100);
             clockContainer.style.cssText = `
                 height: 100% !important;
                 width: 100% !important;
@@ -816,8 +802,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else if (settings.backgroundType === 'gradient') {
             let gradient;
-            const rgbaPrimary = hexToRgba(settings.primaryColor, parseInt(settings.opacity) / 100);
-            const rgbaSecondary = hexToRgba(settings.secondaryColor, parseInt(settings.opacity) / 100);
+            const rgbaPrimary = hexToRgba(settings.primaryColor, 100);
+            const rgbaSecondary = hexToRgba(settings.secondaryColor, 100);
             
             switch (settings.gradientType) {
                 case 'linear':
