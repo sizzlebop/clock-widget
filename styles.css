@@ -412,38 +412,96 @@ body {
     100% { color: #ff0000 !important; }
 }
 
+/* Sparkle Effect */
+.clock[data-effect="sparkle"] {
+    position: relative;
+}
+
+.clock[data-effect="sparkle"] .time,
+.clock[data-effect="sparkle"] .date {
+    position: relative;
+    color: white !important;
+}
+
+/* Dynamic sparkle particles */
+.sparkle-particle {
+    position: absolute;
+    pointer-events: none;
+    animation: sparkle-pop 700ms ease-in-out forwards;
+    font-size: 32px;
+    line-height: 1;
+    color: white;
+    z-index: 2;
+    will-change: transform, opacity;
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+.sparkle-particle::before {
+    content: '✦';
+}
+
+@keyframes sparkle-pop {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.95;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Static sparkles with different timing */
+.clock[data-effect="sparkle"] .time::before,
+.clock[data-effect="sparkle"] .time::after,
+.clock[data-effect="sparkle"] .date::before,
+.clock[data-effect="sparkle"] .date::after {
+    content: '✦';
+    position: absolute;
+    font-size: 32px;
+    line-height: 1;
+    animation: sparkle-pop 700ms ease-in-out infinite;
+    pointer-events: none;
+    opacity: 0;
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    z-index: 2;
+}
+
+.clock[data-effect="sparkle"] .time::before {
+    color: #FFD700;
+    top: -15px;
+    left: 10%;
+    animation-delay: 0ms;
+}
+
+.clock[data-effect="sparkle"] .time::after {
+    color: #FF69B4;
+    top: 15px;
+    right: 10%;
+    animation-delay: 150ms;
+}
+
+.clock[data-effect="sparkle"] .date::before {
+    color: #00FFFF;
+    bottom: -10px;
+    left: 15%;
+    animation-delay: 300ms;
+}
+
+.clock[data-effect="sparkle"] .date::after {
+    color: #FF4500;
+    bottom: 10px;
+    right: 15%;
+    animation-delay: 450ms;
+}
+
 .clock[data-effect="neon"] .time,
 .clock[data-effect="neon"] .date {
     text-shadow: var(--neon-glow) !important;
-}
-
-.clock[data-effect="rainbow"] .time,
-.clock[data-effect="rainbow"] .date {
-    animation: rainbow 3s linear infinite;
-    text-shadow: none !important;
-    -webkit-text-fill-color: unset !important;
-    -webkit-background-clip: unset !important;
-    background: none !important;
-}
-
-#neon-color-control {
-    display: none;
-}
-
-/* Override any existing text-shadow when effects are active */
-.clock[data-effect] .time,
-.clock[data-effect] .date {
-    transition: text-shadow 0.3s ease, color 0.3s ease;
-}
-
-.text-effects-controls select {
-    flex: 1;
-    padding: 8px;
-    border-radius: 4px;
-    background-color: rgb(27, 29, 30);
-    color: rgb(216, 213, 207);
-    border: 1px solid rgb(127, 118, 104);
-    cursor: pointer;
 }
 
 /* Rainbow Text Effect */

@@ -210,10 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
         timeElement.style.removeProperty('color');
         dateElement.style.removeProperty('color');
         timeElement.style.removeProperty('-webkit-text-fill-color');
-        dateElement.style.removeProperty('-webkit-text-fill-color');
+        dateElement.style.removeProperty('-webkit-background-clip');
+        
+        // Remove any existing sparkle particles
+        cleanupSparkleEffect();
         
         if (effect !== 'none') {
             clockElement.setAttribute('data-effect', effect);
+            
             // Show/hide neon color control
             neonColorControl.style.display = effect === 'neon' ? 'flex' : 'none';
             
@@ -224,13 +228,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeElement.style.color = neonColorInput.value;
                 dateElement.style.color = neonColorInput.value;
             } else if (effect === 'sparkle') {
-                // Sparkle effect is handled by CSS
-                timeElement.style.color = 'white';
-                dateElement.style.color = 'white';
+                // Create sparkle particles
+                createSparkleParticles();
+            } else if (effect === 'rainbow') {
+                timeElement.style.setProperty('-webkit-background-clip', 'text');
+                dateElement.style.setProperty('-webkit-background-clip', 'text');
+                timeElement.style.setProperty('-webkit-text-fill-color', 'transparent');
+                dateElement.style.setProperty('-webkit-text-fill-color', 'transparent');
             }
         }
         updateClockStyle();
     });
+
+    // Clean up sparkle interval when changing effects
+    function cleanupSparkleEffect() {
+        if (window.sparkleInterval) {
+            clearInterval(window.sparkleInterval);
+            window.sparkleInterval = null;
+        }
+        const particles = clockElement.querySelectorAll('.sparkle-particle');
+        particles.forEach(particle => particle.remove());
+    }
 
     neonColorInput.addEventListener('input', () => {
         if (textEffectSelect.value === 'neon') {
@@ -350,6 +368,11 @@ document.addEventListener('DOMContentLoaded', () => {
             dateElement.style.setProperty('color', 'white', 'important');
             timeElement.style.removeProperty('text-shadow');
             dateElement.style.removeProperty('text-shadow');
+        } else if (textEffect === 'rainbow') {
+            timeElement.style.setProperty('-webkit-background-clip', 'text');
+            dateElement.style.setProperty('-webkit-background-clip', 'text');
+            timeElement.style.setProperty('-webkit-text-fill-color', 'transparent');
+            dateElement.style.setProperty('-webkit-text-fill-color', 'transparent');
         } else if (textEffect === 'none') {
             // Reset all effect-related styles
             clockElement.style.removeProperty('--neon-glow');
@@ -661,5 +684,68 @@ document.addEventListener('DOMContentLoaded', () => {
             showSeconds: showSecondsSelect.value
         };
         localStorage.setItem('clockSettings', JSON.stringify(defaultSettings));
+    }
+
+    // Function to create sparkle particles
+    function createSparkleParticles() {
+        // Clear any existing interval
+        if (window.sparkleInterval) {
+            clearInterval(window.sparkleInterval);
+        }
+
+        // Create new particles periodically
+        window.sparkleInterval = setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'sparkle-particle';
+            
+            // Get the time and date elements' positions
+            const timeRect = timeElement.getBoundingClientRect();
+            const dateRect = dateElement.getBoundingClientRect();
+            
+            // Randomly choose between time and date element with higher weight for time
+            const targetRect = Math.random() < 0.8 ? timeRect : dateRect;
+            
+            // Position sparkle near the text with tighter clustering
+            const padding = 15; // Reduced padding for closer sparkles
+            const centerX = targetRect.left + targetRect.width / 2;
+            const centerY = targetRect.top + targetRect.height / 2;
+            
+            // Use gaussian-like distribution for more natural clustering
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.pow(Math.random(), 2) * (targetRect.width / 2 + padding);
+            const x = centerX + Math.cos(angle) * distance;
+            const y = centerY + Math.sin(angle) * distance;
+            
+            // Random colors with more variety and brightness
+            const colors = [
+                '#FFE169', // Bright Gold
+                '#FF69B4', // Hot Pink
+                '#7DF9FF', // Electric Blue
+                '#FF4D4D', // Bright Red
+                '#39FF14', // Neon Green
+                '#FF1493', // Deep Pink
+                '#00FFFF', // Cyan
+                '#FF8C00', // Dark Orange
+                '#E066FF', // Medium Orchid
+                '#F0FFFF'  // Azure
+            ];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Random size variation (much larger)
+            const size = 28 + Math.random() * 12; // 28px to 40px
+            
+            particle.style.left = `${x - clockElement.getBoundingClientRect().left}px`;
+            particle.style.top = `${y - clockElement.getBoundingClientRect().top}px`;
+            particle.style.color = color;
+            particle.style.fontSize = `${size}px`;
+            particle.style.textShadow = `0 0 10px ${color}, 0 0 20px ${color}`;
+            
+            clockElement.appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 700); // Match the animation duration
+        }, 50); // Create particles more frequently for a denser effect
     }
 }); 
