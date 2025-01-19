@@ -35,6 +35,50 @@
             </div>
 
             <div class="panel-section">
+                <h3>Background Type</h3>
+                <div class="background-type-controls">
+                    <div class="control-group">
+                        <label for="background-type">Type:</label>
+                        <select id="background-type">
+                            <option value="single">Single Color</option>
+                            <option value="gradient">Gradient</option>
+                        </select>
+                    </div>
+                    <div class="control-group" id="single-color-control">
+                        <label for="background-color">Background Color:</label>
+                        <input type="color" id="background-color" value="#fad029">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section" id="gradient-section">
+                <h3>Gradient</h3>
+                <div class="gradient-controls">
+                    <div class="control-group">
+                        <label for="gradient-type">Gradient Type:</label>
+                        <select id="gradient-type">
+                            <option value="linear">Linear</option>
+                            <option value="radial">Radial</option>
+                            <option value="conic">Conic</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="gradient-angle">Angle:</label>
+                        <input type="range" id="gradient-angle" min="0" max="360" value="45">
+                        <span id="angle-value">45°</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="primary-color">Primary Color:</label>
+                        <input type="color" id="primary-color" value="#fad029">
+                    </div>
+                    <div class="control-group">
+                        <label for="secondary-color">Secondary Color:</label>
+                        <input type="color" id="secondary-color" value="#ff6b6b">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
                 <h3>Font Style</h3>
                 <div class="font-controls">
                     <div class="control-group">
@@ -94,49 +138,25 @@
             </div>
 
             <div class="panel-section">
-                <h3>Background Type</h3>
-                <div class="background-type-controls">
+                <h3>Time Format</h3>
+                <div class="time-format-controls">
                     <div class="control-group">
-                        <label for="background-type">Type:</label>
-                        <select id="background-type">
-                            <option value="single">Single Color</option>
-                            <option value="gradient">Gradient</option>
+                        <label for="time-format">Format:</label>
+                        <select id="time-format">
+                            <option value="24">24-hour</option>
+                            <option value="12">12-hour</option>
                         </select>
                     </div>
-                    <div class="control-group" id="single-color-control">
-                        <label for="background-color">Background Color:</label>
-                        <input type="color" id="background-color" value="#fad029">
+                    <div class="control-group">
+                        <label for="show-seconds">Show Seconds:</label>
+                        <select id="show-seconds">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div class="panel-section" id="gradient-section">
-                <h3>Gradient</h3>
-                <div class="gradient-controls">
-                    <div class="control-group">
-                        <label for="gradient-type">Gradient Type:</label>
-                        <select id="gradient-type">
-                            <option value="linear">Linear</option>
-                            <option value="radial">Radial</option>
-                            <option value="conic">Conic</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label for="gradient-angle">Angle:</label>
-                        <input type="range" id="gradient-angle" min="0" max="360" value="45">
-                        <span id="angle-value">45°</span>
-                    </div>
-                    <div class="control-group">
-                        <label for="primary-color">Primary Color:</label>
-                        <input type="color" id="primary-color" value="#fad029">
-                    </div>
-                    <div class="control-group">
-                        <label for="secondary-color">Secondary Color:</label>
-                        <input type="color" id="secondary-color" value="#ff6b6b">
-                    </div>
-                </div>
-            </div>
-            
             <div class="panel-section">
                 <h3>Effects</h3>
                 <div class="effects-controls">
@@ -163,26 +183,6 @@
                     <div class="control-group">
                         <label for="border-color">Border Color:</label>
                         <input type="color" id="border-color" value="#ff6b6b">
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-section">
-                <h3>Time Format</h3>
-                <div class="time-format-controls">
-                    <div class="control-group">
-                        <label for="time-format">Format:</label>
-                        <select id="time-format">
-                            <option value="24">24-hour</option>
-                            <option value="12">12-hour</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label for="show-seconds">Show Seconds:</label>
-                        <select id="show-seconds">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
                     </div>
                 </div>
             </div>

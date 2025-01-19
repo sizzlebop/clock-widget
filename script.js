@@ -167,7 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add background type change handler
     backgroundTypeSelect.addEventListener('change', (e) => {
         const isGradient = e.target.value === 'gradient';
+        const gradientSection = document.getElementById('gradient-section');
         gradientSection.style.display = isGradient ? 'block' : 'none';
+        
         if (isGradient) {
             clockContainer.style.removeProperty('background-color');
             updateClockStyle();

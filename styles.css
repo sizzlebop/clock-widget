@@ -158,6 +158,7 @@ body {
 .date {
     font-size: 1.5em;
     opacity: 0.9;
+    text-shadow: none;
 }
 
 .customization-panel {
@@ -428,16 +429,16 @@ body {
     position: absolute;
     pointer-events: none;
     animation: sparkle-pop 2000ms ease-in-out forwards;
-    font-size: 6px;
+    font-size: 10.5px;
     line-height: 1;
     color: white;
     z-index: 2;
     will-change: transform, opacity;
-    text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
+    text-shadow: 0 0 4px currentColor, 0 0 8px currentColor;
 }
 
 .sparkle-particle::before {
-    content: '✦';
+    content: '★';
 }
 
 @keyframes sparkle-pop {
@@ -450,8 +451,8 @@ body {
         opacity: 0.4;
     }
     50% {
-        transform: scale(0.8) rotate(180deg);
-        opacity: 0.8;
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.95;
     }
     75% {
         transform: scale(0.6) rotate(270deg);
@@ -463,48 +464,20 @@ body {
     }
 }
 
-/* Static sparkles with different timing */
+/* Static sparkles */
 .clock[data-effect="sparkle"] .time::before,
 .clock[data-effect="sparkle"] .time::after,
 .clock[data-effect="sparkle"] .date::before,
 .clock[data-effect="sparkle"] .date::after {
-    content: '✦';
+    content: '★';
     position: absolute;
-    font-size: 6px;
+    font-size: 10.5px;
     line-height: 1;
     animation: sparkle-pop 2000ms ease-in-out infinite;
     pointer-events: none;
     opacity: 0;
-    text-shadow: 0 0 3px currentColor, 0 0 6px currentColor;
+    text-shadow: 0 0 4px currentColor, 0 0 8px currentColor;
     z-index: 2;
-}
-
-.clock[data-effect="sparkle"] .time::before {
-    color: #FFD700;
-    top: -3px;
-    left: 10%;
-    animation-delay: 0ms;
-}
-
-.clock[data-effect="sparkle"] .time::after {
-    color: #FF69B4;
-    top: 3px;
-    right: 10%;
-    animation-delay: 500ms;
-}
-
-.clock[data-effect="sparkle"] .date::before {
-    color: #00FFFF;
-    bottom: -2px;
-    left: 15%;
-    animation-delay: 1000ms;
-}
-
-.clock[data-effect="sparkle"] .date::after {
-    color: #FF4500;
-    bottom: 2px;
-    right: 15%;
-    animation-delay: 1500ms;
 }
 
 .clock[data-effect="neon"] .time {
@@ -538,4 +511,20 @@ body {
     100% {
         background-position: 200% 50%;
     }
+}
+
+.background-type-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gradient-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#gradient-section {
+    display: none;
 }
