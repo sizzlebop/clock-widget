@@ -296,18 +296,24 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Force clear any existing background styles
-        clockContainer.style.removeProperty('background');
-        clockContainer.style.removeProperty('background-image');
-        clockContainer.style.removeProperty('background-color');
-        
+        // Always apply base text color first
+        timeElement.style.setProperty('color', textColor, 'important');
+        dateElement.style.setProperty('color', textColor, 'important');
+        clockElement.style.setProperty('color', textColor, 'important');
+
+        // Clear any existing effect styles
+        timeElement.style.removeProperty('-webkit-text-fill-color');
+        dateElement.style.removeProperty('-webkit-text-fill-color');
+        timeElement.style.removeProperty('-webkit-background-clip');
+        dateElement.style.removeProperty('-webkit-background-clip');
+        timeElement.style.removeProperty('background');
+        dateElement.style.removeProperty('background');
+
         // Apply background based on type
         if (backgroundType === 'single') {
             clockContainer.style.setProperty('background', backgroundColor, 'important');
             clockContainer.style.setProperty('background-color', backgroundColor, 'important');
-            console.log('Applied single color:', backgroundColor);
         } else if (backgroundType === 'gradient') {
-            // Create and apply gradient
             let gradient;
             switch (gradientType) {
                 case 'linear':
@@ -324,30 +330,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             clockContainer.style.setProperty('background', gradient, 'important');
             clockContainer.style.setProperty('background-image', gradient, 'important');
-            console.log('Applied gradient:', gradient);
-        }
-        
-        // Apply border with custom size
-        if (borderStyle !== 'none') {
-            const borderValue = `${borderSize}px ${borderStyle} ${borderColor}`;
-            clockContainer.style.setProperty('border', borderValue, 'important');
-            console.log('Applied border:', borderValue);
-        } else {
-            clockContainer.style.setProperty('border', 'none', 'important');
         }
 
-        // Apply text color first (before any effects)
-        if (textEffect === 'none') {
-            timeElement.style.setProperty('color', textColor, 'important');
-            dateElement.style.setProperty('color', textColor, 'important');
-            // Clear any effect-related styles
-            timeElement.style.removeProperty('-webkit-text-fill-color');
-            dateElement.style.removeProperty('-webkit-text-fill-color');
-            timeElement.style.removeProperty('-webkit-background-clip');
-            dateElement.style.removeProperty('-webkit-background-clip');
-        }
-
-        // Apply text shadow to both time and date elements
+        // Apply text shadow
         if (textShadowSize > 0) {
             const textShadowOpacity = Math.min(0.9, textShadowSize / 10);
             const blurRadius = Math.max(2, textShadowSize);
@@ -362,47 +347,47 @@ document.addEventListener('DOMContentLoaded', () => {
             timeElement.style.setProperty('text-shadow', 'none', 'important');
             dateElement.style.setProperty('text-shadow', 'none', 'important');
         }
-        
-        // Apply text color and font styles
+
+        // Apply font styles
         const selectedFont = fontFamilySelect.value;
         clockElement.style.setProperty('font-family', selectedFont, 'important');
         timeElement.style.setProperty('font-family', selectedFont, 'important');
         dateElement.style.setProperty('font-family', selectedFont, 'important');
 
-        // Calculate max font size based on clock shape
-        let maxFontSize = 48; // default max size
-        if (clockShape === 'circle' || clockShape === 'square' || clockShape === 'octagon') {
-            maxFontSize = 32; // smaller max size for compact shapes
-        }
-        
-        // Constrain font size input
+        // Apply font sizes
+        const maxFontSize = 48;
         const constrainedFontSize = Math.min(fontSizeInput.value, maxFontSize);
         fontSizeInput.value = constrainedFontSize;
-        
-        // Apply constrained font sizes
         timeElement.style.setProperty('font-size', `${constrainedFontSize * 2}px`, 'important');
         dateElement.style.setProperty('font-size', `${constrainedFontSize * 0.8}px`, 'important');
 
-        // Handle text effects after base color is set
+        // Apply border
+        if (borderStyle !== 'none') {
+            const borderValue = `${borderSize}px ${borderStyle} ${borderColor}`;
+            clockContainer.style.setProperty('border', borderValue, 'important');
+        } else {
+            clockContainer.style.setProperty('border', 'none', 'important');
+        }
+
+        // Apply text effects last
         if (textEffect !== 'none') {
             if (textEffect === 'neon') {
                 const neonGlow = `0 0 5px ${neonColor}, 0 0 10px ${neonColor}, 0 0 20px ${neonColor}, 0 0 30px ${neonColor}`;
                 timeElement.style.setProperty('text-shadow', neonGlow, 'important');
                 timeElement.style.setProperty('color', neonColor, 'important');
-                // Keep date using regular text color
-                dateElement.style.setProperty('color', textColor, 'important');
             } else if (textEffect === 'rainbow') {
+                const rainbowGradient = 'linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet)';
+                timeElement.style.setProperty('background', rainbowGradient, 'important');
+                dateElement.style.setProperty('background', rainbowGradient, 'important');
                 timeElement.style.setProperty('-webkit-background-clip', 'text', 'important');
                 dateElement.style.setProperty('-webkit-background-clip', 'text', 'important');
                 timeElement.style.setProperty('-webkit-text-fill-color', 'transparent', 'important');
                 dateElement.style.setProperty('-webkit-text-fill-color', 'transparent', 'important');
-            } else if (textEffect === 'sparkle') {
-                timeElement.style.setProperty('color', textColor, 'important');
-                dateElement.style.setProperty('color', textColor, 'important');
             }
+            // For sparkle effect, keep the text color as is
         }
 
-        // Store current settings in localStorage
+        // Store settings
         const settings = {
             backgroundType,
             backgroundColor,
@@ -410,12 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
             secondaryColor,
             gradientType,
             gradientAngle,
-            fontFamily: fontFamilySelect.value,
-            fontSize: fontSizeInput.value,
+            fontFamily: selectedFont,
+            fontSize: constrainedFontSize,
             textColor,
             timeFormat: timeFormatSelect.value,
             showSeconds: showSecondsSelect.value,
-            clockShape,
+            clockShape: clockShapeSelect.value,
             textShadowSize,
             textShadowColor,
             borderStyle,
