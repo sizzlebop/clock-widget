@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const embedPreview = document.getElementById('embed-preview');
     const embedCode = document.getElementById('embed-code');
     const copyButton = document.getElementById('copy-embed-code');
+    const copyFeedback = document.getElementById('copy-feedback');
     const clockShapeSelect = document.getElementById('clock-shape');
     const textShadowSizeInput = document.getElementById('text-shadow-size');
     const textShadowSizeValue = document.getElementById('text-shadow-size-value');
@@ -527,13 +528,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Copy button clicked'); // Debug log
             try {
                 await navigator.clipboard.writeText(embedCode.textContent);
-                const originalText = copyButton.textContent;
-                copyButton.textContent = 'Copied!';
+                copyFeedback.classList.remove('hidden');
                 setTimeout(() => {
-                    copyButton.textContent = originalText;
+                    copyFeedback.classList.add('hidden');
                 }, 2000);
             } catch (err) {
-                console.error('Failed to copy:', err);
+                console.error('Failed to copy embed code:', err);
             }
         });
     } else {
@@ -849,14 +849,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Generate embed link handler
     generateEmbedLinkButton.addEventListener('click', () => {
-        const settings = getAllSettings();
-        const currentUrl = new URL(window.location.href);
-        const baseUrl = currentUrl.origin + currentUrl.pathname;
-        const embedUrl = `${baseUrl}?${settings}#embed`;
-        
-        embedLinkInput.value = embedUrl;
-        embedLinkPreview.classList.remove('hidden');
-        embedPreview.classList.add('hidden');
+        if (embedLinkPreview.classList.contains('hidden')) {
+            const settings = getAllSettings();
+            const currentUrl = new URL(window.location.href);
+            const baseUrl = currentUrl.origin + currentUrl.pathname;
+            const embedUrl = `${baseUrl}?${settings}#embed`;
+            
+            embedLinkInput.value = embedUrl;
+            embedLinkPreview.classList.remove('hidden');
+            embedPreview.classList.add('hidden');
+        } else {
+            embedLinkPreview.classList.add('hidden');
+        }
     });
 
     // Copy embed link handler
