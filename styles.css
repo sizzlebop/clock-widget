@@ -300,21 +300,36 @@ body {
 }
 
 .embed-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    margin-top: 16px;
 }
 
 .button-group {
     display: flex;
     gap: 12px;
+    margin-bottom: 16px;
+}
+
+#embed-link {
+    width: 100%;
+    padding: 8px;
+    background-color: rgb(27, 29, 30);
+    color: rgb(216, 213, 207);
+    border: 1px solid rgb(127, 118, 104);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+#embed-link:focus {
+    outline: none;
+    border-color: rgb(250, 208, 41);
 }
 
 .embed-preview {
-    background-color: #282c34;
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 10px;
+    background: #282c34;
+    border-radius: 6px;
+    margin-top: 12px;
+    overflow: hidden;
 }
 
 .embed-preview.hidden {
@@ -536,98 +551,5 @@ body {
 }
 
 #gradient-section {
-    display: none;
-}
-
-.embed-controls .button-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.embed-button {
-    padding: 8px 16px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.embed-button:hover {
-    background-color: #357abd;
-}
-
-.embed-button.active {
-    background-color: #2c5282;
-}
-
-.embed-preview {
-    background-color: #282c34;
-    border-radius: 4px;
-    padding: 15px;
-    margin-top: 10px;
-}
-
-.embed-preview.hidden {
-    display: none;
-}
-
-.code-container {
-    margin-bottom: 10px;
-}
-
-#embed-link {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-family: monospace;
-    background-color: #282c34;
-    color: #ffffff;
-    margin-top: 8px;
-}
-
-.link-preview-text {
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-
-.code-container {
-    margin-bottom: 10px;
-    background: #282c34;
-    padding: 12px;
-    border-radius: 4px;
-}
-
-.button-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.copy-button {
-    padding: 6px 12px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.copy-button:hover {
-    background-color: #357abd;
-}
-
-.copy-feedback {
-    color: #4caf50;
-    font-size: 14px;
-}
-
-.copy-feedback.hidden {
     display: none;
 }

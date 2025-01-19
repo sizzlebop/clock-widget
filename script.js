@@ -42,10 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const textEffectSelect = document.getElementById('text-effect');
     const neonColorInput = document.getElementById('neon-color');
     const neonColorControl = document.getElementById('neon-color-control');
+
     const generateEmbedLinkButton = document.getElementById('generate-embed-link');
     const embedLinkPreview = document.getElementById('embed-link-preview');
     const embedLinkInput = document.getElementById('embed-link');
-    const copyLinkButton = document.getElementById('copy-embed-link');
+    const copyEmbedLinkButton = document.getElementById('copy-embed-link');
     const linkCopyFeedback = document.getElementById('link-copy-feedback');
 
     // Initialize controls with default values
@@ -464,10 +465,12 @@ document.addEventListener('DOMContentLoaded', () => {
             neonColor: settings.neonColor
         });
         
-        // Get the current path relative to the host
-        const relativePath = window.location.pathname.split('?')[0].split('#')[0];
-        // Construct the embed URL using relative path
-        const embedUrl = `${relativePath}?${params.toString()}#embed`;
+        // Get the current site's URL
+        const currentUrl = new URL(window.location.href);
+        // Get the base URL without any parameters or hash
+        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
+        // Construct the embed URL
+        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
         
         // Create embed code with responsive iframe
         const embedHTML = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 50%; overflow: hidden; border-radius: 8px;">
@@ -483,29 +486,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide embed code
     if (showEmbedButton && embedPreview && embedCode) {
+        console.log('Embed button elements found:', {
+            showEmbedButton: showEmbedButton,
+            embedPreview: embedPreview,
+            embedCode: embedCode
+        });
         showEmbedButton.addEventListener('click', () => {
+            console.log('Embed button clicked'); // Debug log
             const isHidden = embedPreview.classList.contains('hidden');
-            
-            // Hide embed link preview if it's open
-            embedLinkPreview.classList.add('hidden');
-            generateEmbedLinkButton.classList.remove('active');
-            generateEmbedLinkButton.textContent = 'Generate Embed Link';
-
+            console.log('Preview is hidden:', isHidden);
             if (isHidden) {
                 embedCode.dataset.type = 'full';
                 const code = generateEmbedCode();
+                console.log('Generated embed code:', code);
                 embedCode.textContent = code.trim();
                 if (window.hljs) {
+                    console.log('Highlight.js is available');
                     hljs.highlightElement(embedCode);
+                } else {
+                    console.log('Highlight.js is not available');
                 }
                 embedPreview.classList.remove('hidden');
-                showEmbedButton.classList.add('active');
                 showEmbedButton.textContent = 'Hide Embed Code';
             } else {
                 embedPreview.classList.add('hidden');
-                showEmbedButton.classList.remove('active');
                 showEmbedButton.textContent = 'Show Embed Code';
             }
+        });
+    } else {
+        console.error('Missing elements:', { 
+            showEmbedButton: !!showEmbedButton, 
+            embedPreview: !!embedPreview, 
+            embedCode: !!embedCode 
         });
     }
 
@@ -806,71 +818,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 200); // Create particles even less frequently
     }
 
-    // Add event listener for generating embed link
+    // Function to get all current settings as URL parameters
+    function getAllSettings() {
+        const settings = {
+            shape: clockShapeSelect.value,
+            bgType: backgroundTypeSelect.value,
+            bgColor: backgroundColorInput.value.substring(1),
+            primaryColor: primaryColorInput.value.substring(1),
+            secondaryColor: secondaryColorInput.value.substring(1),
+            gradientType: gradientTypeSelect.value,
+            gradientAngle: gradientAngleInput.value,
+            fontFamily: encodeURIComponent(fontFamilySelect.value),
+            fontSize: fontSizeInput.value,
+            textColor: textColorInput.value.substring(1),
+            textShadowSize: textShadowSizeInput.value,
+            textShadowColor: textShadowColorInput.value.substring(1),
+            timeFormat: timeFormatSelect.value,
+            showSeconds: showSecondsSelect.value,
+            borderStyle: borderStyleSelect.value,
+            borderSize: borderSizeInput.value,
+            borderColor: borderColorInput.value.substring(1),
+            textEffect: textEffectSelect.value,
+            neonColor: neonColorInput.value.substring(1)
+        };
+
+        return Object.entries(settings)
+            .map(([key, value]) => `${key}=${value}`)
+            .join('&');
+    }
+
+    // Generate embed link handler
     generateEmbedLinkButton.addEventListener('click', () => {
-        // Hide embed code preview if it's open
+        const settings = getAllSettings();
+        const currentUrl = new URL(window.location.href);
+        const baseUrl = currentUrl.origin + currentUrl.pathname;
+        const embedUrl = `${baseUrl}?${settings}#embed`;
+        
+        embedLinkInput.value = embedUrl;
+        embedLinkPreview.classList.remove('hidden');
         embedPreview.classList.add('hidden');
-        showEmbedButton.classList.remove('active');
-        showEmbedButton.textContent = 'Show Embed Code';
-
-        const isHidden = embedLinkPreview.classList.contains('hidden');
-        if (isHidden) {
-            // First, update the clock style and store current settings
-            updateClockStyle();
-            
-            // Get all current settings directly from the form controls
-            const settings = {
-                clockShape: clockShapeSelect.value,
-                backgroundType: backgroundTypeSelect.value,
-                backgroundColor: backgroundColorInput.value.substring(1),
-                primaryColor: primaryColorInput.value.substring(1),
-                secondaryColor: secondaryColorInput.value.substring(1),
-                gradientType: gradientTypeSelect.value,
-                gradientAngle: gradientAngleInput.value,
-                fontFamily: encodeURIComponent(fontFamilySelect.value),
-                fontSize: fontSizeInput.value,
-                textColor: textColorInput.value.substring(1),
-                textShadowSize: textShadowSizeInput.value,
-                textShadowColor: textShadowColorInput.value.substring(1),
-                textEffect: textEffectSelect.value,
-                neonColor: neonColorInput.value.substring(1),
-                timeFormat: timeFormatSelect.value,
-                showSeconds: showSecondsSelect.value,
-                borderStyle: borderStyleSelect.value,
-                borderSize: borderSizeInput.value,
-                borderColor: borderColorInput.value.substring(1)
-            };
-
-            // Store settings in localStorage
-            localStorage.setItem('clockSettings', JSON.stringify(settings));
-
-            // Create query string from settings
-            const queryString = Object.entries(settings)
-                .map(([key, value]) => `${key}=${value}`)
-                .join('&');
-
-            // Get the current path relative to the host
-            const relativePath = window.location.pathname.split('?')[0].split('#')[0];
-            // Generate relative URL with settings and embed flag
-            const relativeUrl = `${relativePath}?${queryString}#embed`;
-            
-            // Show the embed link preview
-            embedLinkInput.value = relativeUrl;
-            embedLinkPreview.classList.remove('hidden');
-            generateEmbedLinkButton.classList.add('active');
-            generateEmbedLinkButton.textContent = 'Hide Embed Link';
-
-            // Log for debugging
-            console.log('Generated embed link:', relativeUrl);
-        } else {
-            embedLinkPreview.classList.add('hidden');
-            generateEmbedLinkButton.classList.remove('active');
-            generateEmbedLinkButton.textContent = 'Generate Embed Link';
-        }
     });
 
-    // Add event listener for copying embed link
-    copyLinkButton.addEventListener('click', async () => {
+    // Copy embed link handler
+    copyEmbedLinkButton.addEventListener('click', async () => {
         try {
             await navigator.clipboard.writeText(embedLinkInput.value);
             linkCopyFeedback.classList.remove('hidden');
@@ -882,92 +872,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Function to load settings from URL parameters
+    // Load settings from URL parameters if they exist
     function loadSettingsFromUrl() {
-        if (window.location.search) {
-            const params = new URLSearchParams(window.location.search);
-            
-            // Load each setting if it exists in the URL
-            if (params.has('clockShape')) {
-                clockShapeSelect.value = params.get('clockShape');
-                console.log('Loading clock shape:', params.get('clockShape'));
-            }
-            if (params.has('backgroundType')) {
-                backgroundTypeSelect.value = params.get('backgroundType');
-                // Show/hide gradient section based on background type
-                gradientSection.style.display = params.get('backgroundType') === 'gradient' ? 'block' : 'none';
-            }
-            if (params.has('backgroundColor')) backgroundColorInput.value = '#' + params.get('backgroundColor');
-            if (params.has('primaryColor')) primaryColorInput.value = '#' + params.get('primaryColor');
-            if (params.has('secondaryColor')) secondaryColorInput.value = '#' + params.get('secondaryColor');
-            if (params.has('gradientType')) gradientTypeSelect.value = params.get('gradientType');
-            if (params.has('gradientAngle')) {
-                gradientAngleInput.value = params.get('gradientAngle');
-                angleValue.textContent = `${params.get('gradientAngle')}°`;
-            }
-            if (params.has('fontFamily')) {
-                const decodedFont = decodeURIComponent(params.get('fontFamily'));
-                fontFamilySelect.value = decodedFont;
-            }
-            if (params.has('fontSize')) {
-                fontSizeInput.value = params.get('fontSize');
-                sizeValue.textContent = `${params.get('fontSize')}px`;
-            }
-            if (params.has('textColor')) textColorInput.value = '#' + params.get('textColor');
-            if (params.has('textShadowSize')) {
-                textShadowSizeInput.value = params.get('textShadowSize');
-                textShadowSizeValue.textContent = `${params.get('textShadowSize')}px`;
-            }
-            if (params.has('textShadowColor')) textShadowColorInput.value = '#' + params.get('textShadowColor');
-            if (params.has('textEffect')) {
-                textEffectSelect.value = params.get('textEffect');
-                // Show/hide neon color control based on text effect
-                neonColorControl.style.display = params.get('textEffect') === 'neon' ? 'flex' : 'none';
-            }
-            if (params.has('neonColor')) neonColorInput.value = '#' + params.get('neonColor');
-            if (params.has('timeFormat')) timeFormatSelect.value = params.get('timeFormat');
-            if (params.has('showSeconds')) showSecondsSelect.value = params.get('showSeconds');
-            if (params.has('borderStyle')) borderStyleSelect.value = params.get('borderStyle');
-            if (params.has('borderSize')) {
-                borderSizeInput.value = params.get('borderSize');
-                borderSizeValue.textContent = `${params.get('borderSize')}px`;
-            }
-            if (params.has('borderColor')) borderColorInput.value = '#' + params.get('borderColor');
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('shape')) clockShapeSelect.value = urlParams.get('shape');
+        if (urlParams.has('bgType')) backgroundTypeSelect.value = urlParams.get('bgType');
+        if (urlParams.has('bgColor')) backgroundColorInput.value = '#' + urlParams.get('bgColor');
+        if (urlParams.has('primaryColor')) primaryColorInput.value = '#' + urlParams.get('primaryColor');
+        if (urlParams.has('secondaryColor')) secondaryColorInput.value = '#' + urlParams.get('secondaryColor');
+        if (urlParams.has('gradientType')) gradientTypeSelect.value = urlParams.get('gradientType');
+        if (urlParams.has('gradientAngle')) gradientAngleInput.value = urlParams.get('gradientAngle');
+        if (urlParams.has('fontFamily')) fontFamilySelect.value = decodeURIComponent(urlParams.get('fontFamily'));
+        if (urlParams.has('fontSize')) fontSizeInput.value = urlParams.get('fontSize');
+        if (urlParams.has('textColor')) textColorInput.value = '#' + urlParams.get('textColor');
+        if (urlParams.has('textShadowSize')) textShadowSizeInput.value = urlParams.get('textShadowSize');
+        if (urlParams.has('textShadowColor')) textShadowColorInput.value = '#' + urlParams.get('textShadowColor');
+        if (urlParams.has('timeFormat')) timeFormatSelect.value = urlParams.get('timeFormat');
+        if (urlParams.has('showSeconds')) showSecondsSelect.value = urlParams.get('showSeconds');
+        if (urlParams.has('borderStyle')) borderStyleSelect.value = urlParams.get('borderStyle');
+        if (urlParams.has('borderSize')) borderSizeInput.value = urlParams.get('borderSize');
+        if (urlParams.has('borderColor')) borderColorInput.value = '#' + urlParams.get('borderColor');
+        if (urlParams.has('textEffect')) textEffectSelect.value = urlParams.get('textEffect');
+        if (urlParams.has('neonColor')) neonColorInput.value = '#' + urlParams.get('neonColor');
 
-            // Store the loaded settings in localStorage
-            const settings = {
-                clockShape: clockShapeSelect.value,
-                backgroundType: backgroundTypeSelect.value,
-                backgroundColor: backgroundColorInput.value.substring(1),
-                primaryColor: primaryColorInput.value.substring(1),
-                secondaryColor: secondaryColorInput.value.substring(1),
-                gradientType: gradientTypeSelect.value,
-                gradientAngle: gradientAngleInput.value,
-                fontFamily: fontFamilySelect.value,
-                fontSize: fontSizeInput.value,
-                textColor: textColorInput.value.substring(1),
-                textShadowSize: textShadowSizeInput.value,
-                textShadowColor: textShadowColorInput.value.substring(1),
-                textEffect: textEffectSelect.value,
-                neonColor: neonColorInput.value.substring(1),
-                timeFormat: timeFormatSelect.value,
-                showSeconds: showSecondsSelect.value,
-                borderStyle: borderStyleSelect.value,
-                borderSize: borderSizeInput.value,
-                borderColor: borderColorInput.value.substring(1)
-            };
-            localStorage.setItem('clockSettings', JSON.stringify(settings));
-
-            // Apply all visual elements
-            updateClockStyle();
-
-            // Create sparkle effect if needed
-            if (settings.textEffect === 'sparkle') {
-                createSparkleParticles();
-            }
-        }
+        // Update all displays
+        updateClockStyle();
+        
+        // Trigger change event on background type to show/hide gradient section
+        backgroundTypeSelect.dispatchEvent(new Event('change'));
+        
+        // Update text effect
+        textEffectSelect.dispatchEvent(new Event('change'));
     }
 
-    // Load settings from URL when page loads
+    // Load settings from URL if they exist
     loadSettingsFromUrl();
 }); 
