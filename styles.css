@@ -133,6 +133,7 @@ body {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
+    background: transparent !important;
 }
 
 .embedded .style-1 {
@@ -144,6 +145,7 @@ body {
     justify-content: center !important;
     align-items: center !important;
     border-radius: 8px !important;
+    overflow: visible !important;
 }
 
 .embedded .clock {
@@ -172,6 +174,12 @@ body {
     padding: 0 !important;
     line-height: 1 !important;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Hide customization panel and footer in embedded mode */
+.embedded .customization-panel,
+.embedded .footer-image {
+    display: none !important;
 }
 
 .clock {
