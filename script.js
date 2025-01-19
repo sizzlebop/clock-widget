@@ -499,12 +499,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Get the current site's URL
         const currentUrl = new URL(window.location.href);
-        // Get the path without any query parameters or hash
-        const path = currentUrl.pathname.replace(/\/[^\/]*$/, '/');
-        // Construct the full URL
-        const embedUrl = `${currentUrl.protocol}//${currentUrl.host}${path}?${params.toString()}#embed`;
+        // Get the base URL without any parameters or hash
+        const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.split('?')[0].split('#')[0]}`;
+        // Construct the full URL with embed hash
+        const embedUrl = `${baseUrl}?${params.toString()}#embed`;
         
-        console.log('Generated relative embed URL:', embedUrl);
+        console.log('Generated embed URL:', embedUrl);
         
         return embedUrl;
     }
@@ -550,12 +550,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show/hide relative embed link
     if (showRelativeEmbed && embedPreview && embedCode) {
         showRelativeEmbed.addEventListener('click', () => {
-            console.log('Relative link button clicked'); // Debug log
+            console.log('Relative link button clicked');
             const isHidden = embedPreview.classList.contains('hidden');
             if (isHidden) {
                 embedCode.dataset.type = 'relative';
                 const link = generateRelativeEmbed();
-                embedCode.textContent = link;
+                // Create a proper iframe embed code
+                const embedHTML = `<iframe src="${link}" style="width: 100%; height: 200px; border: none; border-radius: 8px;" allow="autoplay"></iframe>`;
+                embedCode.textContent = embedHTML;
                 embedPreview.classList.remove('hidden');
                 showRelativeEmbed.textContent = 'Hide Relative Link';
                 showEmbedButton.textContent = 'Show Embed Code';
