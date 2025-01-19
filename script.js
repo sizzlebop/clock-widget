@@ -201,13 +201,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const seconds = String(now.getSeconds()).padStart(2, '0');
         let timeString;
 
-        if (timeFormatSelect.value === '12') {
+        const timeFormat = isEmbedded ? 
+            (new URLSearchParams(window.location.search).get('timeFormat') || '24') : 
+            (timeFormatSelect ? timeFormatSelect.value : '24');
+            
+        const showSeconds = isEmbedded ? 
+            (new URLSearchParams(window.location.search).get('showSeconds') || 'true') : 
+            (showSecondsSelect ? showSecondsSelect.value : 'true');
+
+        if (timeFormat === '12') {
             const period = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12 || 12;
-            timeString = `${hours}:${minutes}${showSecondsSelect.value === 'true' ? ':' + seconds : ''} ${period}`;
+            timeString = `${hours}:${minutes}${showSeconds === 'true' ? ':' + seconds : ''} ${period}`;
         } else {
             hours = String(hours).padStart(2, '0');
-            timeString = `${hours}:${minutes}${showSecondsSelect.value === 'true' ? ':' + seconds : ''}`;
+            timeString = `${hours}:${minutes}${showSeconds === 'true' ? ':' + seconds : ''}`;
         }
         
         timeElement.textContent = timeString;
@@ -222,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dateElement.textContent = now.toLocaleDateString(undefined, options);
     }
 
-    // Update clock every second
+    // Start the clock update for both modes
     updateClock();
     setInterval(updateClock, 1000);
 
