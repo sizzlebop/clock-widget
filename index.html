@@ -20,39 +20,6 @@
         </div>
         <div class="customization-panel">
             <div class="panel-section">
-                <h3>Color Scheme</h3>
-                <div class="color-controls">
-                    <div class="control-group">
-                        <label for="primary-color">Primary Color:</label>
-                        <input type="color" id="primary-color" value="#fad029">
-                    </div>
-                    <div class="control-group">
-                        <label for="secondary-color">Secondary Color:</label>
-                        <input type="color" id="secondary-color" value="#ff6b6b">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="panel-section">
-                <h3>Gradient</h3>
-                <div class="gradient-controls">
-                    <div class="control-group">
-                        <label for="gradient-type">Gradient Type:</label>
-                        <select id="gradient-type">
-                            <option value="linear">Linear</option>
-                            <option value="radial">Radial</option>
-                            <option value="conic">Conic</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label for="gradient-angle">Angle:</label>
-                        <input type="range" id="gradient-angle" min="0" max="360" value="45">
-                        <span id="angle-value">45°</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-section">
                 <h3>Clock Shape</h3>
                 <div class="shape-controls">
                     <div class="control-group">
@@ -90,6 +57,77 @@
                         <label for="font-size">Font Size:</label>
                         <input type="range" id="font-size" min="12" max="72" value="20">
                         <span id="size-value">20px</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="text-color">Font Color:</label>
+                        <input type="color" id="text-color" value="#ffffff">
+                    </div>
+                    <div class="control-group">
+                        <label for="text-shadow-size">Font Shadow Size:</label>
+                        <input type="range" id="text-shadow-size" min="0" max="20" value="0">
+                        <span id="text-shadow-size-value">0px</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="text-shadow-color">Font Shadow Color:</label>
+                        <input type="color" id="text-shadow-color" value="#000000">
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>Color Scheme</h3>
+                <div class="color-controls">
+                    <div class="control-group">
+                        <label for="primary-color">Primary Color:</label>
+                        <input type="color" id="primary-color" value="#fad029">
+                    </div>
+                    <div class="control-group">
+                        <label for="secondary-color">Secondary Color:</label>
+                        <input type="color" id="secondary-color" value="#ff6b6b">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h3>Gradient</h3>
+                <div class="gradient-controls">
+                    <div class="control-group">
+                        <label for="gradient-type">Gradient Type:</label>
+                        <select id="gradient-type">
+                            <option value="linear">Linear</option>
+                            <option value="radial">Radial</option>
+                            <option value="conic">Conic</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="gradient-angle">Angle:</label>
+                        <input type="range" id="gradient-angle" min="0" max="360" value="45">
+                        <span id="angle-value">45°</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-section">
+                <h3>Effects</h3>
+                <div class="effects-controls">
+                    <div class="control-group">
+                        <label for="background-opacity">Background Opacity:</label>
+                        <input type="range" id="background-opacity" min="0" max="100" value="100">
+                        <span id="opacity-value">100%</span>
+                    </div>
+                    <div class="control-group">
+                        <label for="border-style">Border Style:</label>
+                        <select id="border-style">
+                            <option value="none">None</option>
+                            <option value="solid">Solid</option>
+                            <option value="dashed">Dashed</option>
+                            <option value="dotted">Dotted</option>
+                            <option value="double">Double</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="border-color">Border Color:</label>
+                        <input type="color" id="border-color" value="#ff6b6b">
                     </div>
                 </div>
             </div>

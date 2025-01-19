@@ -29,6 +29,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const embedCode = document.getElementById('embed-code');
     const copyButton = document.getElementById('copy-embed-code');
     const clockShapeSelect = document.getElementById('clock-shape');
+    const textShadowSizeInput = document.getElementById('text-shadow-size');
+    const textShadowSizeValue = document.getElementById('text-shadow-size-value');
+    const textShadowColorInput = document.getElementById('text-shadow-color');
+    const textColorInput = document.getElementById('text-color');
+    const backgroundOpacityInput = document.getElementById('background-opacity');
+    const opacityValue = document.getElementById('opacity-value');
+    const borderStyleSelect = document.getElementById('border-style');
+    const borderColorInput = document.getElementById('border-color');
+
+    // Initialize controls with default values
+    textShadowSizeInput.value = "0";
+    textShadowColorInput.value = "#000000";
+    textColorInput.value = "#ffffff";
+    backgroundOpacityInput.value = "100";
+    borderStyleSelect.value = "none";
+    borderColorInput.value = "#ff6b6b";
 
     // Update clock display
     function updateClock() {
@@ -77,12 +93,37 @@ document.addEventListener('DOMContentLoaded', () => {
         updateClockStyle();
     });
 
-    // Add event listeners for all inputs
-    [primaryColorInput, secondaryColorInput, gradientTypeSelect, 
-     gradientAngleInput, fontFamilySelect, fontSizeInput, timeFormatSelect, 
-     showSecondsSelect, clockShapeSelect].forEach(input => {
-        input.addEventListener('change', updateClockStyle);
-        input.addEventListener('input', updateClockStyle);
+    // Add individual event listeners for the controls
+    textShadowSizeInput.addEventListener('input', (e) => {
+        console.log('Text shadow size changed:', e.target.value);
+        textShadowSizeValue.textContent = `${e.target.value}px`;
+        updateClockStyle();
+    });
+
+    textShadowColorInput.addEventListener('input', (e) => {
+        console.log('Text shadow color changed:', e.target.value);
+        updateClockStyle();
+    });
+
+    textColorInput.addEventListener('input', (e) => {
+        console.log('Text color changed:', e.target.value);
+        updateClockStyle();
+    });
+
+    backgroundOpacityInput.addEventListener('input', (e) => {
+        console.log('Opacity changed:', e.target.value);
+        opacityValue.textContent = `${e.target.value}%`;
+        updateClockStyle();
+    });
+
+    borderStyleSelect.addEventListener('change', (e) => {
+        console.log('Border style changed:', e.target.value);
+        updateClockStyle();
+    });
+
+    borderColorInput.addEventListener('input', () => {
+        console.log('Border color changed:', borderColorInput.value);
+        updateClockStyle();
     });
 
     function updateClockStyle() {
@@ -90,9 +131,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const secondaryColor = secondaryColorInput.value;
         const gradientType = gradientTypeSelect.value;
         const gradientAngle = gradientAngleInput.value;
-        const fontFamily = fontFamilySelect.value;
-        const fontSize = fontSizeInput.value;
         const clockShape = clockShapeSelect.value;
+        const textShadowSize = parseInt(textShadowSizeInput.value);
+        const textShadowColor = textShadowColorInput.value;
+        const textColor = textColorInput.value;
+        const opacity = parseInt(backgroundOpacityInput.value) / 100;
+        const borderStyle = borderStyleSelect.value;
+        const borderColor = borderColorInput.value;
+
+        console.log('Style values:', {
+            textShadowSize,
+            textShadowColor,
+            textColor,
+            opacity,
+            borderStyle,
+            borderColor,
+            primaryColor,
+            secondaryColor
+        });
 
         // Create gradient based on type
         let gradient;
@@ -104,25 +160,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 gradient = `radial-gradient(circle, ${primaryColor}, ${secondaryColor})`;
                 break;
             case 'conic':
-                gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor})`;
+                gradient = `conic-gradient(from ${gradientAngle}deg, ${primaryColor}, ${secondaryColor}, ${primaryColor})`;
                 break;
         }
 
-        // Apply styles to clock container
-        const clockContainer = clockElement.parentElement;
-        clockContainer.style.background = gradient;
-        clockElement.style.fontFamily = fontFamily;
+        // Get the correct container (.style-1)
+        const clockContainer = document.querySelector('.style-1');
+        console.log('Clock container:', clockContainer);
         
-        // Remove all shape classes first
+        if (!clockContainer) {
+            console.error('Clock container not found!');
+            return;
+        }
+        
+        // Apply background with opacity
+        const rgbaPrimary = `rgba(${hexToRgb(primaryColor)}, ${opacity})`;
+        clockContainer.style.setProperty('background', gradient, 'important');
+        
+        // Apply border with width proportional to container
+        if (borderStyle !== 'none') {
+            const borderWidth = Math.max(3, Math.floor(clockContainer.offsetWidth * 0.015));
+            const borderValue = `${borderWidth}px ${borderStyle} ${borderColor}`;
+            clockContainer.style.setProperty('border', borderValue, 'important');
+            console.log('Applied border:', borderValue);
+        } else {
+            clockContainer.style.setProperty('border', 'none', 'important');
+        }
+
+        // Apply text shadow to both time and date elements
+        if (textShadowSize > 0) {
+            const textShadowOpacity = Math.min(0.9, textShadowSize / 10);
+            const blurRadius = Math.max(2, textShadowSize);
+            const shadowColor = textShadowColor.replace('#', '');
+            const r = parseInt(shadowColor.substr(0, 2), 16);
+            const g = parseInt(shadowColor.substr(2, 2), 16);
+            const b = parseInt(shadowColor.substr(4, 2), 16);
+            const textShadowStyle = `0 ${textShadowSize/4}px ${blurRadius}px rgba(${r}, ${g}, ${b}, ${textShadowOpacity})`;
+            timeElement.style.setProperty('text-shadow', textShadowStyle, 'important');
+            dateElement.style.setProperty('text-shadow', textShadowStyle, 'important');
+        } else {
+            timeElement.style.setProperty('text-shadow', 'none', 'important');
+            dateElement.style.setProperty('text-shadow', 'none', 'important');
+        }
+        
+        // Apply text color and font styles
+        clockElement.style.setProperty('font-family', fontFamilySelect.value, 'important');
+        timeElement.style.setProperty('font-size', `${fontSizeInput.value * 2}px`, 'important');
+        dateElement.style.setProperty('font-size', `${fontSizeInput.value * 0.8}px`, 'important');
+        timeElement.style.setProperty('color', textColor, 'important');
+        dateElement.style.setProperty('color', textColor, 'important');
+        
+        // Handle shape classes
         clockContainer.classList.remove('rectangle', 'square', 'circle', 'octagon', 'star', 'heart');
-        // Add the selected shape class
         if (clockShape !== 'rectangle') {
             clockContainer.classList.add(clockShape);
         }
-        
-        // Adjust font sizes proportionally
-        timeElement.style.fontSize = `${fontSize * 2}px`;
-        dateElement.style.fontSize = `${fontSize * 0.8}px`;
+
+        // Update value displays
+        textShadowSizeValue.textContent = `${textShadowSize}px`;
+        opacityValue.textContent = `${backgroundOpacityInput.value}%`;
 
         // Store current settings in localStorage
         const settings = {
@@ -130,13 +226,27 @@ document.addEventListener('DOMContentLoaded', () => {
             secondaryColor,
             gradientType,
             gradientAngle,
-            fontFamily,
-            fontSize,
+            fontFamily: fontFamilySelect.value,
+            fontSize: fontSizeInput.value,
+            textColor,
             timeFormat: timeFormatSelect.value,
             showSeconds: showSecondsSelect.value,
-            clockShape
+            clockShape,
+            textShadowSize,
+            textShadowColor,
+            opacity: backgroundOpacityInput.value,
+            borderStyle,
+            borderColor
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
+    }
+
+    // Helper function to convert hex to RGB
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? 
+            `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+            '0, 0, 0';
     }
 
     // Generate embed code based on current settings
@@ -286,9 +396,15 @@ document.addEventListener('DOMContentLoaded', () => {
             fontFamilySelect.value = settings.fontFamily || 'IBM Plex Sans';
             fontSizeInput.value = settings.fontSize || '20';
             sizeValue.textContent = `${settings.fontSize || '20'}px`;
+            textColorInput.value = settings.textColor || '#ffffff';
             timeFormatSelect.value = settings.timeFormat || '24';
             showSecondsSelect.value = settings.showSeconds || 'true';
             clockShapeSelect.value = settings.clockShape || 'rectangle';
+            textShadowSizeInput.value = settings.textShadowSize || '0';
+            textShadowColorInput.value = settings.textShadowColor || '#000000';
+            backgroundOpacityInput.value = settings.opacity || '100';
+            borderStyleSelect.value = settings.borderStyle || 'none';
+            borderColorInput.value = settings.borderColor || '#ff6b6b';
             updateClockStyle();
         }
     }

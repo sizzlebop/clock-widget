@@ -18,6 +18,9 @@ body {
     width: 100%;
     display: flex;
     box-sizing: border-box;
+    min-height: 350px;
+    padding-bottom: 60px;
+    padding-right: 60px;
 }
 
 .style-1 {
@@ -31,9 +34,13 @@ body {
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible !important;
     background: linear-gradient(45deg, #fad029, #ff6b6b);
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    border: none;
+    box-shadow: none;
 }
 
 /* Clock Shapes */
@@ -218,9 +225,9 @@ body {
 }
 
 .control-group span {
-    min-width: 45px;
-    text-align: right;
-    font-size: 14px;
+    margin-left: 8px;
+    min-width: 40px;
+    display: inline-block;
 }
 
 .embed-button, .copy-button {
@@ -330,4 +337,59 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.effects-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.effects-controls .control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.effects-controls input[type="range"] {
+    flex: 1;
+    height: 4px;
+    background: #3a3f42;
+    border-radius: 2px;
+    appearance: none;
+    outline: none;
+}
+
+.effects-controls input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #fad029;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.effects-controls input[type="range"]::-webkit-slider-thumb:hover {
+    background: #ff6b6b;
+}
+
+.effects-controls select {
+    flex: 1;
+    padding: 4px 8px;
+    background: #3a3f42;
+    border: none;
+    border-radius: 4px;
+    color: rgb(216, 213, 207);
+    cursor: pointer;
+    outline: none;
+}
+
+/* Add specific style overrides for effects */
+.style-1[style*="box-shadow"] {
+    overflow: visible !important;
+}
+
+.style-1[style*="border"] {
+    background-clip: padding-box;
 }
