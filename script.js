@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const embedPreview = document.getElementById('embed-preview');
     const embedCode = document.getElementById('embed-code');
     const copyButton = document.getElementById('copy-embed-code');
+    const clockShapeSelect = document.getElementById('clock-shape');
 
     // Update clock display
     function updateClock() {
@@ -78,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add event listeners for all inputs
     [primaryColorInput, secondaryColorInput, gradientTypeSelect, 
-     gradientAngleInput, fontFamilySelect, fontSizeInput, timeFormatSelect, showSecondsSelect].forEach(input => {
+     gradientAngleInput, fontFamilySelect, fontSizeInput, timeFormatSelect, 
+     showSecondsSelect, clockShapeSelect].forEach(input => {
         input.addEventListener('change', updateClockStyle);
         input.addEventListener('input', updateClockStyle);
     });
@@ -90,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const gradientAngle = gradientAngleInput.value;
         const fontFamily = fontFamilySelect.value;
         const fontSize = fontSizeInput.value;
+        const clockShape = clockShapeSelect.value;
 
         // Create gradient based on type
         let gradient;
@@ -110,6 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clockContainer.style.background = gradient;
         clockElement.style.fontFamily = fontFamily;
         
+        // Remove all shape classes first
+        clockContainer.classList.remove('rectangle', 'square', 'circle', 'octagon', 'star', 'heart');
+        // Add the selected shape class
+        if (clockShape !== 'rectangle') {
+            clockContainer.classList.add(clockShape);
+        }
+        
         // Adjust font sizes proportionally
         timeElement.style.fontSize = `${fontSize * 2}px`;
         dateElement.style.fontSize = `${fontSize * 0.8}px`;
@@ -123,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fontFamily,
             fontSize,
             timeFormat: timeFormatSelect.value,
-            showSeconds: showSecondsSelect.value
+            showSeconds: showSecondsSelect.value,
+            clockShape
         };
         localStorage.setItem('clockSettings', JSON.stringify(settings));
     }
@@ -262,24 +273,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load saved settings from localStorage
+    // Load saved settings
     function loadSavedSettings() {
         const savedSettings = localStorage.getItem('clockSettings');
         if (savedSettings) {
             const settings = JSON.parse(savedSettings);
-            primaryColorInput.value = settings.primaryColor;
-            secondaryColorInput.value = settings.secondaryColor;
-            gradientTypeSelect.value = settings.gradientType;
-            gradientAngleInput.value = settings.gradientAngle;
-            angleValue.textContent = `${settings.gradientAngle}°`;
-            fontFamilySelect.value = settings.fontFamily;
-            fontSizeInput.value = settings.fontSize;
-            sizeValue.textContent = `${settings.fontSize}px`;
+            primaryColorInput.value = settings.primaryColor || '#fad029';
+            secondaryColorInput.value = settings.secondaryColor || '#ff6b6b';
+            gradientTypeSelect.value = settings.gradientType || 'linear';
+            gradientAngleInput.value = settings.gradientAngle || '45';
+            angleValue.textContent = `${settings.gradientAngle || '45'}°`;
+            fontFamilySelect.value = settings.fontFamily || 'IBM Plex Sans';
+            fontSizeInput.value = settings.fontSize || '20';
+            sizeValue.textContent = `${settings.fontSize || '20'}px`;
             timeFormatSelect.value = settings.timeFormat || '24';
             showSecondsSelect.value = settings.showSeconds || 'true';
+            clockShapeSelect.value = settings.clockShape || 'rectangle';
             updateClockStyle();
         }
     }
+
+    // Load saved settings on page load
+    loadSavedSettings();
 
     // Check if we're in embed mode
     if (window.location.hash === '#embed') {
@@ -366,7 +381,4 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         localStorage.setItem('clockSettings', JSON.stringify(defaultSettings));
     }
-
-    // Initialize with saved settings or defaults
-    loadSavedSettings();
 }); 

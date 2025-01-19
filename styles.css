@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&family=Livvic:wght@400;500&family=Lobster&family=Dancing+Script:wght@400;500&display=swap');
 
 body {
     margin: 0;
@@ -33,6 +33,50 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     background: linear-gradient(45deg, #fad029, #ff6b6b);
+    transition: all 0.3s ease;
+}
+
+/* Clock Shapes */
+.style-1.square {
+    width: 250px;
+    height: 250px;
+}
+
+.style-1.circle {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+}
+
+.style-1.octagon {
+    width: 250px;
+    height: 250px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.style-1.star {
+    width: 500px;
+    height: 500px;
+    clip-path: polygon(
+        50% 0%,    /* top */
+        61% 35%,   /* top right star point */
+        98% 35%,   /* right tip */
+        68% 57%,   /* bottom right star point */
+        79% 91%,   /* bottom right tip */
+        50% 70%,   /* bottom middle */
+        21% 91%,   /* bottom left tip */
+        32% 57%,   /* bottom left star point */
+        2% 35%,    /* left tip */
+        39% 35%    /* top left star point */
+    );
+}
+
+.style-1.heart {
+    width: 500px;
+    height: 500px;
+    clip-path: path(
+        'M250,400 L75,200 C0,125 50,25 125,25 C175,25 225,75 250,125 C275,75 325,25 375,25 C450,25 500,125 425,200 L250,400 Z'
+    );
 }
 
 /* Embedded view specific styles */
@@ -43,6 +87,13 @@ body {
         border-radius: 0;
     }
     
+    .style-1.square,
+    .style-1.circle,
+    .style-1.octagon {
+        width: min(100vw, 250px);
+        height: min(100vw, 250px);
+    }
+
     .time {
         font-size: calc(4em * (100vw / 500));
     }
@@ -55,6 +106,13 @@ body {
 /* Force dimensions when embedded */
 .embedded .style-1 {
     width: 500px !important;
+    height: 250px !important;
+}
+
+.embedded .style-1.square,
+.embedded .style-1.circle,
+.embedded .style-1.octagon {
+    width: 250px !important;
     height: 250px !important;
 }
 

@@ -6,7 +6,7 @@
     <meta name="embed-view" content="width=500, height=250">
     <title>Clock Widget</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&family=Livvic:wght@400;500&family=Lobster&family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 </head>
@@ -53,12 +53,30 @@
             </div>
 
             <div class="panel-section">
+                <h3>Clock Shape</h3>
+                <div class="shape-controls">
+                    <div class="control-group">
+                        <label for="clock-shape">Shape:</label>
+                        <select id="clock-shape">
+                            <option value="rectangle">Rectangle</option>
+                            <option value="square">Square</option>
+                            <option value="circle">Circle</option>
+                            <option value="octagon">Octagon</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
                 <h3>Font Style</h3>
                 <div class="font-controls">
                     <div class="control-group">
                         <label for="font-family">Font Family:</label>
                         <select id="font-family">
                             <option value="IBM Plex Sans">IBM Plex Sans</option>
+                            <option value="Livvic">Livvic</option>
+                            <option value="Lobster">Lobster</option>
+                            <option value="Dancing Script">Dancing Script</option>
                             <option value="Roboto">Roboto</option>
                             <option value="Montserrat">Montserrat</option>
                             <option value="Lato">Lato</option>
@@ -70,7 +88,7 @@
                     </div>
                     <div class="control-group">
                         <label for="font-size">Font Size:</label>
-                        <input type="range" id="font-size" min="12" max="48" value="20">
+                        <input type="range" id="font-size" min="12" max="72" value="20">
                         <span id="size-value">20px</span>
                     </div>
                 </div>
