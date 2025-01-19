@@ -17,7 +17,6 @@ const fontFamilySelect = document.getElementById('font-family');
 const fontSizeInput = document.getElementById('font-size');
 const timeFormatSelect = document.getElementById('time-format');
 const showSecondsSelect = document.getElementById('show-seconds');
-const clockShapeSelect = document.getElementById('clock-shape');
 const clockContainer = document.querySelector('.style-1');
 const clockElement = document.getElementById('clock');
 const timeElement = document.querySelector('.time');
@@ -429,7 +428,6 @@ document.addEventListener('DOMContentLoaded', () => {
             textColor,
             timeFormat: timeFormatSelect.value,
             showSeconds: showSecondsSelect.value,
-            clockShape: clockShapeSelect.value,
             textShadowSize,
             textShadowColor,
             borderStyle,
@@ -462,7 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
             textColor: settings.textColor,
             timeFormat: settings.timeFormat,
             showSeconds: settings.showSeconds,
-            clockShape: settings.clockShape,
             textShadowSize: settings.textShadowSize,
             textShadowColor: settings.textShadowColor,
             borderStyle: settings.borderStyle,
@@ -566,7 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (textColorInput) textColorInput.value = settings.textColor || '#ffffff';
             if (timeFormatSelect) timeFormatSelect.value = settings.timeFormat || '24';
             if (showSecondsSelect) showSecondsSelect.value = settings.showSeconds || 'true';
-            if (clockShapeSelect) clockShapeSelect.value = settings.clockShape || 'rectangle';
             if (textShadowSizeInput) textShadowSizeInput.value = settings.textShadowSize || '0';
             if (textShadowColorInput) textShadowColorInput.value = settings.textShadowColor || '#000000';
             if (borderStyleSelect) borderStyleSelect.value = settings.borderStyle || 'none';
@@ -598,7 +594,6 @@ document.addEventListener('DOMContentLoaded', () => {
             textColor: params.get('textColor') || '#ffffff',
             timeFormat: params.get('timeFormat') || '24',
             showSeconds: params.get('showSeconds') || 'true',
-            clockShape: params.get('clockShape') || 'rectangle',
             textShadowSize: params.get('textShadowSize') || '0',
             textShadowColor: params.get('textShadowColor') || '#000000',
             borderStyle: params.get('borderStyle') || 'none',
@@ -621,7 +616,6 @@ document.addEventListener('DOMContentLoaded', () => {
         textColorInput.value = settings.textColor;
         timeFormatSelect.value = settings.timeFormat;
         showSecondsSelect.value = settings.showSeconds;
-        clockShapeSelect.value = settings.clockShape;
         textShadowSizeInput.value = settings.textShadowSize;
         textShadowColorInput.value = settings.textShadowColor;
         borderStyleSelect.value = settings.borderStyle;
@@ -838,15 +832,13 @@ document.addEventListener('DOMContentLoaded', () => {
             textShadowColor: textShadowColorInput?.value || '#000000',
             timeFormat: timeFormatSelect?.value || '24',
             showSeconds: showSecondsSelect?.value || 'true',
-            clockShape: clockShapeSelect?.value || 'rectangle',
             textShadowSize: textShadowSizeInput?.value || '0',
             textShadowColor: textShadowColorInput?.value || '#000000',
             borderStyle: borderStyleSelect?.value || 'none',
             borderSize: borderSizeInput?.value || '3',
             borderColor: borderColorInput?.value || '#ff6b6b',
             textEffect: textEffectSelect?.value || 'none',
-            neonColor: neonColorInput?.value || '#00ff00',
-            clockShape: clockShapeSelect?.value || 'rectangle'
+            neonColor: neonColorInput?.value || '#00ff00'
         };
     }
 
@@ -876,7 +868,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add all settings to URL parameters with correct parameter names
             const searchParams = new URLSearchParams();
-            searchParams.append('shape', settings.clockShape || 'rectangle');
             searchParams.append('bgType', settings.backgroundType);
             searchParams.append('bgColor', settings.backgroundColor.replace('#', ''));
             searchParams.append('primaryColor', settings.primaryColor.replace('#', ''));
@@ -944,7 +935,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadSettingsFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         
-        if (urlParams.has('shape')) clockShapeSelect.value = urlParams.get('shape');
         if (urlParams.has('bgType')) backgroundTypeSelect.value = urlParams.get('bgType');
         if (urlParams.has('bgColor')) backgroundColorInput.value = '#' + urlParams.get('bgColor');
         if (urlParams.has('primaryColor')) primaryColorInput.value = '#' + urlParams.get('primaryColor');
