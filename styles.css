@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&family=Livvic:wght@400;500&family=Lobster&family=Dancing+Script:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto&family=Montserrat&family=Lato&family=Open+Sans&family=Poppins&family=Source+Sans+Pro&family=Ubuntu&family=Livvic:wght@400;500&family=Lobster&family=Dancing+Script:wght@400;500&display=swap');
 
 body {
     margin: 0;
@@ -189,6 +189,45 @@ body {
     display: inline-block;
 }
 
+.embed-controls {
+    margin-top: 16px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.embed-preview {
+    margin-top: 16px;
+    padding: 16px;
+    background-color: rgba(27, 29, 30, 0.8);
+    border-radius: 4px;
+    border: 1px solid rgb(127, 118, 104);
+}
+
+.embed-preview .code-container {
+    margin-bottom: 12px;
+}
+
+.embed-preview input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(27, 29, 30);
+    border: 1px solid rgb(127, 118, 104);
+    border-radius: 4px;
+    color: rgb(216, 213, 207);
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.embed-preview .button-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .embed-button, .copy-button {
     background-color: #4A5568;
     color: #ffffff;
@@ -225,15 +264,38 @@ body {
 .copy-feedback {
     color: #48BB78;
     font-size: 14px;
-    font-weight: 500;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 }
 
-.copy-feedback.hidden {
-    display: none;
+.copy-feedback:not(.hidden) {
+    opacity: 1;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+#embed-link {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(27, 29, 30);
+    border: 1px solid rgb(127, 118, 104);
+    border-radius: 4px;
+    color: rgb(216, 213, 207);
+    font-family: monospace;
+    font-size: 14px;
+    cursor: text;
+    resize: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#embed-link:focus {
+    outline: none;
+    border-color: rgb(250, 208, 41);
 }
 
 .footer {
@@ -248,72 +310,6 @@ body {
 .footer-image {
     width: 15%;
     height: auto;
-}
-
-.embed-controls {
-    margin-top: 16px;
-}
-
-.button-group {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-#embed-link {
-    width: 100%;
-    padding: 8px;
-    background-color: rgb(27, 29, 30);
-    color: rgb(216, 213, 207);
-    border: 1px solid rgb(127, 118, 104);
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 14px;
-    margin: 0;
-}
-
-#embed-link:focus {
-    outline: none;
-    border-color: rgb(250, 208, 41);
-}
-
-.embed-preview {
-    margin-top: 16px;
-    padding: 16px;
-    background-color: rgba(27, 29, 30, 0.8);
-    border-radius: 4px;
-    border: 1px solid rgb(127, 118, 104);
-}
-
-.embed-preview .code-container {
-    margin-bottom: 12px;
-}
-
-.embed-preview input[type="text"] {
-    width: 100%;
-    padding: 12px;
-    background-color: rgb(27, 29, 30);
-    border: 1px solid rgb(127, 118, 104);
-    border-radius: 4px;
-    color: rgb(216, 213, 207);
-    font-family: monospace;
-    font-size: 14px;
-}
-
-.embed-preview .button-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.button-group {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.hidden {
-    display: none !important;
 }
 
 .effects-controls {
@@ -506,37 +502,4 @@ body {
 
 #gradient-section {
     display: none;
-}
-
-#embed-link {
-    width: 100%;
-    padding: 12px;
-    background-color: rgb(27, 29, 30);
-    border: 1px solid rgb(127, 118, 104);
-    border-radius: 4px;
-    color: rgb(216, 213, 207);
-    font-family: monospace;
-    font-size: 14px;
-    cursor: text;
-    resize: none;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-#embed-link:focus {
-    outline: none;
-    border-color: rgb(250, 208, 41);
-}
-
-.copy-feedback {
-    color: #48BB78;
-    font-size: 14px;
-    margin-left: 8px;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-}
-
-.copy-feedback:not(.hidden) {
-    opacity: 1;
 }
