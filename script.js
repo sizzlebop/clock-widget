@@ -504,6 +504,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Construct the full URL
         const embedUrl = `${currentUrl.protocol}//${currentUrl.host}${path}?${params.toString()}#embed`;
         
+        console.log('Generated relative embed URL:', embedUrl);
+        
         return embedUrl;
     }
 
