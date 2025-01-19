@@ -347,9 +347,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Apply text color and font styles
-        clockElement.style.setProperty('font-family', fontFamilySelect.value, 'important');
-        timeElement.style.setProperty('font-size', `${fontSizeInput.value * 2}px`, 'important');
-        dateElement.style.setProperty('font-size', `${fontSizeInput.value * 0.8}px`, 'important');
+        const selectedFont = fontFamilySelect.value;
+        clockElement.style.setProperty('font-family', selectedFont, 'important');
+        timeElement.style.setProperty('font-family', selectedFont, 'important');
+        dateElement.style.setProperty('font-family', selectedFont, 'important');
+
+        // Calculate max font size based on clock shape
+        let maxFontSize = 48; // default max size
+        if (clockShape === 'circle' || clockShape === 'square' || clockShape === 'octagon') {
+            maxFontSize = 32; // smaller max size for compact shapes
+        }
+        
+        // Constrain font size input
+        const constrainedFontSize = Math.min(fontSizeInput.value, maxFontSize);
+        fontSizeInput.value = constrainedFontSize;
+        
+        // Apply constrained font sizes
+        timeElement.style.setProperty('font-size', `${constrainedFontSize * 2}px`, 'important');
+        dateElement.style.setProperty('font-size', `${constrainedFontSize * 0.8}px`, 'important');
+        
+        // Apply text color
         timeElement.style.setProperty('color', textColor, 'important');
         dateElement.style.setProperty('color', textColor, 'important');
         
