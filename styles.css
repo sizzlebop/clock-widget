@@ -480,8 +480,15 @@ body {
     z-index: 2;
 }
 
+/* Neon glow effect - specifically for time only */
 .clock[data-effect="neon"] .time {
     text-shadow: var(--neon-glow) !important;
+}
+
+.clock[data-effect="neon"] .date {
+    text-shadow: none;
+    color: white !important;
+    opacity: 0.9;
 }
 
 /* Rainbow Text Effect with enhanced glow */
