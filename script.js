@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if page is embedded
-    const isEmbedded = window.location.hash === '#embed' || window !== window.parent;
+    // Check if page is embedded with #embed hash
+    const isEmbedded = window.location.hash === '#embed';
     if (isEmbedded) {
         document.body.classList.add('embedded');
         // Hide customization panel when embedded
