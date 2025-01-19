@@ -7,12 +7,12 @@
 A modern, customizable clock widget that can be embedded into any website. Features a sleek design with real-time updates, extensive customization options, and theme presets.
 
 <div align="center">
-  <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737177138/screenzy-1737177128467_kuevbo.png" width="800" alt="Clock Widget Preview">
+  <img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737277579/Untitled_cbvagj.png" width="800" alt="Clock Widget Preview">
 </div>
 
 ## Features
 
-- **Real-time Updates**: 
+- **Real-time Updates**:
   - Live time and date display
   - Smooth animations for transitions
   - Automatic timezone detection
@@ -35,7 +35,7 @@ A modern, customizable clock widget that can be embedded into any website. Featu
   - Dark/Light mode toggle
   - Custom theme creation and saving
   - Theme import/export functionality
-- **Responsive Layout**: 
+- **Responsive Layout**:
   - Adaptive sizing for all devices
   - Mobile-optimized interface
   - Touch-friendly controls
@@ -44,12 +44,12 @@ A modern, customizable clock widget that can be embedded into any website. Featu
   - Countdown timer
   - Multiple clock instances
   - World clock display
-- **Easy Embedding**: 
+- **Easy Embedding**:
   - One-click embed code generation
   - Custom size parameters
   - Responsive embed options
   - iframe and JavaScript embedding methods
-- **Persistent Settings**: 
+- **Persistent Settings**:
   - Local storage for preferences
   - Cloud sync capability
   - Settings import/export
@@ -89,6 +89,7 @@ To embed the clock widget in your website:
 ## Customization Options
 
 ### Colors and Gradient
+
 - Primary and secondary colors using color picker
 - Multiple color stops for complex gradients
 - Gradient types: Linear, Radial, or Conic
@@ -97,20 +98,23 @@ To embed the clock widget in your website:
 - Opacity and blend mode settings
 
 ### Typography
-- Font families: IBM Plex Sans, Roboto, Montserrat, Lato, Open Sans, Poppins, Source Sans Pro, Ubuntu
-- Adjustable font size (12-48px)
+
+- Font families: IBM Plex Sans, Inter, Livvic, Lobster, Dancing Script, Roboto, Montserrat, Lato, Open Sans, Poppins, Source Sans Pro, Ubuntu
+- Adjustable font size (12-72px)
 - Font weight options
 - Letter spacing control
 - Text shadow effects
 
 ### Visual Effects
+
 - Adjustable border radius
 - Shadow intensity and spread
 - Background blur amount
-- Hover animations
+- Animations
 - Transition effects
 
 ### Time Display
+
 - 12/24 hour format
 - Toggle seconds visibility
 - Multiple date format options
@@ -119,6 +123,7 @@ To embed the clock widget in your website:
 - Custom format strings
 
 ### Additional Features
+
 - Alarm system with custom sounds
 - Countdown timer functionality
 - Multiple clock instance management
@@ -128,6 +133,7 @@ To embed the clock widget in your website:
 ## Browser Support
 
 Works in all modern browsers:
+
 - Chrome (v90+)
 - Firefox (v90+)
 - Safari (v14+)
@@ -137,6 +143,7 @@ Works in all modern browsers:
 ## Dependencies
 
 No external dependencies required! The widget uses:
+
 - Pure HTML5
 - CSS3 with modern features
 - Vanilla JavaScript (ES6+)
@@ -153,7 +160,7 @@ No external dependencies required! The widget uses:
 
 ## License
 
-MIT License - Feel free to use, modify, and distribute this code for any purpose. 
+MIT License - Feel free to use, modify, and distribute this code for any purpose.
 
 ## Contributing
 
@@ -163,4 +170,4 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 - Documentation: [Wiki](https://github.com/yourusername/clock-widget/wiki)
 - Issues: [GitHub Issues](https://github.com/yourusername/clock-widget/issues)
-- Discussions: [GitHub Discussions](https://github.com/yourusername/clock-widget/discussions) 
+- Discussions: [GitHub Discussions](https://github.com/yourusername/clock-widget/discussions)
